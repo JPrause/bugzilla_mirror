@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @query.name %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @query.description %>
+</p>
+
+<p>
+  <b>Product:</b>
+  <%= @query.product %>
+</p>
+
+<p>
+  <b>Flag:</b>
+  <%= @query.flag %>
+</p>
+
+<p>
+  <b>Bug status:</b>
+  <%= @query.bug_status %>
+</p>
+
+<p>
+  <b>Outputformat:</b>
+  <%= @query.outputformat %>
+</p>
+
+
+<%= link_to 'Edit', edit_query_path(@query) %> |
+<%= link_to 'Back', queries_path %>
