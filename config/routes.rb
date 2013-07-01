@@ -1,5 +1,9 @@
 CfmeBz::Application.routes.draw do
-  resources :queries
+  resources :queries do
+    member do
+      get 'run'
+    end
+  end
 
 
   # The priority is based upon order of creation:

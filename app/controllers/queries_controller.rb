@@ -80,4 +80,22 @@ class QueriesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  # RUN  /queries/1
+  # RUN  /queries/1.json
+  def run
+    @query = Query.find(params[:id])
+    @query_result = @query.run( @query )
+
+    respond_to do |format|
+      format.html
+      format.json { head :no_content }
+    end
+  end
+
+  # GET /queries/1/edit
+  def edit
+    @query = Query.find(params[:id])
+  end
+
 end

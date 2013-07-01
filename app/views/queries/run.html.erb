@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Run Name:</b>
+  <%= @query.name %>
+</p>
+
+<p>
+  <b>Run Description:</b>
+  <%= @query.description %>
+</p>
+
+<p>
+  <b>Run Product:</b>
+  <%= @query.product %>
+</p>
+
+<p>
+  <b>Run Flag:</b>
+  <%= @query.flag %>
+</p>
+
+<p>
+  <b>Run Bug status:</b>
+  <%= @query.bug_status %>
+</p>
+
+<p>
+  <b>Run Outputformat:</b>
+  <%= @query.outputformat %>
+</p>
+
+<p>
+  <b>Run Query Result:</b>
+  <%= simple_format(@query_result) %>
+</p>
+
+
+<%= link_to 'Back', queries_path %>
