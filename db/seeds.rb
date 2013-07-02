@@ -10,7 +10,7 @@ Query.delete_all
 Query.create(
   name: 'Query1',
   description: 'List bugs in POST without a version flag.',
-  product: ' CloudForms Management Engine',
+  product: 'CloudForms Management Engine',
   flag: '',
   bug_status: 'POST',
   outputformat: '%{id},%{flags}')
@@ -18,7 +18,7 @@ Query.create(
 Query.create(
   name: 'Query2',
   description: 'List bugs in POST for 5.2 to verify triple ack.',
-  product: ' CloudForms Management Engine',
+  product: 'CloudForms Management Engine',
   flag: 'cfme-5.2',
   bug_status: 'POST',
   outputformat: '%{id},%{flags}')
@@ -26,7 +26,7 @@ Query.create(
 Query.create(
   name: 'Query3',
   description: 'Verify the bugs have been properly flagged, fixed in, and set to MODIFIED.',
-  product: ' CloudForms Management Engine',
+  product: 'CloudForms Management Engine',
   flag: 'cfme-5.2',
   bug_status: 'MODIFIED',
   outputformat: '%{id},%{fixed_in},%{flags},%{status}')
