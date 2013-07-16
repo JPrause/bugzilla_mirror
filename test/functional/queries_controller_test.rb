@@ -18,7 +18,7 @@ class QueriesControllerTest < ActionController::TestCase
 
   test "should create query" do
     assert_difference('Query.count') do
-      post :create, query: { bug_status: @query.bug_status, description: @query.description, flag: @query.flag, name: @query.name, outputformat: @query.outputformat, product: @query.product }
+      post :create, query: { bug_status: @query.bug_status, description: @query.description, flag: @query.flag, name: @query.name, output_format: @query.output_format, product: @query.product }
     end
 
     assert_redirected_to query_path(assigns(:query))
@@ -35,7 +35,7 @@ class QueriesControllerTest < ActionController::TestCase
   end
 
   test "should update query" do
-    put :update, id: @query, query: { bug_status: @query.bug_status, description: @query.description, flag: @query.flag, name: @query.name, outputformat: @query.outputformat, product: @query.product }
+    put :update, id: @query, query: { bug_status: @query.bug_status, description: @query.description, flag: @query.flag, name: @query.name, output_format: @query.output_format, product: @query.product }
     assert_redirected_to query_path(assigns(:query))
   end
 

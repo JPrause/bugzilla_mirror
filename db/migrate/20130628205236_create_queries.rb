@@ -6,7 +6,7 @@ class CreateQueries < ActiveRecord::Migration
       t.string :product
       t.string :flag
       t.string :bug_status
-      t.string :outputformat
+      t.string :output_format
 
       t.timestamps
     end

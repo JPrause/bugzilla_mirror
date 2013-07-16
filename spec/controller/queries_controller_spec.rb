@@ -10,7 +10,7 @@ describe Query do
       product: 'query product',
       flag: 'query flag',
       bug_status: 'query bug status',
-      outputformat: 'query output format')
+      output_format: 'query output format')
   end
 
   describe "#new" do
@@ -49,9 +49,9 @@ describe Query do
     end
   end
 
-  describe "#outputformat" do
-    it "returns the query outputformat" do
-      @query.outputformat.should eql 'query output format'
+  describe "#output_format" do
+    it "returns the query output_format" do
+      @query.output_format.should eql 'query output format'
     end
   end
 
@@ -63,7 +63,7 @@ describe Query do
         product: 'query product',
         flag: 'query flag',
         bug_status: 'query bug status',
-        outputformat: 'query output format')
+        output_format: 'query output format')
       @query.run(query).should be_empty
     end
   end

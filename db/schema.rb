@@ -19,9 +19,9 @@ ActiveRecord::Schema.define(:version => 20130628205236) do
     t.string   "product"
     t.string   "flag"
     t.string   "bug_status"
-    t.string   "outputformat"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.string   "output_format"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
 end

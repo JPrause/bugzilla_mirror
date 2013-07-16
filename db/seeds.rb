@@ -13,7 +13,7 @@ Query.create(
   product: 'CloudForms Management Engine',
   flag: '',
   bug_status: 'POST',
-  outputformat: '%{id},%{flags}')
+  output_format: '%{id},%{flags}')
 # . . .
 Query.create(
   name: 'Query2',
@@ -21,7 +21,7 @@ Query.create(
   product: 'CloudForms Management Engine',
   flag: 'cfme-5.2',
   bug_status: 'POST',
-  outputformat: '%{id},%{flags}')
+  output_format: '%{id},%{flags}')
 # . . .
 Query.create(
   name: 'Query3',
@@ -29,4 +29,4 @@ Query.create(
   product: 'CloudForms Management Engine',
   flag: 'cfme-5.2',
   bug_status: 'MODIFIED',
-  outputformat: '%{id},%{fixed_in},%{flags},%{status}')
+  output_format: '%{id},%{fixed_in},%{flags},%{status}')
