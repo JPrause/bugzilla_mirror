@@ -31,10 +31,7 @@ module ApplicationHelper
 
     if not self.bz_logged_in?
       username, password = self.bz_get_credentials
-      login_cmd = "#{BZ_CMD} login " \
-                  "\'#{username}\' " \
-                  "\'#{password}\' "
-      %x[ #{login_cmd} ]         
+      `#{BZ_CMD} login '#{username}' '#{password}'`
     end
   end                          
 

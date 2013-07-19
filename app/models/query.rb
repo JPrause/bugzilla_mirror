@@ -5,11 +5,11 @@ class Query < ActiveRecord::Base
 
   def run(query)
     bz_login!
-    query_cmd = "#{BZ_CMD} query " \
-                "--product=\"#{query.product}\" " \
-                "--flag=#{query.flag} " \
-                "--bug_status=#{query.bug_status} " \
-                "--outputformat=\'#{query.output_format}\'"
-    %x[ #{query_cmd} ]
+    query_cmd = "#{BZ_CMD} query "
+    query_cmd << "--product=\"#{query.product}\" "
+    query_cmd << "--flag=#{query.flag} "
+    query_cmd << "--bug_status=#{query.bug_status} "
+    query_cmd << "--outputformat=\'#{query.output_format}\'"
+    `#{query_cmd}`
   end
 end

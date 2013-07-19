@@ -1,6 +1,17 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'spec_helper'))
 require 'tempfile'
 
+class TempCredFile < Tempfile
+  def initialize( file )
+    f = super( file )
+    f.write("---\n")
+    f.write(":bugzilla_credentials:\n")
+    f.write("  :username: My Username\n")
+    f.write("  :password: My Password\n")
+    f.close
+  end
+end
+      
 describe ApplicationHelper do
 
   saved_bz_cmd = ApplicationHelper::BZ_CMD
@@ -16,19 +27,17 @@ describe ApplicationHelper do
     end
   end
 
-  describe "#bz_logged_in? true" do
+  describe "Exercise bz_logged_in?" do
     it "Check for an existing the bugzilla cookie." do
-      file = Tempfile.new('cfme_bz_spec')  
-      silence_warnings do
-        ApplicationHelper::BZ_COOKIES_FILE = file.path
+      Tempfile.new('cfme_bz_spec') do |file| 
+        silence_warnings do
+          ApplicationHelper::BZ_COOKIES_FILE = file.path
+        end
+        bz_logged_in?.should be true
+        file.close
       end
-      bz_logged_in?.should be true
-      file.close
-      file.unlink
     end
-  end
 
-  describe "#bz_logged_in? false" do
     it "Check for no bugzilla cookie." do
       silence_warnings do
         ApplicationHelper::BZ_COOKIES_FILE = '/This/file/does/not/exist'
@@ -37,62 +46,48 @@ describe ApplicationHelper do
     end
   end
 
-  describe "#bz_login! Raise Exception" do
+  describe "Exercise bz_login!" do
     it "Handle bugzilla command not found." do
       silence_warnings do
         ApplicationHelper::BZ_CMD = '/This/cmd/does/not/exist'
       end
       expect{bz_login!}.to raise_exception
     end
-  end
 
-  describe "#bz_login! run" do
     it "Handle bugzilla command produces output." do
       # Fake the command,  cookies file and credentials file.
-      file = Tempfile.new('cfme_bz_spec')  
-      silence_warnings do
-        ApplicationHelper::BZ_CREDS_FILE = file.path
-        ApplicationHelper::BZ_CMD = '/bin/echo'
-        ApplicationHelper::BZ_COOKIES_FILE = '/This/file/does/not/exist'
+      TempCredFile.new('cfme_bz_spec') do |file| 
+        silence_warnings do
+          ApplicationHelper::BZ_CREDS_FILE = file.path
+          ApplicationHelper::BZ_CMD = '/bin/echo'
+          ApplicationHelper::BZ_COOKIES_FILE = '/This/file/does/not/exist'
+        end
+        bz_login!.should match "login My Username My Password"
       end
-      file.write("---\n")
-      file.write(":bugzilla_credentials:\n")
-      file.write("  :username: My Username\n")
-      file.write("  :password: My Password\n")
-      file.close
-      bz_login!.should match "login My Username My Password"
-      file.unlink
     end
   end
 
-  describe "#bz_get_credentials Raise Exception" do
+  describe "Exercise bz_get_credentials" do
+    
     it "Handle bugzilla command not found." do
       silence_warnings do
         ApplicationHelper::BZ_CREDS_FILE = '/This/cmd/does/not/exist'
       end
       expect{bz_get_credentials}.to raise_exception
     end
-  end
 
-  describe "#bz_get_credentials read YAML" do
     it "Exercise bz_get_credentials with YAML input." do
       # Fake the credentials YAML file.
 
-      file = Tempfile.new('cfme_bz_spec')  
-      silence_warnings do
-        ApplicationHelper::BZ_CREDS_FILE = file.path
+      TempCredFile.new('cfme_bz_spec') do |file|
+        silence_warnings do
+          ApplicationHelper::BZ_CREDS_FILE = file.path
+        end
+        un, pw = bz_get_credentials
+        un.should match "My Username"
+        pw.should match "My Password"
       end
-      file.write("---\n")
-      file.write(":bugzilla_credentials:\n")
-      file.write("  :username: My Username\n")
-      file.write("  :password: My Password\n")
-      file.close
-      un, pw = bz_get_credentials
-      file.unlink
-
-      un.should match "My Username"
-      pw.should match "My Password"
     end
   end
-
 end
+
