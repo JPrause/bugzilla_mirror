@@ -11,7 +11,7 @@ describe Query do
     end
   end
 
-  describe "Exercise run" do
+  describe "#run" do
     it "running an invalid query should return nothing" do
       Tempfile.new('cfme_bz_spec') do |file| 
         silence_warnings do

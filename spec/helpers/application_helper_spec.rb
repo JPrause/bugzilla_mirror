@@ -2,12 +2,12 @@ require File.expand_path(File.join(File.dirname(__FILE__), '..', 'spec_helper'))
 require 'tempfile'
 
 class TempCredFile < Tempfile
-  def initialize( file )
-    f = super( file )
-    f.write("---\n")
-    f.write(":bugzilla_credentials:\n")
-    f.write("  :username: My Username\n")
-    f.write("  :password: My Password\n")
+  def initialize(file)
+    f = super
+    f.puts("---")
+    f.puts(":bugzilla_credentials:")
+    f.puts("  :username: My Username")
+    f.puts("  :password: My Password")
     f.close
   end
 end
@@ -27,14 +27,13 @@ describe ApplicationHelper do
     end
   end
 
-  describe "Exercise bz_logged_in?" do
+  context "#bz_logged_in?" do
     it "Check for an existing the bugzilla cookie." do
       Tempfile.new('cfme_bz_spec') do |file| 
         silence_warnings do
           ApplicationHelper::BZ_COOKIES_FILE = file.path
         end
         bz_logged_in?.should be true
-        file.close
       end
     end
 
@@ -46,7 +45,7 @@ describe ApplicationHelper do
     end
   end
 
-  describe "Exercise bz_login!" do
+  context "#bz_login!" do
     it "Handle bugzilla command not found." do
       silence_warnings do
         ApplicationHelper::BZ_CMD = '/This/cmd/does/not/exist'
@@ -55,20 +54,19 @@ describe ApplicationHelper do
     end
 
     it "Handle bugzilla command produces output." do
-      # Fake the command,  cookies file and credentials file.
+      # Fake the command, cookies file and credentials file.
       TempCredFile.new('cfme_bz_spec') do |file| 
         silence_warnings do
           ApplicationHelper::BZ_CREDS_FILE = file.path
           ApplicationHelper::BZ_CMD = '/bin/echo'
           ApplicationHelper::BZ_COOKIES_FILE = '/This/file/does/not/exist'
         end
-        bz_login!.should match "login My Username My Password"
+        bz_login!.should == "login My Username My Password"
       end
     end
   end
 
-  describe "Exercise bz_get_credentials" do
-    
+  context "#bz_get_credentials" do
     it "Handle bugzilla command not found." do
       silence_warnings do
         ApplicationHelper::BZ_CREDS_FILE = '/This/cmd/does/not/exist'
@@ -76,7 +74,7 @@ describe ApplicationHelper do
       expect{bz_get_credentials}.to raise_exception
     end
 
-    it "Exercise bz_get_credentials with YAML input." do
+    it "Handle valid YAML input." do
       # Fake the credentials YAML file.
 
       TempCredFile.new('cfme_bz_spec') do |file|
@@ -84,10 +82,11 @@ describe ApplicationHelper do
           ApplicationHelper::BZ_CREDS_FILE = file.path
         end
         un, pw = bz_get_credentials
-        un.should match "My Username"
-        pw.should match "My Password"
+        un.should == "My Username"
+        pw.should == "My Password"
       end
     end
   end
+
 end
 
