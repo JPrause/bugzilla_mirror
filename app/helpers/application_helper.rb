@@ -13,11 +13,27 @@ module ApplicationHelper
       creds = YAML.load_file(BZ_CREDS_FILE)
     rescue Errno::ENOENT => error
         raise "#{error.message}\n" +
-          "Please create the YAML file:#{BZ_CREDS_FILE} with valid credentials." 
+          "Please create file: #{BZ_CREDS_FILE} with valid credentials."
     end
-    return creds[:bugzilla_credentials][:username],
-      creds[:bugzilla_credentials][:password]
+    if creds[:bugzilla_credentials][:username].nil? ||
+      creds[:bugzilla_credentials][:password].nil? then
+      raise "Missing username or password in file: #{BZ_CREDS_FILE}."
+    end
+
+    [creds[:bugzilla_credentials][:username],
+      creds[:bugzilla_credentials][:password]]
   end
+
+  def bz_get_options
+    begin
+      options = YAML.load_file(BZ_CREDS_FILE)
+    rescue Errno::ENOENT => error
+      return nil
+    end
+    [options[:bugzilla_options][:bugzilla_uri],
+      options[:bugzilla_options][:debug]]
+  end
+
 
   # Running "bugzilla login" generates the bugzilla cookies.
   # If that cookie file exists assume the user already logged in.
@@ -31,8 +47,22 @@ module ApplicationHelper
 
     if not self.bz_logged_in?
       username, password = self.bz_get_credentials
-      `#{BZ_CMD} login '#{username}' '#{password}'`
+      uri_opt, debug_opt = self.bz_get_options
+
+      login_cmd = "#{BZ_CMD} "
+      login_cmd << "--bugzilla=#{uri_opt} " unless uri_opt.nil?
+      login_cmd << "--debug " unless debug_opt.nil?
+      login_cmd << "login #{username} #{password}"
+
+      login_cmd_no_pw = "#{login_cmd}".sub /#{password}/, '****'
+      logger.debug "Running command: #{login_cmd_no_pw}"
+      login_cmd_result =
+        IO.popen(login_cmd.split(" ") << {:err=>[:child, :out]}) { |io_cmd|
+        io_cmd.read
+      }
+      raise "#{login_cmd_no_pw} Failed.\n #{login_cmd_result}" unless
+        $?.success?
     end
-  end                          
+  end
 
 end
