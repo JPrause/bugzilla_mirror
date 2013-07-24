@@ -22,9 +22,9 @@ class Query < ActiveRecord::Base
     query_cmd_out = ""
 
     logger.debug "Running command: #{query_cmd.join(" ")}"
-    query_cmd_result = IO.popen(query_cmd_popen_err) { |io_cmd|
-        query_cmd_out << io_cmd.read
-    }
+    query_cmd_result = IO.popen(query_cmd_popen_err) do |io_cmd|
+      query_cmd_out << io_cmd.read
+    end
     raise "#{query_cmd.join(" ")} Failed.\n #{query_cmd_result}" unless
       $?.success?
 

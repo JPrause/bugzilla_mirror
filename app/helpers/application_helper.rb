@@ -41,6 +41,12 @@ module ApplicationHelper
     File.exists?(BZ_COOKIES_FILE)
   end
 
+  def bz_clear_login!
+    if File.exists?(BZ_COOKIES_FILE) then
+      File.delete(BZ_COOKIES_FILE)
+    end
+  end
+
   def bz_login!
     raise "Please install python-bugzilla" unless
       File.exists?(File.expand_path(BZ_CMD))
@@ -50,18 +56,21 @@ module ApplicationHelper
       uri_opt, debug_opt = self.bz_get_options
 
       login_cmd = "#{BZ_CMD} "
-      login_cmd << "--bugzilla=#{uri_opt} " unless uri_opt.nil?
+      login_cmd << "--bugzilla=#{uri_opt}/xmlrpc.cgi " unless uri_opt.nil?
       login_cmd << "--debug " unless debug_opt.nil?
       login_cmd << "login #{username} #{password}"
 
-      login_cmd_no_pw = "#{login_cmd}".sub /#{password}/, '****'
+      login_cmd_no_pw = login_cmd.sub(password, '****')
       logger.debug "Running command: #{login_cmd_no_pw}"
       login_cmd_result =
-        IO.popen(login_cmd.split(" ") << {:err=>[:child, :out]}) { |io_cmd|
-        io_cmd.read
-      }
-      raise "#{login_cmd_no_pw} Failed.\n #{login_cmd_result}" unless
-        $?.success?
+        IO.popen(login_cmd.split(" ") << {:err=>[:child, :out]}) do |io_cmd|
+          io_cmd.read
+      end
+      if not $?.success?
+        # A failed login attempt could result in a corrupt BZ_COOKIES_FILE
+        bz_clear_login!
+        raise "#{login_cmd_no_pw} Failed.\n #{login_cmd_result}"
+      end
     end
   end
 
