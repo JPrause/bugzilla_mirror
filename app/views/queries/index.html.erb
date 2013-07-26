@@ -1,30 +1,29 @@
 <h1>Listing queries</h1>
 
 <table>
-  <tr>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Product</th>
-    <th>Flag</th>
-    <th>Bug status</th>
-    <th>Output format</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
 
 <% @queries.each do |query| %>
-  <tr>
-    <td><%= query.name %></td>
-    <td><%= query.description %></td>
-    <td><%= query.product %></td>
-    <td><%= query.flag %></td>
-    <td><%= query.bug_status %></td>
-    <td><%= query.output_format %></td>
-    <td><%= link_to 'Show', query %></td>
-    <td><%= link_to 'Edit', edit_query_path(query) %></td>
-    <td><%= link_to 'Run', run_query_path(query) %></td>
-    <td><%= link_to 'Destroy', query, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+
+
+
+    <td class="list_description">
+      <dl>
+        <dt>Name: <%= query.name %></dt>
+        <dt>Description: <%= query.description %></dt>
+        <dt>Product: <%= query.product %></dt>
+        <dt>Flag: <%= query.flag %></dt>
+        <dt>Bug status: <%= query.bug_status %></dt>
+        <dt>Output format: <%= query.output_format %></dt>
+      </dl>
+    </td>
+
+    <td class="list_actions">
+      <%= link_to 'Show', query %><br/>
+      <%= link_to 'Edit', edit_query_path(query) %><br/>
+      <%= link_to 'Run', run_query_path(query) %><br/>
+      <%= link_to 'Destroy', query, method: :delete, data: { confirm: 'Are you sure?' } %>
+    </td>
   </tr>
 <% end %>
 </table>

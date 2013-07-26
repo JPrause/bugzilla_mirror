@@ -30,3 +30,18 @@ Query.create(
   flag: 'cfme-5.2',
   bug_status: 'MODIFIED',
   output_format: '%{id},%{fixed_in},%{flags},%{status}')
+# ...
+Query.create(
+  name: 'Query4',
+  description: 'Modified & Post cfme-5.2 bugs.',
+  product: 'CloudForms Management Engine',
+  flag: 'cfme-5.2',
+  bug_status: 'MODIFIED,POST',
+  output_format: 'BUG_STATUS: %{bug_status} VERSION: %{version} FLAGS: %{flags}')
+# ...
+Query.create(
+  name: 'Query5',
+  description: 'All Modified & Post bugs.',
+  product: 'CloudForms Management Engine',
+  bug_status: 'MODIFIED,POST',
+  output_format: 'BUG_STATUS: %{bug_status} VERSION: %{version} FLAGS: %{flags}')

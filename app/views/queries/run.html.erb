@@ -31,8 +31,21 @@
 </p>
 
 <p>
-  <b>Run Query Result:</b>
-  <%= simple_format(@query_result) %>
+  <table>
+    <b>Run Query Result:</b>
+    <% @query_result.split(/\r?\n/).each do |query_result_output| %>
+    <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+
+      <td class="list_description">
+        <dl>
+          <dt><%= simple_format(query_result_output) %></dt>
+        </dl>
+      </td>
+    </tr>
+  <% end %>
+  </table>
+
+
 </p>
 
 
