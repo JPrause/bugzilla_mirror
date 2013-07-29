@@ -2,43 +2,43 @@
 
 <p>
   <b>Run Name:</b>
-  <%= @query.name %>
+  <%= @bz_query.name %>
 </p>
 
 <p>
   <b>Run Description:</b>
-  <%= @query.description %>
+  <%= @bz_query.description %>
 </p>
 
 <p>
   <b>Run Product:</b>
-  <%= @query.product %>
+  <%= @bz_query.product %>
 </p>
 
 <p>
   <b>Run Flag:</b>
-  <%= @query.flag %>
+  <%= @bz_query.flag %>
 </p>
 
 <p>
   <b>Run Bug status:</b>
-  <%= @query.bug_status %>
+  <%= @bz_query.bug_status %>
 </p>
 
 <p>
   <b>Run Output format:</b>
-  <%= @query.output_format %>
+  <%= @bz_query.output_format %>
 </p>
 
 <p>
   <table>
-    <b>Run Query Result:</b>
-    <% @query_result.split(/\r?\n/).each do |query_result_output| %>
+    <b>Run BzQuery Result:</b>
+    <% @bz_query_result.split(/\r?\n/).each do |bz_query_result_output| %>
     <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
 
       <td class="list_description">
         <dl>
-          <dt><%= simple_format(query_result_output) %></dt>
+          <dt><%= simple_format(bz_query_result_output) %></dt>
         </dl>
       </td>
     </tr>
@@ -49,4 +49,4 @@
 </p>
 
 
-<%= link_to 'Back', queries_path %>
+<%= link_to 'Back', bz_queries_path %>

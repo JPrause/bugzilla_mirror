@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @report_table.name %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @report_table.description %>
+</p>
+
+<p>
+  <b>BzQuery name:</b>
+  <%= @report_table.query_name %>
+</p>
+
+<p>
+  <b>Vertical:</b>
+  <%= @report_table.Vertical %>
+</p>
+
+<p>
+  <b>Horizontal:</b>
+  <%= @report_table.Horizontal %>
+</p>
+
+
+<%= link_to 'Edit', edit_report_table_path(@report_table) %> |
+<%= link_to 'Back', report_tables_path %>

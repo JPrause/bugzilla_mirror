@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @bz_query.name %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @bz_query.description %>
+</p>
+
+<p>
+  <b>Product:</b>
+  <%= @bz_query.product %>
+</p>
+
+<p>
+  <b>Flag:</b>
+  <%= @bz_query.flag %>
+</p>
+
+<p>
+  <b>Bug status:</b>
+  <%= @bz_query.bug_status %>
+</p>
+
+<p>
+  <b>Output format:</b>
+  <%= @bz_query.output_format %>
+</p>
+
+
+<%= link_to 'Edit', edit_bz_query_path(@bz_query) %> |
+<%= link_to 'Back', bz_queries_path %>

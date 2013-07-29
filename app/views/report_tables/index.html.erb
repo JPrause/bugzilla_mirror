@@ -1,0 +1,32 @@
+<h1>Listing report_tables</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>BzQuery name</th>
+    <th>Vertical</th>
+    <th>Horizontal</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @report_tables.each do |report_table| %>
+  <tr>
+    <td><%= report_table.name %></td>
+    <td><%= report_table.description %></td>
+    <td><%= report_table.query_name %></td>
+    <td><%= report_table.Vertical %></td>
+    <td><%= report_table.Horizontal %></td>
+    <td><%= link_to 'Show', report_table %></td>
+    <td><%= link_to 'Edit', edit_report_table_path(report_table) %></td>
+    <td><%= link_to 'Run', run_report_table_path(report_table) %></td>
+    <td><%= link_to 'Destroy', report_table, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Report table', new_report_table_path %>

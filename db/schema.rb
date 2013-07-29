@@ -11,9 +11,9 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130628205236) do
+ActiveRecord::Schema.define(:version => 20130729193813) do
 
-  create_table "queries", :force => true do |t|
+  create_table "bz_queries", :force => true do |t|
     t.string   "name"
     t.text     "description"
     t.string   "product"
@@ -22,6 +22,17 @@ ActiveRecord::Schema.define(:version => 20130628205236) do
     t.string   "output_format"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+  end
+
+  create_table "report_tables", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.text     "query_name"
+    t.string   "Vertical"
+    t.string   "Horizontal"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.integer  "query_id"
   end
 
 end

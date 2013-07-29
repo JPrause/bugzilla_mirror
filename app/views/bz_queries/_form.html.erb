@@ -1,10 +1,10 @@
-<%= form_for(@query) do |f| %>
-  <% if @query.errors.any? %>
+<%= form_for(@bz_query) do |f| %>
+  <% if @bz_query.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@query.errors.count, "error") %> prohibited this query from being saved:</h2>
+      <h2><%= pluralize(@bz_query.errors.count, "error") %> prohibited this bz_query from being saved:</h2>
 
       <ul>
-      <% @query.errors.full_messages.each do |msg| %>
+      <% @bz_query.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
       <% end %>
       </ul>

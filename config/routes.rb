@@ -1,10 +1,15 @@
 CfmeBz::Application.routes.draw do
-  resources :queries do
+  resources :report_tables do
     member do
       get 'run'
     end
   end
 
+  resources :bz_queries do
+    member do
+      get 'run'
+    end
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

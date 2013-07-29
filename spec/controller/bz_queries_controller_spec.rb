@@ -1,6 +1,6 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'spec_helper'))
 
-describe Query do
+describe BzQuery do
 
   saved_bz_cookies_file = ApplicationHelper::BZ_COOKIES_FILE
 
@@ -17,7 +17,7 @@ describe Query do
         silence_warnings do
           ApplicationHelper::BZ_COOKIES_FILE = file.path
         end
-        query = Query.create(
+        query = BzQuery.create(
           name: 'query name',
           description: 'query description',
           product: 'query product',

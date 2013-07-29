@@ -1,0 +1,52 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Run Name:</b>
+  <%= @report_table.name %>
+</p>
+
+<p>
+  <b>Run Description:</b>
+  <%= @report_table.description %>
+</p>
+
+<p>
+  <b>Run BzQuery_Name:</b>
+  <%= @report_table.query_name %>
+</p>
+
+<p>
+  <b>Run BzQuery_Id:</b>
+  <%= @report_table.query_id %>
+</p>
+
+<p>
+  <b>Run Vertical:</b>
+  <%= @report_table.Vertical%>
+</p>
+
+<p>
+  <b>Run Horizontal:</b>
+  <%= @report_table.Horizontal %>
+</p>
+
+<p>
+  <table>
+    <b>Run Report Result:</b>
+    <% @report_table_result.split(/\r?\n/).each do |report_result_output| %>
+    <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+
+      <td class="list_description">
+        <dl>
+          <dt><%= simple_format(report_result_output) %></dt>
+        </dl>
+      </td>
+    </tr>
+  <% end %>
+  </table>
+
+
+</p>
+
+
+<%= link_to 'Back', report_tables_path %>
