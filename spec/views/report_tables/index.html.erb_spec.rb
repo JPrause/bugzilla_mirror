@@ -7,15 +7,15 @@ describe "report_tables/index" do
         :name => "Name",
         :description => "MyText",
         :query_name => "MyText",
-        :Vertical => "Vertical",
-        :Horizontal => "Horizontal"
+        :vertical => "vertical",
+        :horizontal => "horizontal"
       ),
       stub_model(ReportTable,
         :name => "Name",
         :description => "MyText",
         :query_name => "MyText",
-        :Vertical => "Vertical",
-        :Horizontal => "Horizontal"
+        :vertical => "vertical",
+        :horizontal => "horizontal"
       )
     ])
   end
@@ -26,7 +26,7 @@ describe "report_tables/index" do
     assert_select "tr>td", :text => "Name".to_s, :count => 2
     assert_select "tr>td", :text => "MyText".to_s, :count => 4
     assert_select "tr>td", :text => "MyText".to_s, :count => 4
-    assert_select "tr>td", :text => "Vertical".to_s, :count => 2
-    assert_select "tr>td", :text => "Horizontal".to_s, :count => 2
+    assert_select "tr>td", :text => "vertical".to_s, :count => 2
+    assert_select "tr>td", :text => "horizontal".to_s, :count => 2
   end
 end

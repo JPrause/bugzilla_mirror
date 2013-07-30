@@ -6,8 +6,8 @@ describe "report_tables/edit" do
       :name => "MyString",
       :description => "MyText",
       :query_name => "MyText",
-      :Vertical => "MyString",
-      :Horizontal => "MyString"
+      :vertical => "MyString",
+      :horizontal => "MyString"
     ))
   end
 
@@ -19,8 +19,8 @@ describe "report_tables/edit" do
       assert_select "input#report_table_name[name=?]", "report_table[name]"
       assert_select "textarea#report_table_description[name=?]", "report_table[description]"
       assert_select "textarea#report_table_query_name[name=?]", "report_table[query_name]"
-      assert_select "input#report_table_Vertical[name=?]", "report_table[Vertical]"
-      assert_select "input#report_table_Horizontal[name=?]", "report_table[Horizontal]"
+      assert_select "input#report_table_vertical[name=?]", "report_table[vertical]"
+      assert_select "input#report_table_horizontal[name=?]", "report_table[horizontal]"
     end
   end
 end

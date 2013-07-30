@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130729193813) do
+ActiveRecord::Schema.define(:version => 20130730184602) do
 
   create_table "bz_queries", :force => true do |t|
     t.string   "name"
@@ -28,8 +28,8 @@ ActiveRecord::Schema.define(:version => 20130729193813) do
     t.string   "name"
     t.text     "description"
     t.text     "query_name"
-    t.string   "Vertical"
-    t.string   "Horizontal"
+    t.string   "vertical"
+    t.string   "horizontal"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.integer  "query_id"

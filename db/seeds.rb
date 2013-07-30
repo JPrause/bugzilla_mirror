@@ -56,10 +56,10 @@ q6 = BzQuery.create(
 ReportTable.delete_all
 ReportTable.create(
   name: 'Report1',
-  description: 'Vertical=Version Horizontal=Status',
+  description: 'vertical=Version horizontal=Status',
   query_name: 'Query6',
   query_id: BzQuery.find_by_name('Query6'),
-  Vertical: 'VERSION',
-  Horizontal: 'STATUS')
+  vertical: 'VERSION',
+  horizontal: 'STATUS')
 # ...
 

@@ -6,8 +6,8 @@ describe "report_tables/show" do
       :name => "Name",
       :description => "MyText",
       :query_name => "MyText",
-      :Vertical => "Vertical",
-      :Horizontal => "Horizontal"
+      :vertical => "vertical",
+      :horizontal => "horizontal"
     ))
   end
 
@@ -17,7 +17,7 @@ describe "report_tables/show" do
     rendered.should match(/Name/)
     rendered.should match(/MyText/)
     rendered.should match(/MyText/)
-    rendered.should match(/Vertical/)
-    rendered.should match(/Horizontal/)
+    rendered.should match(/vertical/)
+    rendered.should match(/horizontal/)
   end
 end

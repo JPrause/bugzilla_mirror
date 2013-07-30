@@ -4,8 +4,8 @@ class CreateReportTables < ActiveRecord::Migration
       t.string :name
       t.text :description
       t.text :query_name
-      t.string :Vertical
-      t.string :Horizontal
+      t.string :vertical
+      t.string :horizontal
 
       t.timestamps
     end

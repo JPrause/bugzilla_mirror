@@ -1,5 +1,5 @@
 class ReportTable < ActiveRecord::Base
-  attr_accessible :Horizontal, :Vertical, :description, :name,
+  attr_accessible :horizontal, :vertical, :description, :name,
     :query_name, :query_id
 
   def run(report_table)
