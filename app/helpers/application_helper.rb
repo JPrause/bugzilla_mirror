@@ -6,7 +6,7 @@ module ApplicationHelper
   BZ_COOKIES_FILE = File.expand_path('~') + '/.bugzillacookies'
   BZ_CREDS_FILE = File.expand_path('~') + '/bugzilla_credentials.yaml'
 
-  # Ruby will catch and raise Erron::ENOENT: If there the user does  not
+  # Ruby will catch and raise Erron::ENOENT: If there the user does not
   # have a ~/bugzilla_credentials.yaml file.
   def bz_get_credentials
     begin
@@ -51,7 +51,7 @@ module ApplicationHelper
     raise "Please install python-bugzilla" unless
       File.exists?(File.expand_path(BZ_CMD))
 
-    if not self.bz_logged_in?
+    unless self.bz_logged_in?
       username, password = self.bz_get_credentials
       uri_opt, debug_opt = self.bz_get_options
 
@@ -66,7 +66,7 @@ module ApplicationHelper
         IO.popen(login_cmd.split(" ") << {:err=>[:child, :out]}) do |io_cmd|
           io_cmd.read
       end
-      if not $?.success?
+      unless $?.success?
         # A failed login attempt could result in a corrupt BZ_COOKIES_FILE
         bz_clear_login!
         raise "#{login_cmd_no_pw} Failed.\n #{login_cmd_result}"
