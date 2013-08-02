@@ -7,6 +7,7 @@ class ReportTable < ActiveRecord::Base
     # query output.
     
     bz_query_id = BzQuery.find_by_name(report_table.query_name)
+    raise "Query: \'#{report_table.query_name}\' not found" unless bz_query_id
     bz_query_id.run(bz_query_id)
 
     # Add code to calculate the report stats and produce the
