@@ -51,15 +51,23 @@ q6 = BzQuery.create(
   description: 'All Modified & Post bugs.',
   product: 'CloudForms Management Engine',
   bug_status: 'MODIFIED,POST',
-  output_format: 'ID[%{id}] STATUS[%{bug_status}] VERSION[%{version}] FLAGS[%{flags}]')
+  output_format: 'ID:%{id} STATUS:%{bug_status} VERSION:%{version} FLAGS:%{flags}')
+# ...
+q7 = BzQuery.create(
+  name: 'Query7',
+  description: 'All Modified & Post bugs.',
+  product: 'CloudForms Management Engine',
+  bug_status: 'MODIFIED,POST',
+  output_format: ' status: %{status} version: %{version} ')
+# ...
 # ...
 ReportTable.delete_all
 ReportTable.create(
   name: 'Report1',
   description: 'vertical=Version horizontal=Status',
-  query_name: 'Query6',
-  query_id: BzQuery.find_by_name('Query6'),
-  vertical: 'VERSION',
-  horizontal: 'STATUS')
+  query_name: 'Query7',
+  query_id: BzQuery.find_by_name('Query7'),
+  vertical: 'version',
+  horizontal: 'status')
 # ...
 

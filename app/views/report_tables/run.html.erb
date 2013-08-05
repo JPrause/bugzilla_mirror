@@ -1,48 +1,49 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <b>Run Name:</b>
+  <b>Report Name:</b>
   <%= @report_table.name %>
 </p>
 
 <p>
-  <b>Run Description:</b>
+  <b>Description:</b>
   <%= @report_table.description %>
 </p>
 
 <p>
-  <b>Run BzQuery_Name:</b>
+  <b>BzQuery_Name:</b>
   <%= @report_table.query_name %>
 </p>
 
 <p>
-  <b>Run BzQuery_Id:</b>
-  <%= @report_table.query_id %>
-</p>
-
-<p>
-  <b>Run Vertical:</b>
+  <b>Vertical:</b>
   <%= @report_table.vertical%>
 </p>
 
 <p>
-  <b>Run Horizontal:</b>
+  <b>Horizontal:</b>
   <%= @report_table.horizontal %>
 </p>
 
 <p>
   <table>
-    <b>Run Report Result:</b>
-    <% @report_table_result.split(/\r?\n/).each do |report_result_output| %>
+    <b>Report Result:</b>
     <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
 
       <td class="list_description">
-        <dl>
-          <dt><%= simple_format(report_result_output) %></dt>
-        </dl>
+        <% @report_table_result.keys.each do |kh| %>
+          <% @report_table_result[kh].keys.each do |kv| %>
+            <td>
+              <%= kh %>
+              <%= kv %>
+              <%= " : " %>
+              <%= @report_table_result[kh][kv] %>
+            </td>
+          <% end %>
+        <% end %>
       </td>
     </tr>
-  <% end %>
+    </tbody>
   </table>
 
 
