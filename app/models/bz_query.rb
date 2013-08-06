@@ -4,6 +4,8 @@ class BzQuery < ActiveRecord::Base
   attr_accessible :bug_status, :description, :flag, :name,
     :output_format, :product
 
+  has_many :bz_query_outputs
+
   def run(bz_query)
 
     bz_login!
@@ -29,6 +31,9 @@ class BzQuery < ActiveRecord::Base
     raise "#{bz_query_cmd.join(" ")} Failed.\n #{bz_query_cmd_result}" unless
       $?.success?
 
+    # create a new bz_query_outputs entry in the db and save this output there.
+    bz_query_outputs.create(output: bz_query_cmd_out)
+    
     bz_query_cmd_out
   end
 end

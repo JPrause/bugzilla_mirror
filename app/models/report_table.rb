@@ -3,12 +3,18 @@ class ReportTable < ActiveRecord::Base
     :query_name, :query_id
 
   def run(report_table)
-    # For the initial pass simply return the unmanipulated
-    # query output.
 
-    bz_query_id = BzQuery.find_by_name(report_table.query_name)
-    raise "Query: \'#{report_table.query_name}\' not found" unless bz_query_id
-    bz_query_out = bz_query_id.run(bz_query_id)
+    # For the initial pass simply report on the data from the last
+    # run of the query.
+    #
+    # TBD: JJV Next step is to add support to allow the user to
+    # select from one of the past runs of the query or to run
+    # the query now.
+    begin
+      bz_query_out = BzQuery.find_by_name(report_table.query_name).bz_query_outputs.last.output
+    rescue
+        raise "Output for Query: \'#{report_table.query_name}\' not found"
+    end
 
     # TBD: JJV - Move the below bz_query_out regexp/parse/scan code to a
     # shared helper class.
