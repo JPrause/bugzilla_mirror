@@ -13,7 +13,7 @@ BzQuery.create(
   product: 'CloudForms Management Engine',
   flag: '',
   bug_status: 'POST',
-  output_format: '%{id},%{flags}')
+  output_format: 'BZ_ID: %{id} BUG_STATUS: %{bug_status} VERSION: %{version} FLAGS: %{flags} FIXED_IN %{fixed_in}')
 # . . .
 BzQuery.create(
   name: 'Query2',
@@ -21,7 +21,7 @@ BzQuery.create(
   product: 'CloudForms Management Engine',
   flag: 'cfme-5.2',
   bug_status: 'POST',
-  output_format: '%{id},%{flags}')
+  output_format: 'BZ_ID: %{id} BUG_STATUS: %{bug_status} VERSION: %{version} FLAGS: %{flags} FIXED_IN %{fixed_in}')
 # . . .
 BzQuery.create(
   name: 'Query3',
@@ -29,7 +29,7 @@ BzQuery.create(
   product: 'CloudForms Management Engine',
   flag: 'cfme-5.2',
   bug_status: 'MODIFIED',
-  output_format: '%{id},%{fixed_in},%{flags},%{status}')
+  output_format: 'BZ_ID: %{id} BUG_STATUS: %{bug_status} VERSION: %{version} FLAGS: %{flags} FIXED_IN %{fixed_in}')
 # ...
 BzQuery.create(
   name: 'Query4',
@@ -37,28 +37,28 @@ BzQuery.create(
   product: 'CloudForms Management Engine',
   flag: 'cfme-5.2',
   bug_status: 'MODIFIED,POST',
-  output_format: 'BUG_STATUS: %{bug_status} VERSION: %{version} FLAGS: %{flags}')
+  output_format: 'BZ_ID: %{id} BUG_STATUS: %{bug_status} VERSION: %{version} FLAGS: %{flags} FIXED_IN %{fixed_in}')
 # ...
 BzQuery.create(
   name: 'Query5',
   description: 'All Modified & Post bugs.',
   product: 'CloudForms Management Engine',
   bug_status: 'MODIFIED,POST',
-  output_format: 'BUG_STATUS: %{bug_status} VERSION: %{version} FLAGS: %{flags}')
+  output_format: 'BZ_ID: %{id} BUG_STATUS: %{bug_status} VERSION: %{version} FLAGS: %{flags} FIXED_IN %{fixed_in}')
 # ...
 q6 = BzQuery.create(
   name: 'Query6',
   description: 'All Modified & Post bugs.',
   product: 'CloudForms Management Engine',
   bug_status: 'MODIFIED,POST',
-  output_format: 'ID:%{id} STATUS:%{bug_status} VERSION:%{version} FLAGS:%{flags}')
+  output_format: 'BZ_ID: %{id} BUG_STATUS: %{bug_status} VERSION: %{version} FLAGS: %{flags} FIXED_IN %{fixed_in}')
 # ...
 q7 = BzQuery.create(
   name: 'Query7',
   description: 'All Modified & Post bugs.',
   product: 'CloudForms Management Engine',
   bug_status: 'MODIFIED,POST',
-  output_format: ' status: %{status} version: %{version} ')
+  output_format: 'BZ_ID: %{id} BUG_STATUS: %{bug_status} VERSION: %{version}')
 # ...
 # ...
 ReportTable.delete_all
@@ -68,6 +68,6 @@ ReportTable.create(
   query_name: 'Query7',
   query_id: BzQuery.find_by_name('Query7'),
   vertical: 'version',
-  horizontal: 'status')
+  horizontal: 'bug_status')
 # ...
 
