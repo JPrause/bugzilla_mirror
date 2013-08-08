@@ -1,4 +1,5 @@
 class ReportTable < ActiveRecord::Base
+
   attr_accessible :horizontal, :vertical, :description, :name,
     :query_name, :query_id
 

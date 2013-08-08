@@ -1,4 +1,6 @@
 include ApplicationHelper
+include ReportTablesHelper
+
 
 class BzQuery < ActiveRecord::Base
   attr_accessible :bug_status, :description, :flag, :name,
