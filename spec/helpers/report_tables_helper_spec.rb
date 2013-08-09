@@ -11,5 +11,10 @@ require 'spec_helper'
 #   end
 # end
 describe ReportTablesHelper do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context "#get_bz_query_run_times" do
+    it "Handle query name not found." do
+      get_bz_query_run_times("INVALID QUERY NAME").should == [["NONE", 0]]
+    end
+  end
 end
+
