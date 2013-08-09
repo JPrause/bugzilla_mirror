@@ -20,12 +20,8 @@
     <%= f.text_area :description %>
   </div>
   <div class="field">
-    <%= f.label :query_name %><br />
-    <%= f.text_area :query_name %>
-  </div>
-  <div class="field">
-    <%= f.label :query_id %><br />
-    <%= f.text_area :query_id %>
+    <%= f.label "Selected Query Output ID (for debugging): " %><br />
+    <%= f.text_field :query_id %>
   </div>
   <div class="field">
     <%= f.label :vertical %><br />
@@ -36,36 +32,13 @@
     <%= f.text_field :horizontal %>
   </div>
   <div class="field">
-    <%#= select_tag "report_table[query_id]", 
-                     options_for_select([['NONE', 0], ['Lisbon', 1], ['Madrid', 2]], 0) %>
-    <%= puts "JJV Joe is cool!" %>
-    <%= puts "JJV Joe is cool!" %>
-    <%= puts "JJV Joe is cool!" %>
-    <%= puts "JJV Joe is cool!" %>
-    <%= puts "JJV Joe is cool!" %>
-    <%= puts "JJV Joe is cool!" %>
-    <%= puts "JJV Joe is cool!" %>
-    <%= puts "JJV Joe is cool!" %>
-    <%= puts "JJV Joe is cool!" %>
-    <%= puts "JJV Joe is cool!" %>
-    <%= puts "JJV Joe is cool!" %>
-    <%= puts "JJV Joe is cool!" %>
+    <%= f.label :query_name %><br />
+    <%= f.text_field :query_name %>
+  </div>
+  <div class="field">
+    <%= f.label "#{@report_table.query_name} output from time:" %><br />
     <%= select_tag "report_table[query_id]", 
                      options_for_select(get_bz_query_run_times(@report_table.query_name), 0) %>
-    <%= puts "JJV Yes he is!" %>
-    <%= puts "JJV Yes he is!" %>
-    <%= puts "JJV Yes he is!" %>
-    <%= puts "JJV Yes he is!" %>
-    <%= puts "JJV Yes he is!" %>
-    <%= puts "JJV Yes he is!" %>
-    <%= puts "JJV Yes he is!" %>
-    <%= puts "JJV Yes he is!" %>
-    <%= puts "JJV Yes he is!" %>
-    <%= puts "JJV Yes he is!" %>
-    <%= puts "JJV Yes he is!" %>
-    <%= puts "JJV Yes he is!" %>
-    <%= puts "JJV Yes he is!" %>
-    <%= puts "JJV Yes he is!" %>
   </div>
 
 

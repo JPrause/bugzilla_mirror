@@ -6,14 +6,15 @@ class ReportTable < ActiveRecord::Base
   def run(report_table)
 
     logger.debug "JJV - report_table.query_name: #{report_table.query_name}<-"
+    logger.debug "JJV - report_table.query_id: #{report_table.query_id}<-"
     logger.debug "JJV - horizontal: #{report_table.horizontal}"
     logger.debug "JJV - vertical: #{report_table.vertical}"
 
-    bz_query_out = get_output(report_table.query_name)
+    bz_query_out = get_output(report_table.query_id)
     hori_up = report_table.horizontal.upcase
     vert_up = report_table.vertical.upcase
-    hori_array = get_element_array(hori_up, report_table.query_name)
-    vert_array = get_element_array(vert_up, report_table.query_name)
+    hori_array = get_element_array(hori_up, report_table.query_id)
+    vert_array = get_element_array(vert_up, report_table.query_id)
 
     logger.debug  "JJV - hori_array: ->#{hori_array}<-"
     logger.debug  "JJV - vert_array: ->#{vert_array}<-"
@@ -38,40 +39,34 @@ class ReportTable < ActiveRecord::Base
   end
 
   private
-  def get_output(query_name)
-    # For the initial pass simply report on the data from the last
-    # run of the query.
-    #
-    # TBD: JJV Next step is to add support to allow the user to
-    # select from one of the past runs of the query or to run
-    # the query now.
+  def get_output(query_id)
     begin
-      BzQuery.find_by_name(query_name).bz_query_outputs.last.output
+      BzQueryOutput.find_by_id(query_id).output
     rescue
-      raise "Output for Query: \'#{query_name}\' not found"
+      raise "Output for Query: \'#{query_id}\' not found"
     end
   end
     
   private
-  def get_element_array(element_name, query_name)
+  def get_element_array(element_name, query_id)
     # JJV - There must be an easier way to map a string to a method name?
     begin
       case element_name
         when "PRODUCT"
-          BzQuery.find_by_name(query_name).bz_query_outputs.last.product
+          BzQueryOutput.find_by_id(query_id).product
         when "FLAG"
-          BzQuery.find_by_name(query_name).bz_query_outputs.last.flag
+          BzQueryOutput.find_by_id(query_id).flag
         when "BUG_STATUS"
-          BzQuery.find_by_name(query_name).bz_query_outputs.last.bug_status
+          BzQueryOutput.find_by_id(query_id).bug_status
         when "BZ_ID"
-          BzQuery.find_by_name(query_name).bz_query_outputs.last.bz_id
+          BzQueryOutput.find_by_id(query_id).bz_id
         when "VERSION"
-          BzQuery.find_by_name(query_name).bz_query_outputs.last.version
+          BzQueryOutput.find_by_id(query_id).version
         else
           []
       end
     rescue
-      raise "Element \"#{element_name.downcase}\' for Query: \'#{query_name}\' not found"
+      raise "Element \"#{element_name.downcase}\' for Query: \'#{query_id}\' not found"
     end
   end
     
