@@ -38,7 +38,7 @@
   <div class="field">
     <%= f.label "#{@report_table.query_name} output from time:" %><br />
     <%= select_tag "report_table[query_id]", 
-                     options_for_select(get_bz_query_run_times(@report_table.query_name), 0) %>
+                     options_for_select(get_bz_query_run_times(@report_table.query_name), @report_table.query_id) %>
   </div>
 
 

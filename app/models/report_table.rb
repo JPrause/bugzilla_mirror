@@ -10,36 +10,43 @@ class ReportTable < ActiveRecord::Base
     logger.debug "JJV - horizontal: #{report_table.horizontal}"
     logger.debug "JJV - vertical: #{report_table.vertical}"
 
-    bz_query_out = get_output(report_table.query_id)
-    hori_up = report_table.horizontal.upcase
-    vert_up = report_table.vertical.upcase
-    hori_array = get_element_array(hori_up, report_table.query_id)
-    vert_array = get_element_array(vert_up, report_table.query_id)
+    @bz_query_out = get_query_output(report_table.query_id)
+    @hori_up = report_table.horizontal.upcase
+    @vert_up = report_table.vertical.upcase
+    hori_array = get_query_element(@hori_up, report_table.query_id)
+    vert_array = get_query_element(@vert_up, report_table.query_id)
 
     logger.debug  "JJV - hori_array: ->#{hori_array}<-"
     logger.debug  "JJV - vert_array: ->#{vert_array}<-"
 
-    table = {}
-    table = Hash[*hori_array.uniq.sort.each.collect { |v| [v, {}] }.flatten ]
+    @table = {}
+    @table = Hash[*hori_array.uniq.sort.each.collect { |v| [v, {}] }.flatten ]
 
     hori_array.uniq.sort.each do |h|
-      table[h] = Hash[*vert_array.uniq.sort.each.collect { |v| [v, 0] }.flatten ]
+      @table[h] = Hash[*vert_array.uniq.sort.each.collect { |v| [v, 0] }.flatten ]
     end
 
-    table.keys.each do |kh|
-      table[kh].keys.each do |kv|
-        # TDB: JJV - Fix this to detect when vertical comes after | before horizontal.
-        cnt = bz_query_out.scan(/#{hori_up}: #{kh}.*#{vert_up}: #{kv}/).count
-	table[kh][kv] = cnt
-      end
-    end
-
-    table
+    set_table_bz_count!
+    @table
 
   end
 
   private
-  def get_output(query_id)
+  def set_table_bz_count!()
+    @table.keys.each do |kh|
+      @table[kh].keys.each do |kv|
+        cnt = @bz_query_out.scan(/#{@hori_up}: #{kh}.*#{@vert_up}: #{kv}/).count
+        # Check if elements are flipped around in the output.
+        if cnt == 0
+          cnt = @bz_query_out.scan(/#{@vert_up}: #{kv}.*#{@hori_up}: #{kh}/).count
+        end
+	@table[kh][kv] = cnt
+      end
+    end
+  end
+
+  private
+  def get_query_output(query_id)
     begin
       BzQueryOutput.find_by_id(query_id).output
     rescue
@@ -48,7 +55,7 @@ class ReportTable < ActiveRecord::Base
   end
     
   private
-  def get_element_array(element_name, query_id)
+  def get_query_element(element_name, query_id)
     # JJV - There must be an easier way to map a string to a method name?
     begin
       case element_name

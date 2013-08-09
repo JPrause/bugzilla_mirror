@@ -31,23 +31,22 @@
 </p>
 
 <p>
-  <table>
-    <b>Report Result:</b>
+  <b>Report Result:</b>
+  <table border="1">
     <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
-
-      <td class="list_description">
-        <% @report_table_result.keys.each do |kh| %>
-          <% @report_table_result[kh].keys.each do |kv| %>
-            <td>
-              <%= kh %>
-              <%= kv %>
-              <%= " : " %>
-              <%= @report_table_result[kh][kv] %>
-            </td>
-          <% end %>
-        <% end %>
-      </td>
+      <th><%= @report_table.vertical%>  &nbsp; &nbsp; &nbsp;</th>
+      <th><%= @report_table.horizontal%></th>
+      <th>Totals</th>
     </tr>
+
+    <% @report_table_result.keys.each do |kv| %> <% @report_table_result[kv].keys.each do |kh| %>
+    <tr>
+      <td><%= kh %></td>
+      <td><%= kv %></td>
+      <td><%= @report_table_result[kv][kh] %></td>
+    </tr>
+    <% end %> <% end %>
+
     </tbody>
   </table>
 
