@@ -14,4 +14,15 @@ module ReportTablesHelper
     past_query_runs
   end
 
+  def get_query_time(query_id)
+    begin
+      BzQueryOutput.find_by_id(query_id).updated_at
+    rescue
+      logger.info "Output for Query: \'#{query_id}\' not found"
+      "Query time not yet selected."
+    end
+  end
+    
+
+
 end

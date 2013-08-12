@@ -11,13 +11,18 @@
 </p>
 
 <p>
-  <b>BzQuery_Name:</b>
+  <b>BzQuery Name:</b>
   <%= @report_table.query_name %>
 </p>
 
 <p>
-  <b>BzQuery_ID:</b>
+  <b>BzQuery ID:</b>
   <%= @report_table.query_id %>
+</p>
+
+<p>
+  <b>BzQuery Occurrence Time:</b>
+  <%= get_query_time(@report_table.query_id) %>
 </p>
 
 <p>
