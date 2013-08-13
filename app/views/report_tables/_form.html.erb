@@ -37,8 +37,13 @@
   </div>
   <div class="field">
     <%= f.label "#{@report_table.query_name} occurrence time:" %><br />
+    <% if @report_table.query_id == 0 %>
+      <%= default = "LATEST" %>
+    <% else %>
+      <%= default = @report_table.query_id %>
+    <% end %>
     <%= select_tag "report_table[query_id]", 
-                     options_for_select(get_bz_query_run_times(@report_table.query_name), @report_table.query_id) %>
+                     options_for_select(get_bz_query_run_times(@report_table.query_name), default) %>
   </div>
 
 

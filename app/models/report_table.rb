@@ -10,7 +10,7 @@ class ReportTable < ActiveRecord::Base
     logger.debug "JJV - horizontal: #{report_table.horizontal}"
     logger.debug "JJV - vertical: #{report_table.vertical}"
 
-    @bz_query_out = get_query_output(report_table.query_id)
+    @bz_query_out = get_query_output(report_table)
     @hori_up = report_table.horizontal.upcase
     @vert_up = report_table.vertical.upcase
     hori_array = get_query_element(@hori_up, report_table.query_id)
@@ -45,36 +45,4 @@ class ReportTable < ActiveRecord::Base
     end
   end
 
-  private
-  def get_query_output(query_id)
-    begin
-      BzQueryOutput.find_by_id(query_id).output
-    rescue
-      raise "Output for Query: \'#{query_id}\' not found"
-    end
-  end
-    
-  private
-  def get_query_element(element_name, query_id)
-    # JJV - There must be an easier way to map a string to a method name?
-    begin
-      case element_name
-        when "PRODUCT"
-          BzQueryOutput.find_by_id(query_id).product
-        when "FLAG"
-          BzQueryOutput.find_by_id(query_id).flag
-        when "BUG_STATUS"
-          BzQueryOutput.find_by_id(query_id).bug_status
-        when "BZ_ID"
-          BzQueryOutput.find_by_id(query_id).bz_id
-        when "VERSION"
-          BzQueryOutput.find_by_id(query_id).version
-        else
-          []
-      end
-    rescue
-      raise "Element \"#{element_name.downcase}\' for Query: \'#{query_id}\' not found"
-    end
-  end
-    
 end
