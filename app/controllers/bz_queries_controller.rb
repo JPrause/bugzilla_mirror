@@ -51,6 +51,7 @@ class BzQueriesController < ApplicationController
         format.json { render json: @bz_query.errors, status: :unprocessable_entity }
       end
     end
+    @bz_query_result = @bz_query.run( @bz_query )
   end
 
   # PUT /bz_queries/1
