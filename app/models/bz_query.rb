@@ -34,7 +34,7 @@ class BzQuery < ActiveRecord::Base
       $?.success?
 
     # create a new bz_query_outputs entry in the db and save this output there.
-    bz_query_outputs.create(output: bz_query_cmd_out)
+    bz_query_outputs.create(:output => bz_query_cmd_out)
     
     bz_query_cmd_out
   end

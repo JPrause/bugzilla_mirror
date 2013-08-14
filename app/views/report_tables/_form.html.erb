@@ -31,10 +31,18 @@
     <%= f.label :horizontal %><br />
     <%= f.text_field :horizontal %>
   </div>
+
   <div class="field">
     <%= f.label :query_name %><br />
-    <%= f.text_field :query_name %>
+    <% if @report_table.query_name == 0 %>
+      <%= default = "NONE" %>
+    <% else %>
+      <%= default = @report_table.query_name %>
+    <% end %>
+    <%= select_tag "report_table[query_name]", 
+                     options_for_select(BzQuery.pluck(:name), default) %>
   </div>
+
   <div class="field">
     <%= f.label "#{@report_table.query_name} occurrence time:" %><br />
     <% if @report_table.query_id == 0 %>
@@ -45,7 +53,6 @@
     <%= select_tag "report_table[query_id]", 
                      options_for_select(get_bz_query_run_times(@report_table.query_name), default) %>
   </div>
-
 
   <div class="actions">
     <%= f.submit %>

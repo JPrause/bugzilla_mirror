@@ -1,23 +1,22 @@
 class ReportTable < ActiveRecord::Base
 
+  include ReportTablesHelper
+
   attr_accessible :horizontal, :vertical, :description, :name,
     :query_name, :query_id
 
   def run(report_table)
 
-    logger.debug "JJV - report_table.query_name: #{report_table.query_name}<-"
-    logger.debug "JJV - report_table.query_id: #{report_table.query_id}<-"
-    logger.debug "JJV - horizontal: #{report_table.horizontal}"
-    logger.debug "JJV - vertical: #{report_table.vertical}"
+    logger.debug "report_table.query_name: #{report_table.query_name}<-"
+    logger.debug "report_table.query_id: #{report_table.query_id}<-"
+    logger.debug "horizontal: #{report_table.horizontal}"
+    logger.debug "vertical: #{report_table.vertical}"
 
     @bz_query_out = get_query_output(report_table)
     @hori_up = report_table.horizontal.upcase
     @vert_up = report_table.vertical.upcase
     hori_array = get_query_element(@hori_up, report_table.query_id)
     vert_array = get_query_element(@vert_up, report_table.query_id)
-
-    logger.debug  "JJV - hori_array: ->#{hori_array}<-"
-    logger.debug  "JJV - vert_array: ->#{vert_array}<-"
 
     @table = {}
     @table = Hash[*hori_array.uniq.sort.each.collect { |v| [v, {}] }.flatten ]

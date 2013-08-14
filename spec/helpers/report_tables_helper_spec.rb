@@ -13,7 +13,8 @@ require 'spec_helper'
 describe ReportTablesHelper do
   context "#get_bz_query_run_times" do
     it "Handle query name not found." do
-      get_bz_query_run_times("INVALID QUERY NAME").should == [["NONE", 0]]
+      get_bz_query_run_times("INVALID QUERY NAME").should ==
+        [["LATEST", "LATEST"]]
     end
   end
 end
