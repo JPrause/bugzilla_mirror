@@ -14,11 +14,6 @@ require 'tempfile'
 # end
 describe ReportTablesHelper do
 
-  test_query_name = "TestSoxQuery99"
-  local_query = nil
-  saved_bz_cmd = ApplicationHelper::BZ_CMD
-  saved_bz_cookies_file = ApplicationHelper::BZ_COOKIES_FILE
-
   class LocalReportTable
     attr_accessor :query_id, :query_name
 
@@ -28,33 +23,36 @@ describe ReportTablesHelper do
     end
   end
 
-  # Run after each tests to reset any faked ApplicationHelper constants.
+  # Run before each tests to reset any faked ApplicationHelper constants.
+  # and create a test query.
   before :each do
+    @saved_bz_cmd = ApplicationHelper::BZ_CMD
+    @saved_bz_cookies_file = ApplicationHelper::BZ_COOKIES_FILE
+    @test_query_name = "TestSoxQuery99"
     @file = Tempfile.new('cfme_bz_spec')
+
     silence_warnings do
       # Fake the bugzilla cookies file and the bugzilla command.
       ApplicationHelper::BZ_COOKIES_FILE = @file.path
       ApplicationHelper::BZ_CMD = '/bin/echo'
     end
-    local_query = BzQuery.create(
+    @local_query = BzQuery.create(
       description: "Test Query.",
-      name: test_query_name,
+      name: @test_query_name,
       product: nil, 
       flag: nil,
       bug_status: nil,
       output_format: nil)
-    local_query.run(local_query)
-    local_query.run(local_query)
-    local_query.run(local_query)
-    local_query.run(local_query)
+    4.times { @local_query.run(@local_query) }
   end
 
+  # Run after each tests to reset any faked ApplicationHelper constants.
   after :each do
     silence_warnings do
-      ApplicationHelper::BZ_CMD = saved_bz_cmd
-      ApplicationHelper::BZ_COOKIES_FILE = saved_bz_cookies_file
+      ApplicationHelper::BZ_CMD = @saved_bz_cmd
+      ApplicationHelper::BZ_COOKIES_FILE = @saved_bz_cookies_file
     end
-    local_query.destroy
+    @local_query.destroy
     @file.close
     @file.unlink
   end
@@ -65,7 +63,7 @@ describe ReportTablesHelper do
     end
 
     it "Handle a valid bz query with valid output." do
-      get_latest_bz_query(test_query_name).should_not == 0
+      get_latest_bz_query(@test_query_name).should_not == 0
     end
   end
 
@@ -76,7 +74,7 @@ describe ReportTablesHelper do
     end
 
     it "Handle a valid bz query with valid run times." do
-      get_bz_query_run_times(test_query_name).count.should == 5
+      get_bz_query_run_times(@test_query_name).count.should == 5
     end
   end
 
@@ -86,7 +84,7 @@ describe ReportTablesHelper do
     end
 
     it "Handle a valid bz query with a valid run time." do
-      valid_query_id = BzQuery.find_by_name(test_query_name).bz_query_outputs.pluck(:id)[0]
+      valid_query_id = BzQuery.find_by_name(@test_query_name).bz_query_outputs.pluck(:id)[0]
       get_bz_query_run_time(valid_query_id).should be_within(10.minutes).of(Time.now)
     end
   end
@@ -99,8 +97,8 @@ describe ReportTablesHelper do
     end
 
     it "Handle a valid report_table query_id and query_name." do
-      report_table.query_id = get_latest_bz_query(test_query_name)
-      report_table.query_name = test_query_name
+      report_table.query_id = get_latest_bz_query(@test_query_name)
+      report_table.query_name = @test_query_name
       get_query_output(report_table).should ==  "query\n"
     end
   end
@@ -111,7 +109,7 @@ describe ReportTablesHelper do
     end
 
     it "Handle a valid element name." do
-      valid_query_id = BzQuery.find_by_name(test_query_name).bz_query_outputs.pluck(:id)[0]
+      valid_query_id = BzQuery.find_by_name(@test_query_name).bz_query_outputs.pluck(:id)[0]
       get_query_element("output", valid_query_id).should == "query\n"
     end
   end
