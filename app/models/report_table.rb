@@ -1,17 +1,3 @@
-def set_table_bz_count!(table, bz_query_out, hori_up, vert_up)
-  table.keys.each do |kh|
-    table[kh].keys.each do |kv|
-      cnt = bz_query_out.scan(/#{hori_up}: #{kh}.*#{vert_up}: #{kv}/).count
-      # Check if elements are flipped around in the output.
-      if cnt == 0
-        cnt = bz_query_out.scan(/#{vert_up}: #{kv}.*#{hori_up}: #{kh}/).count
-      end
-      table[kh][kv] = cnt
-    end
-  end
-  table
-end
-
 class ReportTable < ActiveRecord::Base
 
   include ReportTablesHelper

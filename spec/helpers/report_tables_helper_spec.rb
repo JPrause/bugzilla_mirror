@@ -105,7 +105,7 @@ describe ReportTablesHelper do
 
   context "#get_query_element" do
     it "Handle an invalid element name." do
-      get_query_element("INVALID_ELEMENT_NAME", 0).should == []
+      expect{get_query_element("INVALID_ELEMENT_NAME", 0)}.to raise_exception
     end
 
     it "Handle a valid element name." do

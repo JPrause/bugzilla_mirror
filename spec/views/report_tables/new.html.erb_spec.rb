@@ -18,8 +18,6 @@ describe "report_tables/new" do
     assert_select "form[action=?][method=?]", report_tables_path, "post" do
       assert_select "input#report_table_name[name=?]", "report_table[name]"
       assert_select "textarea#report_table_description[name=?]", "report_table[description]"
-      assert_select "input#report_table_vertical[name=?]", "report_table[vertical]"
-      assert_select "input#report_table_horizontal[name=?]", "report_table[horizontal]"
     end
   end
 end

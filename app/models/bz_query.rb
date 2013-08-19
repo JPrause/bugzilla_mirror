@@ -6,7 +6,7 @@ class BzQuery < ActiveRecord::Base
   attr_accessible :bug_status, :description, :flag, :name,
     :output_format, :product
 
-  has_many :bz_query_outputs, dependent: :destroy
+  has_many :bz_query_outputs, :dependent => :destroy
 
   def run(bz_query)
 

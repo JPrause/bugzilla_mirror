@@ -25,11 +25,13 @@
   </div>
   <div class="field">
     <%= f.label :vertical %><br />
-    <%= f.text_field :vertical %>
+    <%= select_tag "report_table[vertical]", 
+                     options_for_select(["product", "flag", "bug_status", "version"]) %>
   </div>
   <div class="field">
     <%= f.label :horizontal %><br />
-    <%= f.text_field :horizontal %>
+    <%= select_tag "report_table[horizontal]", 
+                     options_for_select(["product", "flag", "bug_status", "version"]) %>
   </div>
 
   <div class="field">
@@ -45,13 +47,16 @@
 
   <div class="field">
     <%= f.label "#{@report_table.query_name} occurrence time:" %><br />
-    <% if @report_table.query_id == 0 %>
+    <% if @report_table.query_name == nil %>
+      <%= default = "LATEST" %>
+      <%= @report_table.query_name = BzQuery.pluck(:name).first %>
+    <% elsif @report_table.query_id == 0 %>
       <%= default = "LATEST" %>
     <% else %>
       <%= default = @report_table.query_id %>
     <% end %>
     <%= select_tag "report_table[query_id]", 
-                     options_for_select(get_bz_query_run_times(@report_table.query_name), default) %>
+      options_for_select(get_bz_query_run_times(@report_table.query_name), default) %>
   </div>
 
   <div class="actions">

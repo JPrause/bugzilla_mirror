@@ -1,40 +1,45 @@
 module ReportTablesHelper
 
   def get_latest_bz_query(name)
-    past_query_run_id = 0
-    BzQuery.find_by_name(name).bz_query_outputs.each do |run|
-      past_query_run_id = run.id
-    end
-
-    past_query_run_id
+    BzQuery.find_by_name(name).bz_query_outputs.order(:id).last.id
   end
 
   def get_bz_query_run_times(name)
     past_query_runs = []
-    query = BzQuery.find_by_name(name)
-    if query.respond_to?('bz_query_outputs')
-      BzQuery.find_by_name(name).bz_query_outputs.each do |run|
-        past_query_runs << [run.updated_at, run.id]    
-      end
-    end
+    BzQuery.find_by_name(name).bz_query_outputs.order(:updated_at).each do |run|
+      past_query_runs << [run.updated_at, run.id]    
+    end unless BzQuery.find_by_name(name) == nil
     past_query_runs << ["LATEST", "LATEST"]    
   end
 
   def get_bz_query_run_time(query_id)
-    output = BzQueryOutput.find_by_id(query_id)
-    output.respond_to?('updated_at') ? output.updated_at : "LATEST" 
+    query_id == nil || query_id == 0 ? "LATEST" :
+      BzQueryOutput.find_by_id(query_id).updated_at
   end
 
   def get_query_output(report_table)
-      if report_table.query_id == 0
-         report_table.query_id = get_latest_bz_query(report_table.query_name)
-      end
-      BzQueryOutput.find_by_id(report_table.query_id).output
+    if report_table.query_id == 0
+       report_table.query_id = get_latest_bz_query(report_table.query_name)
+    end
+    BzQueryOutput.find_by_id(report_table.query_id).output
   end
     
   def get_query_element(element_name, query_id)
-    output = BzQueryOutput.find_by_id(query_id)
-    output.respond_to?(element_name.downcase) ? output.send(element_name.downcase) : []
+    BzQueryOutput.find_by_id(query_id).send(element_name.downcase)
+  end
+
+  def set_table_bz_count!(table, bz_query_out, hori_up, vert_up)
+    table.keys.each do |kh|
+      table[kh].keys.each do |kv|
+        cnt = bz_query_out.scan(/#{hori_up}: #{kh}.*#{vert_up}: #{kv}/).count
+        # Check if elements are flipped around in the output.
+        if cnt == 0
+          cnt = bz_query_out.scan(/#{vert_up}: #{kv}.*#{hori_up}: #{kh}/).count
+        end
+        table[kh][kv] = cnt
+      end
+    end
+    table
   end
 
 end
