@@ -45,9 +45,18 @@ END_OF_TEST_DATA
 
 describe ReportTable do
 
+  before :each do
+    class ReportTable
+      def test_set_table_bz_count!(source_table, test_data, x, y)
+        set_table_bz_count!(source_table, test_data, x, y)
+      end
+    end
+    @report_test = ReportTable.new
+  end
+
   context "#set_table_bz_count!" do
     it "Test empty table and empty test data" do
-      set_table_bz_count!({}, "", "", "").should == {}
+      @report_test.test_set_table_bz_count!({}, "", "", "").should == {}
     end
 
     it "Test valid table." do
@@ -77,7 +86,7 @@ describe ReportTable do
                                    "5.2.0"=>5,
                                    "unspecified"=>4}}
 
-      set_table_bz_count!(source_table, TEST_DATA, "BUG_STATUS", "VERSION").should == result_table 
+      @report_test.test_set_table_bz_count!(source_table, TEST_DATA, "BUG_STATUS", "VERSION").should == result_table 
     end
 
     it "Test table with only one key." do
@@ -95,7 +104,7 @@ describe ReportTable do
                                    "5.2.0"=>4,
                                    "unspecified"=>1}}
 
-      set_table_bz_count!(source_table, TEST_DATA, "BUG_STATUS", "VERSION").should == result_table 
+      @report_test.test_set_table_bz_count!(source_table, TEST_DATA, "BUG_STATUS", "VERSION").should == result_table 
     end
 
   end
