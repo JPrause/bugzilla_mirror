@@ -18,12 +18,12 @@ describe BzQuery do
           ApplicationHelper::BZ_COOKIES_FILE = file.path
         end
         query = BzQuery.create(
-          name: 'query name',
-          description: 'query description',
-          product: 'query product',
-          flag: 'query flag',
-          bug_status: 'query bug status',
-          output_format: 'query output format')
+          :name => 'query name',
+          :description => 'query description',
+          :product => 'query product',
+          :flag => 'query flag',
+          :bug_status => 'query bug status',
+          :output_format => 'query output format')
         query.run(query).should be_empty
       end
     end

@@ -11,7 +11,7 @@ describe BzQueryOutput do
     end
 
     it "is valid to set output" do
-      q_out = BzQueryOutput.new(output: "hi")
+      q_out = BzQueryOutput.new(:output => "hi")
       q_out.output.should == "hi"
     end
   end

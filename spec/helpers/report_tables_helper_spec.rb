@@ -37,12 +37,12 @@ describe ReportTablesHelper do
       ApplicationHelper::BZ_CMD = '/bin/echo'
     end
     @local_query = BzQuery.create(
-      description: "Test Query.",
-      name: @test_query_name,
-      product: nil, 
-      flag: nil,
-      bug_status: nil,
-      output_format: nil)
+      :description => "Test Query.",
+      :name => @test_query_name,
+      :product => nil, 
+      :flag => nil,
+      :bug_status => nil,
+      :output_format => nil)
     4.times { @local_query.run(@local_query) }
   end
 
