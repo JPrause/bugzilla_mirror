@@ -1,6 +1,6 @@
 class ReportTable < ActiveRecord::Base
 
-  include ReportTablesHelper
+  include QueryMixin
 
   attr_accessible :horizontal, :vertical, :description, :name,
     :query_name, :query_id

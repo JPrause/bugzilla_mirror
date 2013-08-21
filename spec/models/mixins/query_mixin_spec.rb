@@ -1,17 +1,9 @@
-require File.expand_path(File.join(File.dirname(__FILE__), '..', 'spec_helper'))
+require File.expand_path(File.join(File.dirname(__FILE__), '../..', 'spec_helper'))
 require 'tempfile'
 
-# Specs in this file have access to a helper object that includes
-# the ReportTablesHelper. For example:
-#
-# describe ReportTablesHelper do
-#   describe "string concat" do
-#     it "concats two strings with spaces" do
-#       helper.concat_strings("this","that").should == "this that"
-#     end
-#   end
-# end
-describe ReportTablesHelper do
+include QueryMixin
+
+describe QueryMixin do
 
   class LocalReportTable
     attr_accessor :query_id, :query_name
@@ -56,25 +48,38 @@ describe ReportTablesHelper do
     @file.unlink
   end
 
-  context "#get_bz_query_run_times" do
+  context "#get_latest_bz_query" do
     it "when the query name is not found" do
-      get_bz_query_run_times("INVALID QUERY NAME").should ==
-        [["LATEST", "LATEST"]]
+      expect{get_latest_bz_query("INVALID QUERY NAME")}.to raise_exception
     end
 
-    it "with a valid query that contains valid run times" do
-      get_bz_query_run_times(@test_query_name).count.should == 5
+    it "with a valid query that contains valid output" do
+      get_latest_bz_query(@test_query_name).should_not == 0
     end
   end
 
-  context "#get_bz_query_run_time" do
-    it "when the query name is not found" do
-      get_bz_query_run_time(0).should == "LATEST"
+  context "#get_query_output" do
+    report_table = LocalReportTable.new("INVALID_NAME")
+
+    it "with invalid report_table query_id and query_name params" do
+      expect{get_query_output(report_table)}.to raise_exception
     end
 
-    it "with a valid query that contains a valid run time" do
+    it "with valid report_table query_id and query_name params" do
+      report_table.query_id = get_latest_bz_query(@test_query_name)
+      report_table.query_name = @test_query_name
+      get_query_output(report_table).should ==  "query\n"
+    end
+  end
+
+  context "#get_query_element" do
+    it "with an invalid element name" do
+      expect{get_query_element("INVALID_ELEMENT_NAME", 0)}.to raise_exception
+    end
+
+    it "with a valid element name" do
       valid_query_id = BzQuery.find_by_name(@test_query_name).bz_query_outputs.pluck(:id)[0]
-      get_bz_query_run_time(valid_query_id).should be_within(10.minutes).of(Time.now)
+      get_query_element("output", valid_query_id).should == "query\n"
     end
   end
 
