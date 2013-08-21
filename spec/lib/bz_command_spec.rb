@@ -12,18 +12,17 @@ class TempCredFile < Tempfile
   end
 end
       
-describe ApplicationHelper do
+describe BzCommand do
+  saved_bz_cmd = BzCommand::BZ_CMD
+  saved_bz_cookies_file = BzCommand::BZ_COOKIES_FILE
+  saved_bz_creds_file = BzCommand::BZ_CREDS_FILE
 
-  saved_bz_cmd = ApplicationHelper::BZ_CMD
-  saved_bz_cookies_file = ApplicationHelper::BZ_COOKIES_FILE
-  saved_bz_creds_file = ApplicationHelper::BZ_CREDS_FILE
-
-  # Run after each tests to reset any faked ApplicationHelper constants.
+  # Run after each tests to reset any faked BzCommand constants.
   after :each do
     silence_warnings do
-      ApplicationHelper::BZ_CMD = saved_bz_cmd
-      ApplicationHelper::BZ_COOKIES_FILE = saved_bz_cookies_file
-      ApplicationHelper::BZ_CREDS_FILE = saved_bz_creds_file
+      BzCommand::BZ_CMD = saved_bz_cmd
+      BzCommand::BZ_COOKIES_FILE = saved_bz_cookies_file
+      BzCommand::BZ_CREDS_FILE = saved_bz_creds_file
     end
   end
 
@@ -31,37 +30,37 @@ describe ApplicationHelper do
     it "with an existing bugzilla cookie" do
       Tempfile.new('cfme_bz_spec') do |file| 
         silence_warnings do
-          ApplicationHelper::BZ_COOKIES_FILE = file.path
+          BzCommand::BZ_COOKIES_FILE = file.path
         end
-        bz_logged_in?.should be true
+        BzCommand.bz_logged_in?.should be true
       end
     end
 
     it "with no bugzilla cookie" do
       silence_warnings do
-        ApplicationHelper::BZ_COOKIES_FILE = '/This/file/does/not/exist'
+        BzCommand::BZ_COOKIES_FILE = '/This/file/does/not/exist'
       end
-      bz_logged_in?.should be false
+      BzCommand.bz_logged_in?.should be false
     end
   end
 
   context "#bz_login!" do
     it "when the bugzilla command is not found" do
       silence_warnings do
-        ApplicationHelper::BZ_CMD = '/This/cmd/does/not/exist'
+        BzCommand::BZ_CMD = '/This/cmd/does/not/exist'
       end
-      expect{bz_login!}.to raise_exception
+      expect{BzCommand.bz_login!}.to raise_exception
     end
 
     it "when the bugzilla command produces output" do
       # Fake the command, cookies file and credentials file.
       TempCredFile.new('cfme_bz_spec') do |file| 
         silence_warnings do
-          ApplicationHelper::BZ_CREDS_FILE = file.path
-          ApplicationHelper::BZ_CMD = '/bin/echo'
-          ApplicationHelper::BZ_COOKIES_FILE = '/This/file/does/not/exist'
+          BzCommand::BZ_CREDS_FILE = file.path
+          BzCommand::BZ_CMD = '/bin/echo'
+          BzCommand::BZ_COOKIES_FILE = '/This/file/does/not/exist'
         end
-        bz_login!.should == "login My Username My Password"
+        BzCommand.bz_login!.should == "login My Username My Password"
       end
     end
   end
@@ -69,9 +68,9 @@ describe ApplicationHelper do
   context "#bz_get_credentials" do
     it "when the bugzilla command is not found" do
       silence_warnings do
-        ApplicationHelper::BZ_CREDS_FILE = '/This/cmd/does/not/exist'
+        BzCommand::BZ_CREDS_FILE = '/This/cmd/does/not/exist'
       end
-      expect{bz_get_credentials}.to raise_exception
+      expect{BzCommand.bz_get_credentials}.to raise_exception
     end
 
     it "when the YAML input is invalid" do
@@ -79,9 +78,9 @@ describe ApplicationHelper do
 
       TempCredFile.new('cfme_bz_spec') do |file|
         silence_warnings do
-          ApplicationHelper::BZ_CREDS_FILE = file.path
+          BzCommand::BZ_CREDS_FILE = file.path
         end
-        un, pw = bz_get_credentials
+        un, pw = BzCommand.bz_get_credentials
         un.should == "My Username"
         pw.should == "My Password"
       end

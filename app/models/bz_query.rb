@@ -1,6 +1,4 @@
-include ApplicationHelper
 include ReportTablesHelper
-
 
 class BzQuery < ActiveRecord::Base
   attr_accessible :bug_status, :description, :flag, :name,
@@ -10,9 +8,9 @@ class BzQuery < ActiveRecord::Base
 
   def run(bz_query)
 
-    bz_login!
+    BzCommand.bz_login!
 
-    bz_query_cmd = ["#{BZ_CMD}", "query"]
+    bz_query_cmd = ["#{BzCommand::BZ_CMD}", "query"]
     bz_query_cmd << "--product=#{bz_query.product}" unless
       bz_query.product.nil?
     bz_query_cmd << "--flag=#{bz_query.flag}" unless bz_query.flag.nil?

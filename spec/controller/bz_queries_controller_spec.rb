@@ -2,12 +2,12 @@ require File.expand_path(File.join(File.dirname(__FILE__), '..', 'spec_helper'))
 
 describe BzQuery do
 
-  saved_bz_cookies_file = ApplicationHelper::BZ_COOKIES_FILE
+  saved_bz_cookies_file = BzCommand::BZ_COOKIES_FILE
 
-  # Run after each tests to reset any faked ApplicationHelper constants.
+  # Run after each tests to reset any faked BzCommand constants.
   after :each do
     silence_warnings do
-      ApplicationHelper::BZ_COOKIES_FILE = saved_bz_cookies_file
+      BzCommand::BZ_COOKIES_FILE = saved_bz_cookies_file
     end
   end
 
@@ -15,7 +15,7 @@ describe BzQuery do
     it "with an invalid query should return nothing" do
       Tempfile.new('cfme_bz_spec') do |file| 
         silence_warnings do
-          ApplicationHelper::BZ_COOKIES_FILE = file.path
+          BzCommand::BZ_COOKIES_FILE = file.path
         end
         query = BzQuery.create(
           :name => 'query name',

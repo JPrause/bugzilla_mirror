@@ -23,18 +23,18 @@ describe ReportTablesHelper do
     end
   end
 
-  # Run before each tests to reset any faked ApplicationHelper constants.
+  # Run before each tests to reset any faked BzCommand constants.
   # and create a test query.
   before :each do
-    @saved_bz_cmd = ApplicationHelper::BZ_CMD
-    @saved_bz_cookies_file = ApplicationHelper::BZ_COOKIES_FILE
+    @saved_bz_cmd = BzCommand::BZ_CMD
+    @saved_bz_cookies_file = BzCommand::BZ_COOKIES_FILE
     @test_query_name = "TestSoxQuery99"
     @file = Tempfile.new('cfme_bz_spec')
 
     silence_warnings do
       # Fake the bugzilla cookies file and the bugzilla command.
-      ApplicationHelper::BZ_COOKIES_FILE = @file.path
-      ApplicationHelper::BZ_CMD = '/bin/echo'
+      BzCommand::BZ_COOKIES_FILE = @file.path
+      BzCommand::BZ_CMD = '/bin/echo'
     end
     @local_query = BzQuery.create(
       :description => "Test Query",
@@ -46,11 +46,11 @@ describe ReportTablesHelper do
     4.times { @local_query.run(@local_query) }
   end
 
-  # Run after each tests to reset any faked ApplicationHelper constants.
+  # Run after each tests to reset any faked BzCommand constants.
   after :each do
     silence_warnings do
-      ApplicationHelper::BZ_CMD = @saved_bz_cmd
-      ApplicationHelper::BZ_COOKIES_FILE = @saved_bz_cookies_file
+      BzCommand::BZ_CMD = @saved_bz_cmd
+      BzCommand::BZ_COOKIES_FILE = @saved_bz_cookies_file
     end
     @local_query.destroy
     @file.close
