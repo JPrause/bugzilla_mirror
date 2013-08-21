@@ -3,7 +3,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), '..', 'spec_helper'))
 describe ReportTable do
 
   context "#run" do
-    it "running an invalid report should return nothing" do
+    it "with an invalid report should return nothing" do
       report_table = ReportTable.create(
         :name => 'Report1',
         :description => 'vertical=Version horizontal=Status',

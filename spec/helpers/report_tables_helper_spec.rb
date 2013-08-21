@@ -37,7 +37,7 @@ describe ReportTablesHelper do
       ApplicationHelper::BZ_CMD = '/bin/echo'
     end
     @local_query = BzQuery.create(
-      :description => "Test Query.",
+      :description => "Test Query",
       :name => @test_query_name,
       :product => nil, 
       :flag => nil,
@@ -58,32 +58,32 @@ describe ReportTablesHelper do
   end
 
   context "#get_latest_bz_query" do
-    it "Handle query name not found." do
+    it "when the query name is not found" do
       expect{get_latest_bz_query("INVALID QUERY NAME")}.to raise_exception
     end
 
-    it "Handle a valid bz query with valid output." do
+    it "with a valid query that contains valid output" do
       get_latest_bz_query(@test_query_name).should_not == 0
     end
   end
 
   context "#get_bz_query_run_times" do
-    it "Handle query name not found." do
+    it "when the query name is not found" do
       get_bz_query_run_times("INVALID QUERY NAME").should ==
         [["LATEST", "LATEST"]]
     end
 
-    it "Handle a valid bz query with valid run times." do
+    it "with a valid query that contains valid run times" do
       get_bz_query_run_times(@test_query_name).count.should == 5
     end
   end
 
   context "#get_bz_query_run_time" do
-    it "Handle query name not found." do
+    it "when the query name is not found" do
       get_bz_query_run_time(0).should == "LATEST"
     end
 
-    it "Handle a valid bz query with a valid run time." do
+    it "with a valid query that contains a valid run time" do
       valid_query_id = BzQuery.find_by_name(@test_query_name).bz_query_outputs.pluck(:id)[0]
       get_bz_query_run_time(valid_query_id).should be_within(10.minutes).of(Time.now)
     end
@@ -92,11 +92,11 @@ describe ReportTablesHelper do
   context "#get_query_output" do
     report_table = LocalReportTable.new("INVALID_NAME")
 
-    it "Handle an invalid report_table query_id and query_name." do
+    it "with invalid report_table query_id and query_name params" do
       expect{get_query_output(report_table)}.to raise_exception
     end
 
-    it "Handle a valid report_table query_id and query_name." do
+    it "with valid report_table query_id and query_name params" do
       report_table.query_id = get_latest_bz_query(@test_query_name)
       report_table.query_name = @test_query_name
       get_query_output(report_table).should ==  "query\n"
@@ -104,11 +104,11 @@ describe ReportTablesHelper do
   end
 
   context "#get_query_element" do
-    it "Handle an invalid element name." do
+    it "with an invalid element name" do
       expect{get_query_element("INVALID_ELEMENT_NAME", 0)}.to raise_exception
     end
 
-    it "Handle a valid element name." do
+    it "with a valid element name" do
       valid_query_id = BzQuery.find_by_name(@test_query_name).bz_query_outputs.pluck(:id)[0]
       get_query_element("output", valid_query_id).should == "query\n"
     end

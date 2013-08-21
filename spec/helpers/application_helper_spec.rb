@@ -28,7 +28,7 @@ describe ApplicationHelper do
   end
 
   context "#bz_logged_in?" do
-    it "Check for an existing the bugzilla cookie." do
+    it "with an existing bugzilla cookie" do
       Tempfile.new('cfme_bz_spec') do |file| 
         silence_warnings do
           ApplicationHelper::BZ_COOKIES_FILE = file.path
@@ -37,7 +37,7 @@ describe ApplicationHelper do
       end
     end
 
-    it "Check for no bugzilla cookie." do
+    it "with no bugzilla cookie" do
       silence_warnings do
         ApplicationHelper::BZ_COOKIES_FILE = '/This/file/does/not/exist'
       end
@@ -46,14 +46,14 @@ describe ApplicationHelper do
   end
 
   context "#bz_login!" do
-    it "Handle bugzilla command not found." do
+    it "when the bugzilla command is not found" do
       silence_warnings do
         ApplicationHelper::BZ_CMD = '/This/cmd/does/not/exist'
       end
       expect{bz_login!}.to raise_exception
     end
 
-    it "Handle bugzilla command produces output." do
+    it "when the bugzilla command produces output" do
       # Fake the command, cookies file and credentials file.
       TempCredFile.new('cfme_bz_spec') do |file| 
         silence_warnings do
@@ -67,14 +67,14 @@ describe ApplicationHelper do
   end
 
   context "#bz_get_credentials" do
-    it "Handle bugzilla command not found." do
+    it "when the bugzilla command is not found" do
       silence_warnings do
         ApplicationHelper::BZ_CREDS_FILE = '/This/cmd/does/not/exist'
       end
       expect{bz_get_credentials}.to raise_exception
     end
 
-    it "Handle valid YAML input." do
+    it "when the YAML input is invalid" do
       # Fake the credentials YAML file.
 
       TempCredFile.new('cfme_bz_spec') do |file|

@@ -12,7 +12,7 @@ describe BzQuery do
   end
 
   describe "#run" do
-    it "running an invalid query should return nothing" do
+    it "with an invalid query should return nothing" do
       Tempfile.new('cfme_bz_spec') do |file| 
         silence_warnings do
           ApplicationHelper::BZ_COOKIES_FILE = file.path

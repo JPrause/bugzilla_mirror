@@ -55,11 +55,11 @@ describe ReportTable do
   end
 
   context "#set_table_bz_count!" do
-    it "Test empty table and empty test data" do
+    it "with empty params" do
       @report_test.test_set_table_bz_count!({}, "", "", "").should == {}
     end
 
-    it "Test valid table." do
+    it "with multiple keys in params" do
       source_table = {"MODIFIED"=>{"4.0.1"=>0,
                                    "5.0.0"=>0,
                                    "5.0.1"=>0,
@@ -89,7 +89,7 @@ describe ReportTable do
       @report_test.test_set_table_bz_count!(source_table, TEST_DATA, "BUG_STATUS", "VERSION").should == result_table 
     end
 
-    it "Test table with only one key." do
+    it "with a single key in params" do
       source_table = {"MODIFIED"=>{"4.0.1"=>0,
                                    "5.0.0"=>0,
                                    "5.0.1"=>0,
