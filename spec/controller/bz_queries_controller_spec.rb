@@ -13,8 +13,7 @@ describe BzQuery do
 
   describe "#run" do
     it "with an invalid query should return nothing" do
-      file = Tempfile.new('cfme_bz_spec')
-      begin
+      Tempfile.open('cfme_bz_spec') do |file|
         silence_warnings do
           BzCommand::COOKIES_FILE = file.path
         end
@@ -26,8 +25,6 @@ describe BzQuery do
           :bug_status    => 'query bug status',
           :output_format => 'query output format')
         query.run.should be_empty
-      ensure
-        file.unlink unless file.nil?
       end
     end
   end

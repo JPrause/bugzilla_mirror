@@ -11,7 +11,7 @@ class TempCredFile < Tempfile
     f.puts(":bugzilla_options:")
     f.puts("  :bugzilla_uri: MyURI")
     f.puts("  :debug: MyDebug")
-    f.close
+    f.flush
   end
 end
       
@@ -31,14 +31,11 @@ describe BzCommand do
 
   context "#logged_in?" do
     it "with an existing bugzilla cookie" do
-      file = Tempfile.new('cfme_bz_spec')
-      begin
+      Tempfile.open('cfme_bz_spec') do |file|
         silence_warnings do
           BzCommand::COOKIES_FILE = file.path
         end
         BzCommand.logged_in?.should be true
-      ensure
-        file.unlink unless file.nil?
       end
     end
 
@@ -61,8 +58,7 @@ describe BzCommand do
 
     it "when the bugzilla login command produces output" do
       # Fake the command, cookies file and credentials file.
-      file = TempCredFile.new('cfme_bz_spec')
-      begin
+      TempCredFile.open('cfme_bz_spec') do |file|
         silence_warnings do
           BzCommand::CREDS_FILE = file.path
           BzCommand::CMD = '/bin/echo'
@@ -70,8 +66,6 @@ describe BzCommand do
         end
         cmd, output = BzCommand.login!
         output.should include("login My Username My Password")
-      ensure
-        file.unlink unless file.nil?
       end
     end
 
@@ -95,16 +89,13 @@ describe BzCommand do
 
     it "when the bugzilla query command produces output" do
       # Fake the command, cookies file and credentials file.
-      file = TempCredFile.new('cfme_bz_spec')
-      begin
+      TempCredFile.open('cfme_bz_spec') do |file|
         silence_warnings do
           BzCommand::CMD = '/bin/echo'
         end
         cmd, output = BzCommand.query("MyProduct")
         file.unlink unless file.nil?
         output.should include("query --product=MyProduct")
-      ensure
-        file.unlink unless file.nil?
       end
     end
 
@@ -120,16 +111,13 @@ describe BzCommand do
 
     it "when the YAML input is invalid" do
       # Fake the credentials YAML file.
-      file = TempCredFile.new('cfme_bz_spec')
-      begin
+      TempCredFile.open('cfme_bz_spec') do |file|
         silence_warnings do
           BzCommand::CREDS_FILE = file.path
         end
         un, pw = BzCommand.credentials
         un.should == "My Username"
         pw.should == "My Password"
-      ensure
-        file.unlink unless file.nil?
       end
     end
   end

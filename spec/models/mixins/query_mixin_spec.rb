@@ -23,7 +23,7 @@ describe QueryMixin do
     @saved_bz_cmd = BzCommand::CMD
     @saved_bz_cookies_file = BzCommand::COOKIES_FILE
     @test_query_name = "TestSoxQuery99"
-    @file = Tempfile.new('cfme_bz_spec')
+    @file = Tempfile.open('cfme_bz_spec')
 
     silence_warnings do
       # Fake the bugzilla cookies file and the bugzilla command.
@@ -47,8 +47,8 @@ describe QueryMixin do
       BzCommand::COOKIES_FILE = @saved_bz_cookies_file
     end
     @local_query.destroy
-    @file.close
-    @file.unlink
+    @file.close unless @file.nil?
+    @file.unlink unless @file.nil?
   end
 
   context "#get_latest_bz_query" do

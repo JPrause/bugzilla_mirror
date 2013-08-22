@@ -28,7 +28,7 @@ describe ReportTablesHelper do
     @saved_cmd = BzCommand::CMD
     @saved_cookies_file = BzCommand::COOKIES_FILE
     @test_query_name = "TestSoxQuery99"
-    @file = Tempfile.new('cfme_bz_spec')
+    @file = Tempfile.open('cfme_bz_spec')
 
     silence_warnings do
       # Fake the bugzilla cookies file and the bugzilla command.
@@ -52,8 +52,8 @@ describe ReportTablesHelper do
       BzCommand::COOKIES_FILE = @saved_cookies_file
     end
     @local_query.destroy
-    @file.close
-    @file.unlink
+    @file.close unless @file.nil?
+    @file.unlink unless @file.nil?
   end
 
   context "#get_bz_query_run_times" do
