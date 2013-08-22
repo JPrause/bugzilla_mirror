@@ -17,31 +17,31 @@ describe QueryMixin do
   # Run before each tests to reset any faked BzCommand constants.
   # and create a test query.
   before :each do
-    @saved_bz_cmd = BzCommand::BZ_CMD
-    @saved_bz_cookies_file = BzCommand::BZ_COOKIES_FILE
+    @saved_bz_cmd = BzCommand::CMD
+    @saved_bz_cookies_file = BzCommand::COOKIES_FILE
     @test_query_name = "TestSoxQuery99"
     @file = Tempfile.new('cfme_bz_spec')
 
     silence_warnings do
       # Fake the bugzilla cookies file and the bugzilla command.
-      BzCommand::BZ_COOKIES_FILE = @file.path
-      BzCommand::BZ_CMD = '/bin/echo'
+      BzCommand::COOKIES_FILE = @file.path
+      BzCommand::CMD = '/bin/echo'
     end
     @local_query = BzQuery.create(
       :description => "Test Query",
       :name => @test_query_name,
-      :product => nil, 
+      :product => "My Test Product", 
       :flag => nil,
       :bug_status => nil,
       :output_format => nil)
-    4.times { @local_query.run(@local_query) }
+    1.times { @local_query.run(@local_query) }
   end
 
   # Run after each tests to reset any faked BzCommand constants.
   after :each do
     silence_warnings do
-      BzCommand::BZ_CMD = @saved_bz_cmd
-      BzCommand::BZ_COOKIES_FILE = @saved_bz_cookies_file
+      BzCommand::CMD = @saved_bz_cmd
+      BzCommand::COOKIES_FILE = @saved_bz_cookies_file
     end
     @local_query.destroy
     @file.close
@@ -68,7 +68,8 @@ describe QueryMixin do
     it "with valid report_table query_id and query_name params" do
       report_table.query_id = get_latest_bz_query(@test_query_name)
       report_table.query_name = @test_query_name
-      get_query_output(report_table).should ==  "query\n"
+      get_query_output(report_table).should ==
+        "query --product=My Test Product\n"
     end
   end
 
@@ -78,8 +79,10 @@ describe QueryMixin do
     end
 
     it "with a valid element name" do
-      valid_query_id = BzQuery.find_by_name(@test_query_name).bz_query_outputs.pluck(:id)[0]
-      get_query_element("output", valid_query_id).should == "query\n"
+      valid_query_id =
+        BzQuery.find_by_name(@test_query_name).bz_query_outputs.pluck(:id)[0]
+      get_query_element("output", valid_query_id).should ==
+        "query --product=My Test Product\n"
     end
   end
 

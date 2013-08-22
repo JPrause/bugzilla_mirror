@@ -8,81 +8,128 @@ class TempCredFile < Tempfile
     f.puts(":bugzilla_credentials:")
     f.puts("  :username: My Username")
     f.puts("  :password: My Password")
+    f.puts(":bugzilla_options:")
+    f.puts("  :bugzilla_uri: MyURI")
+    f.puts("  :debug: MyDebug")
     f.close
   end
 end
       
 describe BzCommand do
-  saved_bz_cmd = BzCommand::BZ_CMD
-  saved_bz_cookies_file = BzCommand::BZ_COOKIES_FILE
-  saved_bz_creds_file = BzCommand::BZ_CREDS_FILE
+  saved_cmd = BzCommand::CMD
+  saved_cookies_file = BzCommand::COOKIES_FILE
+  saved_creds_file = BzCommand::CREDS_FILE
 
   # Run after each tests to reset any faked BzCommand constants.
   after :each do
     silence_warnings do
-      BzCommand::BZ_CMD = saved_bz_cmd
-      BzCommand::BZ_COOKIES_FILE = saved_bz_cookies_file
-      BzCommand::BZ_CREDS_FILE = saved_bz_creds_file
+      BzCommand::CMD = saved_cmd
+      BzCommand::COOKIES_FILE = saved_cookies_file
+      BzCommand::CREDS_FILE = saved_creds_file
     end
   end
 
-  context "#bz_logged_in?" do
+  context "#logged_in?" do
     it "with an existing bugzilla cookie" do
-      Tempfile.new('cfme_bz_spec') do |file| 
+      file = Tempfile.new('cfme_bz_spec')
+      begin
         silence_warnings do
-          BzCommand::BZ_COOKIES_FILE = file.path
+          BzCommand::COOKIES_FILE = file.path
         end
-        BzCommand.bz_logged_in?.should be true
+        BzCommand.logged_in?.should be true
+      ensure
+        file.unlink unless file.nil?
       end
     end
 
     it "with no bugzilla cookie" do
       silence_warnings do
-        BzCommand::BZ_COOKIES_FILE = '/This/file/does/not/exist'
+        BzCommand::COOKIES_FILE = '/This/file/does/not/exist'
       end
-      BzCommand.bz_logged_in?.should be false
+      BzCommand.logged_in?.should be false
     end
   end
 
-  context "#bz_login!" do
+  context "#login!" do
+
     it "when the bugzilla command is not found" do
       silence_warnings do
-        BzCommand::BZ_CMD = '/This/cmd/does/not/exist'
+        BzCommand::CMD = '/This/cmd/does/not/exist'
       end
-      expect{BzCommand.bz_login!}.to raise_exception
+      expect{BzCommand.login!}.to raise_exception
     end
 
-    it "when the bugzilla command produces output" do
+    it "when the bugzilla login command produces output" do
       # Fake the command, cookies file and credentials file.
-      TempCredFile.new('cfme_bz_spec') do |file| 
+      file = TempCredFile.new('cfme_bz_spec')
+      begin
         silence_warnings do
-          BzCommand::BZ_CREDS_FILE = file.path
-          BzCommand::BZ_CMD = '/bin/echo'
-          BzCommand::BZ_COOKIES_FILE = '/This/file/does/not/exist'
+          BzCommand::CREDS_FILE = file.path
+          BzCommand::CMD = '/bin/echo'
+          BzCommand::COOKIES_FILE = '/This/file/does/not/exist'
         end
-        BzCommand.bz_login!.should == "login My Username My Password"
+        cmd, output = BzCommand.login!
+        output.should include("login My Username My Password")
+      ensure
+        file.unlink unless file.nil?
       end
     end
+
   end
 
-  context "#bz_get_credentials" do
+  context "#query" do
+
     it "when the bugzilla command is not found" do
       silence_warnings do
-        BzCommand::BZ_CREDS_FILE = '/This/cmd/does/not/exist'
+        BzCommand::CMD = '/This/cmd/does/not/exist'
       end
-      expect{BzCommand.bz_get_credentials}.to raise_exception
+      expect{BzCommand.query}.to raise_exception
+    end
+
+    it "when no product is specified" do
+      silence_warnings do
+        BzCommand::CMD = '/bin/echo'
+      end
+      expect{BzCommand.query}.to raise_exception
+    end
+
+    it "when the bugzilla query command produces output" do
+      # Fake the command, cookies file and credentials file.
+      file = TempCredFile.new('cfme_bz_spec')
+      begin
+        silence_warnings do
+          BzCommand::CMD = '/bin/echo'
+        end
+        cmd, output = BzCommand.query("MyProduct")
+        file.unlink unless file.nil?
+        output.should include("query --product=MyProduct")
+      ensure
+        file.unlink unless file.nil?
+      end
+    end
+
+  end
+
+  context "#credentials" do
+    it "when the bugzilla command is not found" do
+      silence_warnings do
+        BzCommand::CREDS_FILE = '/This/cmd/does/not/exist'
+      end
+      expect{BzCommand.credentials}.to raise_exception
     end
 
     it "when the YAML input is invalid" do
       # Fake the credentials YAML file.
-
-      TempCredFile.new('cfme_bz_spec') do |file|
+      file = TempCredFile.new('cfme_bz_spec')
+      begin
         silence_warnings do
-          BzCommand::BZ_CREDS_FILE = file.path
+          BzCommand::CREDS_FILE = file.path
         end
-        un, pw = BzCommand.bz_get_credentials
+        un, pw = BzCommand.credentials
         un.should == "My Username"
         pw.should == "My Password"
+      ensure
+        file.unlink unless file.nil?
       end
     end
   end
