@@ -28,13 +28,13 @@ describe QueryMixin do
       BzCommand::CMD = '/bin/echo'
     end
     @local_query = BzQuery.create(
-      :description => "Test Query",
-      :name => @test_query_name,
-      :product => "My Test Product", 
-      :flag => nil,
-      :bug_status => nil,
+      :description   => "Test Query",
+      :name          => @test_query_name,
+      :product       => "My Test Product", 
+      :flag          => nil,
+      :bug_status    => nil,
       :output_format => nil)
-    1.times { @local_query.run(@local_query) }
+    1.times { @local_query.run }
   end
 
   # Run after each tests to reset any faked BzCommand constants.

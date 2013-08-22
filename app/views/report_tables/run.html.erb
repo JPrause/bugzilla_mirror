@@ -44,13 +44,15 @@
       <th>Totals</th>
     </tr>
 
-    <% @report_table_result.keys.each do |kv| %> <% @report_table_result[kv].keys.each do |kh| %>
-    <tr>
-      <td><%= kh %></td>
-      <td><%= kv %></td>
-      <td><%= @report_table_result[kv][kh] %></td>
-    </tr>
-    <% end %> <% end %>
+    <% @report_table_result.each do |vertical_name, horizontals| %>
+      <% horizontals.each do |horizontal_name, value| %>
+        <tr>
+          <td><%= horizontal_name %></td>
+          <td><%= vertical_name %></td>
+          <td><%= value %></td>
+        </tr>
+      <% end %>
+    <% end %>
 
     </tbody>
   </table>

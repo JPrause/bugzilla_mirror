@@ -3,11 +3,11 @@ require 'spec_helper'
 describe "report_tables/show" do
   before(:each) do
     @report_table = assign(:report_table, stub_model(ReportTable,
-      :name => "Name",
+      :name        => "Name",
       :description => "MyText",
-      :query_name => "MyText",
-      :vertical => "vertical",
-      :horizontal => "horizontal"
+      :query_name  => "MyText",
+      :vertical    => "vertical",
+      :horizontal  => "horizontal"
     ))
   end
 

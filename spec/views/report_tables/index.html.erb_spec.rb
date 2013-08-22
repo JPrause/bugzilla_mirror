@@ -4,18 +4,18 @@ describe "report_tables/index" do
   before(:each) do
     assign(:report_tables, [
       stub_model(ReportTable,
-        :name => "Name",
+        :name        => "Name",
         :description => "MyText",
-        :query_name => "MyText",
-        :vertical => "vertical",
-        :horizontal => "horizontal"
+        :query_name  => "MyText",
+        :vertical    => "vertical",
+        :horizontal  => "horizontal"
       ),
       stub_model(ReportTable,
-        :name => "Name",
+        :name        => "Name",
         :description => "MyText",
-        :query_name => "MyText",
-        :vertical => "vertical",
-        :horizontal => "horizontal"
+        :query_name  => "MyText",
+        :vertical    => "vertical",
+        :horizontal  => "horizontal"
       )
     ])
   end

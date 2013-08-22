@@ -36,13 +36,13 @@ describe ReportTablesHelper do
       BzCommand::CMD = '/bin/echo'
     end
     @local_query = BzQuery.create(
-      :description => "Test Query",
-      :name => @test_query_name,
-      :product => "cfme_test_product", 
-      :flag => nil,
-      :bug_status => nil,
+      :description   => "Test Query",
+      :name          => @test_query_name,
+      :product       => "cfme_test_product", 
+      :flag          => nil,
+      :bug_status    => nil,
       :output_format => nil)
-    4.times { @local_query.run(@local_query) }
+    4.times { @local_query.run }
   end
 
   # Run after each tests to reset any faked BzCommand constants.

@@ -19,13 +19,13 @@ describe BzQuery do
           BzCommand::COOKIES_FILE = file.path
         end
         query = BzQuery.create(
-          :name => 'query name',
-          :description => 'query description',
-          :product => 'query product',
-          :flag => 'query flag',
-          :bug_status => 'query bug status',
+          :name          => 'query name',
+          :description   => 'query description',
+          :product       => 'query product',
+          :flag          => 'query flag',
+          :bug_status    => 'query bug status',
           :output_format => 'query output format')
-        query.run(query).should be_empty
+        query.run.should be_empty
       ensure
         file.unlink unless file.nil?
       end

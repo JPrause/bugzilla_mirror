@@ -4,12 +4,12 @@ class BzQuery < ActiveRecord::Base
 
   has_many :bz_query_outputs, :dependent => :destroy
 
-  def run(bz_query)
+  def run
 
     BzCommand.login!
 
-    cmd, output = BzCommand.query(bz_query.product, bz_query.flag,
-      bz_query.bug_status, bz_query.output_format)
+    cmd, output = BzCommand.query(self.product, self.flag,
+      self.bug_status, self.output_format)
 
     # create a new bz_query_outputs entry in the db and save this output there.
     bz_query_outputs.create(:output => output)

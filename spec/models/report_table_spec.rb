@@ -60,51 +60,53 @@ describe ReportTable do
     end
 
     it "with multiple keys in params" do
-      source_table = {"MODIFIED"=>{"4.0.1"=>0,
-                                   "5.0.0"=>0,
-                                   "5.0.1"=>0,
-                                   "5.1.0"=>0,
-                                   "5.2.0"=>0,
-                                   "unspecified"=>0},
-                      "POST"=>{"4.0.1"=>0,
-                                   "5.0.0"=>0,
-                                   "5.0.1"=>0,
-                                   "5.1.0"=>0,
-                                   "5.2.0"=>0,
-                                   "unspecified"=>0}}
+      source_table = {"MODIFIED" => {"4.0.1"       => 0,
+                                     "5.0.0"       => 0,
+                                     "5.0.1"       => 0,
+                                     "5.1.0"       => 0,
+                                     "5.2.0"       => 0,
+                                     "unspecified" => 0},
+                      "POST"     => {"4.0.1"       => 0,
+                                     "5.0.0"       => 0,
+                                     "5.0.1"       => 0,
+                                     "5.1.0"       => 0,
+                                     "5.2.0"       => 0,
+                                     "unspecified" => 0}}
 
-      result_table = {"MODIFIED"=>{"4.0.1"=>1,
-                                   "5.0.0"=>2,
-                                   "5.0.1"=>1,
-                                   "5.1.0"=>0,
-                                   "5.2.0"=>4,
-                                   "unspecified"=>1},
-                      "POST"=>{"4.0.1"=>5,
-                                   "5.0.0"=>9,
-                                   "5.0.1"=>2,
-                                   "5.1.0"=>4,
-                                   "5.2.0"=>5,
-                                   "unspecified"=>4}}
+      result_table = {"MODIFIED" => {"4.0.1"       => 1,
+                                     "5.0.0"       => 2,
+                                     "5.0.1"       => 1,
+                                     "5.1.0"       => 0,
+                                     "5.2.0"       => 4,
+                                    "unspecified"  => 1},
+                      "POST"     => {"4.0.1"       => 5,
+                                     "5.0.0"       => 9,
+                                     "5.0.1"       => 2,
+                                     "5.1.0"       => 4,
+                                     "5.2.0"       => 5,
+                                     "unspecified" => 4}}
 
-      @report_test.test_set_table_bz_count!(source_table, TEST_DATA, "BUG_STATUS", "VERSION").should == result_table 
+      @report_test.test_set_table_bz_count!(source_table, TEST_DATA,
+        "BUG_STATUS", "VERSION").should == result_table 
     end
 
     it "with a single key in params" do
-      source_table = {"MODIFIED"=>{"4.0.1"=>0,
-                                   "5.0.0"=>0,
-                                   "5.0.1"=>0,
-                                   "5.1.0"=>0,
-                                   "5.2.0"=>0,
-                                   "unspecified"=>0}}
+      source_table = {"MODIFIED" =>  {"4.0.1"       => 0,
+                                      "5.0.0"       => 0,
+                                      "5.0.1"       => 0,
+                                      "5.1.0"       => 0,
+                                      "5.2.0"       => 0,
+                                      "unspecified" => 0}}
 
-      result_table = {"MODIFIED"=>{"4.0.1"=>1,
-                                   "5.0.0"=>2,
-                                   "5.0.1"=>1,
-                                   "5.1.0"=>0,
-                                   "5.2.0"=>4,
-                                   "unspecified"=>1}}
+      result_table = {"MODIFIED" =>  {"4.0.1"       => 1,
+                                      "5.0.0"       => 2,
+                                      "5.0.1"       => 1,
+                                      "5.1.0"       => 0,
+                                      "5.2.0"       => 4,
+                                      "unspecified" => 1}}
 
-      @report_test.test_set_table_bz_count!(source_table, TEST_DATA, "BUG_STATUS", "VERSION").should == result_table 
+      @report_test.test_set_table_bz_count!(source_table, TEST_DATA,
+        "BUG_STATUS", "VERSION").should == result_table 
     end
 
   end

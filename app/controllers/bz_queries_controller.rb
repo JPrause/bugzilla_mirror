@@ -51,7 +51,7 @@ class BzQueriesController < ApplicationController
         format.json { render json: @bz_query.errors, status: :unprocessable_entity }
       end
     end
-    @bz_query_result = @bz_query.run( @bz_query )
+    @bz_query_result = @bz_query.run
   end
 
   # PUT /bz_queries/1
@@ -86,7 +86,7 @@ class BzQueriesController < ApplicationController
   # RUN  /bz_queries/1.json
   def run
     @bz_query = BzQuery.find(params[:id])
-    @bz_query_result = @bz_query.run( @bz_query )
+    @bz_query_result = @bz_query.run
 
     respond_to do |format|
       format.html
