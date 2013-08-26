@@ -1,0 +1,65 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @errata_report.name %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @errata_report.description %>
+</p>
+
+<p>
+  <b>Query:</b>
+  <%= @errata_report.query_id %>
+</p>
+
+<p>
+  <b>Query name:</b>
+  <%= @errata_report.query_name %>
+</p>
+
+<p>
+  <b>Query occurance:</b>
+  <%= @errata_report.query_occurance %>
+</p>
+
+<p>
+  <b>Version:</b>
+  <%= @errata_report.version %>
+</p>
+
+<p>
+  <b>Email addr pm ack:</b>
+  <%= @errata_report.email_addr_pm_ack %>
+</p>
+
+<p>
+  <b>Email addr devel ack:</b>
+  <%= @errata_report.email_addr_devel_ack %>
+</p>
+
+<p>
+  <b>Email addr qa ack:</b>
+  <%= @errata_report.email_addr_qa_ack %>
+</p>
+
+<p>
+  <b>Send email pm ack:</b>
+  <%= @errata_report.send_email_pm_ack %>
+</p>
+
+<p>
+  <b>Send email devel ack:</b>
+  <%= @errata_report.send_email_devel_ack %>
+</p>
+
+<p>
+  <b>Send email qa ack:</b>
+  <%= @errata_report.send_email_qa_ack %>
+</p>
+
+
+<%= link_to 'Edit', edit_errata_report_path(@errata_report) %> |
+<%= link_to 'Back', errata_reports_path %>

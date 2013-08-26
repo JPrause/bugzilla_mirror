@@ -8,13 +8,22 @@
 # encoding: utf-8
 BzQuery.delete_all
 q = BzQuery.create(
+  name: 'ReadyErrata',
+  description: 'List bugs in POST to verify triple ack.',
+  product: 'CloudForms Management Engine',
+  flag: 'cfme-5.2',
+  bug_status: 'POST',
+  output_format: 'BZ_ID: %{id} BUG_STATUS: %{bug_status} VERSION: %{version} FLAGS: %{flags} KEYWORDS: %{keywords}')
+q.run
+# . . .
+q = BzQuery.create(
   name: 'Errata_Ready_cfme-5.2',
   description: 'List bugs in POST for 5.2 to verify triple ack.',
   product: 'CloudForms Management Engine',
   flag: 'cfme-5.2',
   bug_status: 'POST',
   output_format: 'BZ_ID: %{id} BUG_STATUS: %{bug_status} VERSION: %{version} FLAGS: %{flags} KEYWORDS: %{keywords}')
-q.run(q)
+q.run
 # . . .
 q = BzQuery.create(
   name: 'Errata_Ready_cfme-5.1.z',
@@ -23,7 +32,7 @@ q = BzQuery.create(
   flag: 'cfme-5.1.z',
   bug_status: 'POST',
   output_format: 'BZ_ID: %{id} BUG_STATUS: %{bug_status} VERSION: %{version} FLAGS: %{flags} KEYWORDS: %{keywords}')
-q.run(q)
+q.run
 # . . .
 q = BzQuery.create(
   name: 'Errata_Ready_cfme-5.0.z',
@@ -32,7 +41,7 @@ q = BzQuery.create(
   flag: 'cfme-5.0.z',
   bug_status: 'POST',
   output_format: 'BZ_ID: %{id} BUG_STATUS: %{bug_status} VERSION: %{version} FLAGS: %{flags} KEYWORDS: %{keywords}')
-q.run(q)
+q.run
 # . . .
 q = BzQuery.create(
   name: 'Errata_Ready_cfme-4.0.z',
@@ -41,7 +50,7 @@ q = BzQuery.create(
   flag: 'cfme-4.0.z',
   bug_status: 'POST',
   output_format: 'BZ_ID: %{id} BUG_STATUS: %{bug_status} VERSION: %{version} FLAGS: %{flags} KEYWORDS: %{keywords}')
-q.run(q)
+q.run
 # . . .
 q = BzQuery.create(
   name: 'Query1',
@@ -50,7 +59,7 @@ q = BzQuery.create(
   flag: '',
   bug_status: 'POST',
   output_format: 'BZ_ID: %{id} BUG_STATUS: %{bug_status} VERSION: %{version} FLAGS: %{flags} KEYWORDS: %{keywords}')
-q.run(q)
+q.run
 # . . .
 q = BzQuery.create(
   name: 'Query3',
@@ -59,7 +68,7 @@ q = BzQuery.create(
   flag: 'cfme-5.2',
   bug_status: 'MODIFIED',
   output_format: 'BZ_ID: %{id} BUG_STATUS: %{bug_status} VERSION: %{version} FLAGS: %{flags} KEYWORDS: %{keywords}')
-q.run(q)
+q.run
 # ...
 q = BzQuery.create(
   name: 'Query4',
@@ -68,7 +77,7 @@ q = BzQuery.create(
   flag: 'cfme-5.2',
   bug_status: 'MODIFIED,POST',
   output_format: 'BZ_ID: %{id} BUG_STATUS: %{bug_status} VERSION: %{version} FLAGS: %{flags} KEYWORDS: %{keywords}')
-q.run(q)
+q.run
 # ...
 q = BzQuery.create(
   name: 'Query5',
@@ -76,7 +85,7 @@ q = BzQuery.create(
   product: 'CloudForms Management Engine',
   bug_status: 'MODIFIED,POST',
   output_format: 'BZ_ID: %{id} BUG_STATUS: %{bug_status} VERSION: %{version} FLAGS: %{flags} KEYWORDS: %{keywords}')
-q.run(q)
+q.run
 # ...
 q = BzQuery.create(
   name: 'Query6',
@@ -84,7 +93,7 @@ q = BzQuery.create(
   product: 'CloudForms Management Engine',
   bug_status: 'MODIFIED,POST',
   output_format: 'BZ_ID: %{id} BUG_STATUS: %{bug_status} VERSION: %{version} FLAGS: %{flags} KEYWORDS: %{keywords}')
-q.run(q)
+q.run
 # ...
 q = BzQuery.create(
   name: 'Query7',
@@ -92,7 +101,7 @@ q = BzQuery.create(
   product: 'CloudForms Management Engine',
   bug_status: 'MODIFIED,POST',
   output_format: 'BZ_ID: %{id} BUG_STATUS: %{bug_status} VERSION: %{version}')
-q.run(q)
+q.run
 # ...
 ReportTable.delete_all
 ReportTable.create(

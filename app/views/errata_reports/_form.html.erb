@@ -1,0 +1,65 @@
+<%= form_for(@errata_report) do |f| %>
+  <% if @errata_report.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@errata_report.errors.count, "error") %> prohibited this errata_report from being saved:</h2>
+
+      <ul>
+      <% @errata_report.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br />
+    <%= f.text_area :description %>
+  </div>
+  <div class="field">
+    <%= f.label :query_id %><br />
+    <%= f.text_field :query_id %>
+  </div>
+  <div class="field">
+    <%= f.label :query_name %><br />
+    <%= f.text_field :query_name %>
+  </div>
+  <div class="field">
+    <%= f.label :query_occurance %><br />
+    <%= f.text_field :query_occurance %>
+  </div>
+  <div class="field">
+    <%= f.label :version %><br />
+    <%= f.text_field :version %>
+  </div>
+  <div class="field">
+    <%= f.label :email_addr_pm_ack %><br />
+    <%= f.text_field :email_addr_pm_ack %>
+  </div>
+  <div class="field">
+    <%= f.label :email_addr_devel_ack %><br />
+    <%= f.text_field :email_addr_devel_ack %>
+  </div>
+  <div class="field">
+    <%= f.label :email_addr_qa_ack %><br />
+    <%= f.text_field :email_addr_qa_ack %>
+  </div>
+  <div class="field">
+    <%= f.label :send_email_pm_ack %><br />
+    <%= f.check_box :send_email_pm_ack %>
+  </div>
+  <div class="field">
+    <%= f.label :send_email_devel_ack %><br />
+    <%= f.check_box :send_email_devel_ack %>
+  </div>
+  <div class="field">
+    <%= f.label :send_email_qa_ack %><br />
+    <%= f.check_box :send_email_qa_ack %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

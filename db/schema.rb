@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130807201454) do
+ActiveRecord::Schema.define(:version => 20130826150731) do
 
   create_table "bz_queries", :force => true do |t|
     t.string   "name"
@@ -37,6 +37,46 @@ ActiveRecord::Schema.define(:version => 20130807201454) do
   end
 
   add_index "bz_query_outputs", ["bz_query_id"], :name => "index_bz_query_outputs_on_bz_query_id"
+
+  create_table "errata_reports", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.string   "query_id"
+    t.string   "query_name"
+    t.string   "query_occurance"
+    t.string   "version"
+    t.string   "email_addr_pm_ack"
+    t.string   "email_addr_devel_ack"
+    t.string   "email_addr_qa_ack"
+    t.boolean  "send_email_pm_ack"
+    t.boolean  "send_email_devel_ack"
+    t.boolean  "send_email_qa_ack"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
+
+  create_table "report_ready_errata", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.string   "query_id"
+    t.string   "query_name"
+    t.string   "query_occurance"
+    t.string   "flag_cfme_version"
+    t.string   "flag_needinfo"
+    t.string   "flag_requires_doc_text"
+    t.string   "flag_blocker"
+    t.string   "flag_pm_ack"
+    t.string   "flag_devel_ack"
+    t.string   "flag_qa_ack"
+    t.string   "email_addr_pm_ack"
+    t.string   "email_addr_devel_ack"
+    t.string   "email_addr_qa_ack"
+    t.boolean  "send_email_pm_ack"
+    t.boolean  "send_email_devel_ack"
+    t.boolean  "send_email_qa_ack"
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
+  end
 
   create_table "report_tables", :force => true do |t|
     t.string   "name"
