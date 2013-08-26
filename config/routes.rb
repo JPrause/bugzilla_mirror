@@ -1,6 +1,9 @@
 CfmeBz::Application.routes.draw do
-  resources :errata_reports
-
+  resources :errata_reports do
+    member do
+      get 'run'
+    end
+  end
 
   resources :report_tables do
     member do

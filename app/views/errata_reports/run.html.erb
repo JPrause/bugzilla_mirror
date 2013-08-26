@@ -1,0 +1,81 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Report Name:</b>
+  <%= @errata_report.name %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @errata_report.description %>
+</p>
+
+<p>
+  <b>BzQuery Name:</b>
+  <%= @errata_report.version %>
+</p>
+
+<p>
+  <b>BzQuery ID:</b>
+  <%= @errata_report.query_id %>
+</p>
+
+<p>
+  <b>BzQuery Name:</b>
+  <%= @errata_report.query_name %>
+</p>
+
+<p>
+  <b>BzQuery Occurrence Time:</b>
+  <%= BzQueryOutput.find_by_id(@errata_report.query_id).updated_at %>
+</p>
+
+<p>
+  <b>Email Address Devel:</b>
+  <%= @errata_report.email_addr_devel_ack %>
+</p>
+
+<p>
+  <b>Email Address PM:</b>
+  <%= @errata_report.email_addr_pm_ack %>
+</p>
+
+<p>
+  <b>Email Address QA:</b>
+  <%= @errata_report.email_addr_qa_ack %>
+</p>
+
+<p>
+  <b>Send Email To Devel:</b>
+  <%= @errata_report.send_email_devel_ack %>
+</p>
+
+<p>
+  <b>Send Email To PM:</b>
+  <%= @errata_report.send_email_pm_ack %>
+</p>
+
+<p>
+  <b>Send Email To QA:</b>
+  <%= @errata_report.send_email_qa_ack %>
+</p>
+
+
+<p>
+  <table>
+    <b>Run Errata Report Result:</b>
+    <% @errata_report_result.split(/\r?\n/).each do |output| %>
+    <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+
+      <td class="list_description">
+        <dl>
+          <dt><%= simple_format(output) %></dt>
+        </dl>
+      </td>
+    </tr>
+  <% end %>
+  </table>
+</p>
+
+
+<%= link_to 'Back', errata_reports_path %>

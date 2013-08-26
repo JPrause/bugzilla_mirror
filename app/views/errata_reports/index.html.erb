@@ -1,41 +1,33 @@
-<h1>Listing errata_reports</h1>
+<h1>Listing Errata Reports</h1>
 
 <table>
-  <tr>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Query</th>
-    <th>Query name</th>
-    <th>Query occurance</th>
-    <th>Version</th>
-    <th>Email addr pm ack</th>
-    <th>Email addr devel ack</th>
-    <th>Email addr qa ack</th>
-    <th>Send email pm ack</th>
-    <th>Send email devel ack</th>
-    <th>Send email qa ack</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
 
 <% @errata_reports.each do |errata_report| %>
-  <tr>
-    <td><%= errata_report.name %></td>
-    <td><%= errata_report.description %></td>
-    <td><%= errata_report.query_id %></td>
-    <td><%= errata_report.query_name %></td>
-    <td><%= errata_report.query_occurance %></td>
-    <td><%= errata_report.version %></td>
-    <td><%= errata_report.email_addr_pm_ack %></td>
-    <td><%= errata_report.email_addr_devel_ack %></td>
-    <td><%= errata_report.email_addr_qa_ack %></td>
-    <td><%= errata_report.send_email_pm_ack %></td>
-    <td><%= errata_report.send_email_devel_ack %></td>
-    <td><%= errata_report.send_email_qa_ack %></td>
-    <td><%= link_to 'Show', errata_report %></td>
-    <td><%= link_to 'Edit', edit_errata_report_path(errata_report) %></td>
-    <td><%= link_to 'Destroy', errata_report, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+
+    <td class="list_description">   
+      <dl>
+        <dt>Name: <%= errata_report.name %></dt>
+        <dt>Description: <%= errata_report.description %></dt>
+        <dt>Query:  <%= errata_report.query_id %></dt>
+        <dt>Query name:  <%= errata_report.query_name %></dt>
+        <dt>Query occurance:  <%= errata_report.query_occurance %></dt>
+        <dt>Version:  <%= errata_report.version %></dt>
+        <dt>Email addr pm ack:  <%= errata_report.email_addr_pm_ack %></dt>
+        <dt>Email addr devel ack:  <%= errata_report.email_addr_devel_ack %></dt>
+        <dt>Email addr qa ack:  <%= errata_report.email_addr_qa_ack %></dt>
+        <dt>Send email pm ack:  <%= errata_report.send_email_pm_ack %></dt>
+        <dt>Send email devel ack:  <%= errata_report.send_email_devel_ack %></dt>
+        <dt>Send email qa ack:  <%= errata_report.send_email_qa_ack %></dt>
+      </dl>
+    </td>
+
+    <td class="list_actions">
+      <%= link_to 'Show', errata_report %><br/>
+      <%= link_to 'Edit', edit_errata_report_path(errata_report) %><br/>
+      <%= link_to 'Run', run_errata_report_path(errata_report) %><br/>
+      <%= link_to 'Destroy', errata_report, method: :delete, data: { confirm: 'Are you sure?' } %>
+    </td>
   </tr>
 <% end %>
 </table>

@@ -80,4 +80,17 @@ class ErrataReportsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  # RUN  /errata_reports/1
+  # RUN  /errata_reports/1.json
+  def run
+    @errata_report = ErrataReport.find(params[:id])
+    @errata_report_result = @errata_report.run
+
+    respond_to do |format|
+      format.html
+      format.json { head :no_content }
+    end
+  end
+
 end
