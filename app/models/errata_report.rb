@@ -15,7 +15,7 @@ class ErrataReport < ActiveRecord::Base
 
     logger.debug "query_id  ->#{self.query_id}<-"                             
     logger.debug "query_name  ->#{self.query_name}<-"                         
-    logger.debug "query_occurrence  ->#{self.query_occurrence  }<-"             
+    logger.debug "query_occurrence  ->#{self.query_occurrence}<-"             
 
     logger.debug "email_addr_devel_ack  ->#{self.email_addr_devel_ack}<-"
     logger.debug "email_addr_pm_ack  ->#{self.email_addr_pm_ack}<-"           
