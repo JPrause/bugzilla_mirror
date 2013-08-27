@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130826150731) do
+ActiveRecord::Schema.define(:version => 20130827172800) do
 
   create_table "bz_queries", :force => true do |t|
     t.string   "name"
@@ -41,9 +41,9 @@ ActiveRecord::Schema.define(:version => 20130826150731) do
   create_table "errata_reports", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.string   "query_id"
+    t.integer  "query_id",             :limit => 255
     t.string   "query_name"
-    t.string   "query_occurance"
+    t.string   "query_occurrence"
     t.string   "version"
     t.string   "email_addr_pm_ack"
     t.string   "email_addr_devel_ack"
@@ -51,8 +51,8 @@ ActiveRecord::Schema.define(:version => 20130826150731) do
     t.boolean  "send_email_pm_ack"
     t.boolean  "send_email_devel_ack"
     t.boolean  "send_email_qa_ack"
-    t.datetime "created_at",           :null => false
-    t.datetime "updated_at",           :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
   end
 
   create_table "report_ready_errata", :force => true do |t|

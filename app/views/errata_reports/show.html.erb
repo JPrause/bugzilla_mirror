@@ -11,7 +11,7 @@
 </p>
 
 <p>
-  <b>Query:</b>
+  <b>Query Id:</b>
   <%= @errata_report.query_id %>
 </p>
 
@@ -21,8 +21,9 @@
 </p>
 
 <p>
-  <b>Query occurance:</b>
-  <%= @errata_report.query_occurance %>
+  <b>Query Occurrence:</b>
+  <%= @errata_report.query_occurrence %>
+  <%= get_bz_query_run_time(@errata_report.query_id) %>
 </p>
 
 <p>

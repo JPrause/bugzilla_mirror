@@ -5,9 +5,9 @@ describe "errata_reports/show" do
     @errata_report = assign(:errata_report, stub_model(ErrataReport,
       :name => "Name",
       :description => "MyText",
-      :query_id => "Query",
+      :query_id => "Query Id",
       :query_name => "Query Name",
-      :query_occurance => "Query Occurance",
+      :query_occurrence => "Query Occurrence",
       :version => "Version",
       :email_addr_pm_ack => "Email Addr Pm Ack",
       :email_addr_devel_ack => "Email Addr Devel Ack",
@@ -25,7 +25,7 @@ describe "errata_reports/show" do
     rendered.should match(/MyText/)
     rendered.should match(/Query/)
     rendered.should match(/Query Name/)
-    rendered.should match(/Query Occurance/)
+    rendered.should match(/Query Occurrence/)
     rendered.should match(/Version/)
     rendered.should match(/Email Addr Pm Ack/)
     rendered.should match(/Email Addr Devel Ack/)
