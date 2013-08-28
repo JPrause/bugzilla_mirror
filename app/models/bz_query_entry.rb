@@ -1,33 +1,22 @@
 class BzQueryEntry < ActiveRecord::Base
   before_create :bz_query_entry_create
   belongs_to :bz_query_output
-  attr_accessible :bz_id, :pm_ack, :devel_ack, :qa_ack, :doc_ack, :status
+  attr_accessible :bz_id, :pm_ack, :devel_ack, :qa_ack, :doc_ack, :status, :verion
 
   private
-  def get_token_values(str, token)
-    token_values = str.scan(/(?<=#{token}:\s)\S*/)
+  def bz_query_entry_create
 
-    # Because regexp lookahead and lookbehind must be a fixed length
-    # removing the occasionally occuring trailing ->'<- character must
-    # be done in a separate step.
-    token_values.each do |x|
-      x.sub!(/'$/, '')
-    end
+    logger.info "Called before_create bz_query_entry_create"
 
-    token_values
-  end
-
-  private
-  def bz_query_entry_create(line)
-
-    logger.info "Called before_create bz_query_entry_create(->#{line}<-)"
-
-    self.bz_id = get_token_values(line, "BZ_ID")
-    self.pm_ack = get_token_values(line, "FLAGS")
-    self.devel_ack = get_token_values(line, "FLAGS")
-    self.qa_ack = get_token_values(line, "FLAGS")
-    self.doc_ack = get_token_values(line, "FLAGS")
-    self.status = get_token_values(line, "BUG_STATUS")
+    puts ""
+    puts "JJV -011- * * * * * * * * ** * * * * * * * ** * * * * * * * * "
+    puts "JJV -011- bz_id     ->#{self.bz_id}<-"
+    puts "JJV -011- pm_ack    ->#{self.pm_ack}<-"
+    puts "JJV -011- devel_ack ->#{self.devel_ack}<-"
+    puts "JJV -011- qa_ack    ->#{self.qa_ack}<-"
+    puts "JJV -011- doc_ack   ->#{self.doc_ack}<-"
+    puts "JJV -011- status    ->#{self.status}<-"
+    puts "JJV -011- verion    ->#{self.verion}<-"
   end
 
 end
