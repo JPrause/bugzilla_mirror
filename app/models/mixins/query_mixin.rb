@@ -11,6 +11,13 @@ module QueryMixin
     BzQueryOutput.find_by_id(report.query_id).output
   end
     
+  def get_query_entries(report)
+    if report.query_id == 0
+       report.query_id = get_latest_bz_query(report.query_name)
+    end
+    BzQueryOutput.find_by_id(report.query_id).bz_query_entries
+  end
+    
   def get_query_element(element_name, query_id)
     BzQueryOutput.find_by_id(query_id).send(element_name.downcase)
   end

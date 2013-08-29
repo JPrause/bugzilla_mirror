@@ -66,16 +66,16 @@ class BzQueryOutput < ActiveRecord::Base
       devel_ack_str, devel_ack = get_from_flags(bz_line, /devel_ack/)
       qa_ack_str, qa_ack = get_from_flags(bz_line, /qa_ack/)
       doc_ack_str, doc_ack = get_from_flags(bz_line, /doc_ack/)
-      verion, version_value = get_from_flags(bz_line, VERSION_REGEX)
+      version_str, version_ack = get_from_flags(bz_line, VERSION_REGEX)
 
-      bz_query_entries.create(:bz_id     => bz_id,
-                              :pm_ack    => pm_ack,
-                              :devel_ack => devel_ack,
-                              :qa_ack    => qa_ack,
-                              :doc_ack   => doc_ack,
-                              :status    => status,
-                              :verion    => verion)
-
+      bz_query_entries.create(:bz_id         => bz_id,
+                              :pm_ack        => pm_ack,
+                              :devel_ack     => devel_ack,
+                              :qa_ack        => qa_ack,
+                              :doc_ack       => doc_ack,
+                              :status        => status,
+                              :version       => version_str,
+                              :version_ack   => version_ack)
     end
     
   end

@@ -9,6 +9,20 @@ class ErrataReport < ActiveRecord::Base
 
   def run
 
+    @needs_pm_ack = []
+    @needs_devel_ack = []
+    @needs_qa_ack = []
+    @needs_doc_ack = []
+    @needs_version_ack = []
+
+    @needs_acks = { :needs_pm_ack       => @needs_pm_ack,
+                    :needs_devel_ack    => @needs_devel_ack,
+                    :needs_qa_ack       => @needs_qa_ack,
+                    :needs_doc_ack      => @needs_doc_ack,
+                    :needs_version_ack  => @needs_version_ack }
+
+
+
     logger.debug "name  ->#{self.name}<-"
     logger.debug "description  ->#{self.description}<-"                   
     logger.debug "version  ->#{self.version}<-"
@@ -25,10 +39,22 @@ class ErrataReport < ActiveRecord::Base
     logger.debug "send_email_pm_ack  ->#{self.send_email_pm_ack}<-"
     logger.debug "send_email_qa_ack  ->#{self.send_email_qa_ack}<-"           
 
-    bz_query_out = get_query_output(self)
+    get_query_entries(self).each do |bz|
+      @needs_version_ack << bz.bz_id unless ack_not_needed? bz.version_ack
+      @needs_pm_ack << bz.bz_id unless ack_not_needed? bz.pm_ack
+      @needs_devel_ack << bz.bz_id unless ack_not_needed? bz.devel_ack
+      @needs_qa_ack << bz.bz_id unless ack_not_needed? bz.qa_ack
+      @needs_doc_ack << bz.bz_id unless ack_not_needed? bz.doc_ack
+      
+    end
 
-    bz_query_out
+    @needs_acks
 
+  end
+
+  private
+  def ack_not_needed?(ack)
+    ack == "+" || ack.upcase == "NONE"
   end
 
 end

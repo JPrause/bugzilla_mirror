@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130828171743) do
+ActiveRecord::Schema.define(:version => 20130829132449) do
 
   create_table "bz_queries", :force => true do |t|
     t.string   "name"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(:version => 20130828171743) do
   create_table "bz_query_entries", :force => true do |t|
     t.integer  "BzQueryOutput_id"
     t.string   "bz_id"
-    t.string   "verion"
+    t.string   "version"
     t.string   "pm_ack"
     t.string   "devel_ack"
     t.string   "qa_ack"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(:version => 20130828171743) do
     t.string   "status"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+    t.string   "version_ack"
   end
 
   add_index "bz_query_entries", ["BzQueryOutput_id"], :name => "index_bz_query_entries_on_BzQueryOutput_id"
