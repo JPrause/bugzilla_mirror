@@ -39,11 +39,8 @@ class ErrataReport < ActiveRecord::Base
       ack_code << (ack_not_needed?(bz.version_ack) ? "-" : "B")
       bz_entry = {:BZ_ID   => bz.bz_id,
                   :ACKS    => ack_code,
-                  :SUMMARY => "TDB"}
-=begin
-                  # JJV TBD Replace above line w/below.
                   :SUMMARY  => bz.summary}
-=end
+
       if ack_code == "-----"
         @bzs_have_acks << bz_entry
       else

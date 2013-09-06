@@ -27,14 +27,17 @@ class BzQueryOutput < ActiveRecord::Base
    
   end
 
+  # TODO Update all tokens to have token_END delimiter.
   private
   def get_token_values(str, token)
-    token_values = str.scan(/(?<=#{token}:\s)\S*/)
+    token_values = str.scan(/(?<=#{token}:\s).*(?<=#{token}_END)/)
+    token_values = str.scan(/(?<=#{token}:\s)\S*/) unless token_values != []
 
     # Because regexp lookahead and lookbehind must be a fixed length
     # removing the occasionally occuring trailing ->'<- character must
     # be done in a separate step.
     token_values.each do |x|
+      x.sub!("#{token}_END", "")
       x.sub!(/'$/, '')
     end
 
@@ -60,6 +63,7 @@ class BzQueryOutput < ActiveRecord::Base
       # create a new bz_query_entries object in the db for each
       # BZ (line) in the output.
       bz_id = get_token_values(bz_line, "BZ_ID").join
+      summary = get_token_values(bz_line, "SUMMARY").join
       status = get_token_values(bz_line, "BUG_STATUS").join
 
       pm_ack_str, pm_ack = get_from_flags(bz_line, /pm_ack/)
@@ -73,6 +77,7 @@ class BzQueryOutput < ActiveRecord::Base
                               :devel_ack     => devel_ack,
                               :qa_ack        => qa_ack,
                               :doc_ack       => doc_ack,
+                              :summary       => summary,
                               :status        => status,
                               :version       => version_str,
                               :version_ack   => version_ack)
