@@ -85,7 +85,7 @@ class ErrataReportsController < ApplicationController
   # RUN  /errata_reports/1.json
   def run
     @errata_report = ErrataReport.find(params[:id])
-    @errata_report_result = @errata_report.run
+    @errata_report_need_acks, @errata_report_have_acks = @errata_report.run
 
     respond_to do |format|
       format.html

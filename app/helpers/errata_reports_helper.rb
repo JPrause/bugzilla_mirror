@@ -1,7 +1,8 @@
 module ErrataReportsHelper
 
-  def title(key)
-    key.to_s.tr("_", " ").titleize
+  def get_bugzilla_uri
+    uri, _ = BzCommand.options
+    uri + "/show_bug.cgi?id="
   end
 
 end

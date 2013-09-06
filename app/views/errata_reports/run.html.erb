@@ -60,27 +60,46 @@
   <%= @errata_report.send_email_qa_ack %>
 </p>
 
-
 <p>
-  <b>Errata Report Result:</b>
+  <b>BZs That Need ACK(s):</b></br>
+  <u><i>Legend:</i></u></br>
+  <b>-</b> : Have ACK For This Column</br>
+  <b>P</b> : Needs ACK from <b><i>P</i></b>roduct Management</br>
+  <b>D</b> : Needs ACK from <b><i>D</i></b>evelopment</br>
+  <b>Q</b> : Needs ACK from <b><i>Q</i></b>uality Assurance</br>
+  <b>O</b> : Needs ACK from D<b><i>o</i></b>cumentation</br>
+  <b>B</b> : Needs ACK from Bugzilla <b><i>B</i></b>ot</br>
+  
   <table>
-
-    <% @errata_report_result.each do |key, array| %>
-      <% if array.any? %>
-        <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
-            <td>
-              <br/><b><%= title key %></b><br/>
-              <% array.each do |bz| %>
-                <a href="https://bugzilla.redhat.com/show_bug.cgi?id=<%= bz %>"><%= bz %></a> <br/>
-              <% end %>
-            </td>
-        </tr>
-      <% end %>
+    <% @errata_report_need_acks.each do |bz| %>
+      <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+        <td>
+        <a href="<%=get_bugzilla_uri%><%= bz[:BZ_ID] %>"><%= bz[:BZ_ID] %></a>
+        </td>
+        <td><%= bz[:ACKS] %></td>
+        <td><%= bz[:SUMMARY] %></td>
+      </tr>
     <% end %>
-
     </tbody>
   </table>
 
 </p>
+
+<p>
+  <b>BZs That Have All ACKs:</b>
+  <table>
+    <% @errata_report_have_acks.each do |bz| %>
+      <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+        <td>
+        <a href="<%=get_bugzilla_uri%><%= bz[:BZ_ID] %>"><%= bz[:BZ_ID] %></a>
+        </td>
+        <td><%= bz[:SUMMARY] %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+</p>
+
 
 <%= link_to 'Back', errata_reports_path %>

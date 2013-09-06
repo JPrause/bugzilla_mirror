@@ -9,19 +9,8 @@ class ErrataReport < ActiveRecord::Base
 
   def run
 
-    @needs_pm_ack = []
-    @needs_devel_ack = []
-    @needs_qa_ack = []
-    @needs_doc_ack = []
-    @needs_version_ack = []
-
-    @needs_acks = { :needs_pm_ack       => @needs_pm_ack,
-                    :needs_devel_ack    => @needs_devel_ack,
-                    :needs_qa_ack       => @needs_qa_ack,
-                    :needs_doc_ack      => @needs_doc_ack,
-                    :needs_version_ack  => @needs_version_ack }
-
-
+    @bzs_need_acks = []
+    @bzs_have_acks = []
 
     logger.debug "name  ->#{self.name}<-"
     logger.debug "description  ->#{self.description}<-"                   
@@ -40,15 +29,29 @@ class ErrataReport < ActiveRecord::Base
     logger.debug "send_email_qa_ack  ->#{self.send_email_qa_ack}<-"           
 
     get_query_entries(self).each do |bz|
-      @needs_version_ack << bz.bz_id unless ack_not_needed? bz.version_ack
-      @needs_pm_ack << bz.bz_id unless ack_not_needed? bz.pm_ack
-      @needs_devel_ack << bz.bz_id unless ack_not_needed? bz.devel_ack
-      @needs_qa_ack << bz.bz_id unless ack_not_needed? bz.qa_ack
-      @needs_doc_ack << bz.bz_id unless ack_not_needed? bz.doc_ack
-      
+      ack_code = ""
+
+      ack_code << (ack_not_needed?(bz.pm_ack) ? "-" : "P")
+      ack_code << (ack_not_needed?(bz.devel_ack) ? "-" : "D")
+      ack_code << (ack_not_needed?(bz.qa_ack) ? "-" : "Q")
+      ack_code << (ack_not_needed?(bz.doc_ack) ? "-" : "O")
+      # The version ack is set by the Bugzilla Bot so user "B".
+      ack_code << (ack_not_needed?(bz.version_ack) ? "-" : "B")
+      bz_entry = {:BZ_ID   => bz.bz_id,
+                  :ACKS    => ack_code,
+                  :SUMMARY => "TDB"}
+=begin
+                  # JJV TBD Replace above line w/below.
+                  :SUMMARY  => bz.summary}
+=end
+      if ack_code == "-----"
+        @bzs_have_acks << bz_entry
+      else
+        @bzs_need_acks << bz_entry
+      end
     end
 
-    @needs_acks
+    [@bzs_need_acks, @bzs_have_acks]
 
   end
 
