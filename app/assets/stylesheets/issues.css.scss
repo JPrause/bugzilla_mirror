@@ -1,9 +1,9 @@
-// Place all the styles related to the Products controller here.
+// Place all the styles related to the Issues controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 /* START_HIGHLIGHT */
-.errata_reports {
+.issues {
   table {
     border-collapse: collapse;
   }
@@ -15,7 +15,7 @@
 
   .list_description {
     width: 60%;
-
+  
     dl {
       margin: 0;
     }
@@ -44,13 +44,6 @@
   .list_line_odd {
     background:   #6ca9ba;
   }
-
-  .tag_line_even {
-    background:   #F2A7A7;
-  }
-
-  .tag_line_odd {
-    background:   #F2E277;
-  }
 }
 /* END_HIGHLIGHT */
+

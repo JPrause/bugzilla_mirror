@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130906191308) do
+ActiveRecord::Schema.define(:version => 20130913140339) do
 
   create_table "bz_queries", :force => true do |t|
     t.string   "name"
@@ -70,6 +70,20 @@ ActiveRecord::Schema.define(:version => 20130906191308) do
     t.boolean  "send_email_qa_ack"
     t.datetime "created_at",                          :null => false
     t.datetime "updated_at",                          :null => false
+  end
+
+  create_table "issues", :force => true do |t|
+    t.string   "bz_id"
+    t.string   "status"
+    t.string   "summary"
+    t.string   "version"
+    t.string   "version_ack"
+    t.string   "pm_ack"
+    t.string   "devel_ack"
+    t.string   "qa_ack"
+    t.string   "doc_ack"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "report_ready_errata", :force => true do |t|

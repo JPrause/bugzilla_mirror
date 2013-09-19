@@ -1,19 +1,14 @@
 CfmeBz::Application.routes.draw do
+
+  resources :issues do
+    collection do
+      get 'update_all'
+    end
+  end
+
   resources :errata_reports do
-    member do
-      get 'run'
-    end
-  end
-
-  resources :report_tables do
-    member do
-      get 'run'
-    end
-  end
-
-  resources :bz_queries do
-    member do
-      get 'run'
+    collection do
+      get 'index'
     end
   end
 

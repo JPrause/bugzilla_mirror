@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <table>
+    <b>Issue#update_all Result:</b>
+    <% @issue_update_all_result.split(/\r?\n/).each do |issue| %>
+    <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+
+      <td class="list_description">
+        <dl>
+          <dt><%= simple_format(issue) %></dt>
+        </dl>
+      </td>
+    </tr>
+  <% end %>
+  </table>
+</p> 
+
+
+<%= link_to 'Back', issues_path %>

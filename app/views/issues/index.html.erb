@@ -1,0 +1,37 @@
+<h1>Issue Table</h1>
+
+<p>
+  <b>Last Updated:</b>          
+  <%= @issues_updated_at %>    
+</p>
+
+<%= link_to 'Run The Errata Report', errata_reports_path %>
+<br />
+<br />
+<%= link_to 'Refresh DB From Bugzilla', update_all_issues_path %>
+<br />
+<%# To uncomment the below line change %# to %= %>
+<%# link_to 'Statistic Report', statstic_report_issues_path %>
+<br />
+<br />
+
+<table>
+  <tr>
+    <th>Bz</th>
+    <th>Status</th>
+    <th>Summary</th>
+  </tr>
+
+<% @issues.each do |issue| %>
+  <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+    <td>
+      <a href="<%=get_bugzilla_uri%><%= issue.bz_id %>"><%= issue.bz_id %></a>
+    </td>
+    <td><%= issue.status %></td>
+    <td><%= issue.summary %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+

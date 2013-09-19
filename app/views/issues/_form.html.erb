@@ -1,0 +1,53 @@
+<%= form_for(@issue) do |f| %>
+  <% if @issue.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@issue.errors.count, "error") %> prohibited this issue from being saved:</h2>
+
+      <ul>
+      <% @issue.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :bz_id %><br />
+    <%= f.text_field :bz_id %>
+  </div>
+  <div class="field">
+    <%= f.label :status %><br />
+    <%= f.text_field :status %>
+  </div>
+  <div class="field">
+    <%= f.label :summary %><br />
+    <%= f.text_field :summary %>
+  </div>
+  <div class="field">
+    <%= f.label :version %><br />
+    <%= f.text_field :version %>
+  </div>
+  <div class="field">
+    <%= f.label :version_ack %><br />
+    <%= f.text_field :version_ack %>
+  </div>
+  <div class="field">
+    <%= f.label :pm_ack %><br />
+    <%= f.text_field :pm_ack %>
+  </div>
+  <div class="field">
+    <%= f.label :devel_ack %><br />
+    <%= f.text_field :devel_ack %>
+  </div>
+  <div class="field">
+    <%= f.label :qa_ack %><br />
+    <%= f.text_field :qa_ack %>
+  </div>
+  <div class="field">
+    <%= f.label :doc_ack %><br />
+    <%= f.text_field :doc_ack %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
