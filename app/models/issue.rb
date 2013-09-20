@@ -41,28 +41,18 @@ class Issue < ActiveRecord::Base
 
     RubyBugzilla.login!
 
-    product="CloudForms Management Engine"
-    bug_status="ASSIGNED"
-    bug_status="NEW, ASSIGNED, POST, MODIFIED, ON_DEV, ON_QA, VERIFIED, RELEASE_PENDING"
-    flag=""
-    output_format='BZ_ID: %{id} BZ_ID_END ASSIGNED_TO: %{assigned_to} ASSIGNED_TO_END SUMMARY: %{summary} SUMMARY_END BUG_STATUS: %{bug_status} BUG_STATUS_END VERSION: %{version} VERSION_END FLAGS: %{flags} FLAGS_END KEYWORDS: %{keywords} KEYWORDS_END'
+    product = "CloudForms Management Engine"
+    bug_status = "NEW, ASSIGNED, POST, MODIFIED, ON_DEV, ON_QA, VERIFIED, RELEASE_PENDING"
+    flag = ""
+    output_format = 'BZ_ID: %{id} BZ_ID_END ASSIGNED_TO: %{assigned_to} ASSIGNED_TO_END '
+    output_format << 'SUMMARY: %{summary} SUMMARY_END '
+    output_format << 'BUG_STATUS: %{bug_status} BUG_STATUS_END '
+    output_format << 'VERSION: %{version} VERSION_END '
+    output_format << 'FLAGS: %{flags} FLAGS_END '
+    output_format << 'KEYWORDS: %{keywords} KEYWORDS_END'
 
     cmd, output = RubyBugzilla.query(product, flag, bug_status, output_format)
-
-=begin JJV 
-    puts "JJV -011- product ->#{product}<-"
-    puts "JJV -012- bug_status ->#{bug_status}<-"
-    puts "JJV -013- flag ->#{flag}<-"
-    puts "JJV -014- output_format ->#{output_format}<-"
-
-
-    puts "JJV -090- models/issue.rb update_all cmd ->#{cmd}<-"
-    puts "JJV -091- models/issue.rb update_all output ->#{output.count("\n")}<-"
-    puts "JJV -091- models/issue.rb update_all output ->#{output}<-"
-=end
-
     self.recreate_all_issues(output)
-
     output
 
   end
@@ -122,23 +112,6 @@ class Issue < ActiveRecord::Base
       qa_ack_str, qa_ack = self.get_from_flags(bz_line, /qa_ack/)
       doc_ack_str, doc_ack = self.get_from_flags(bz_line, /doc_ack/)
       version_str, version_ack = self.get_from_flags(bz_line, VERSION_REGEX)
-
-=begin JJV
-      puts "JJV -020- bz_id         ->#{bz_id}<="
-      puts "JJV -020- assigned_to   ->#{assigned_to}<="
-      puts "JJV -020- summary       ->#{summary}<="
-      puts "JJV -020- status        ->#{status}<="
-      puts "JJV -020- pm_ack_str    ->#{pm_ack_str}<="
-      puts "JJV -020- pm_ack        ->#{pm_ack}<="
-      puts "JJV -020- devel_ack_str ->#{devel_ack_str}<="
-      puts "JJV -020- devel_ack     ->#{devel_ack}<="
-      puts "JJV -020- qa_ack_str    ->#{qa_ack_str}<="
-      puts "JJV -020- qa_ack        ->#{qa_ack}<="
-      puts "JJV -020- doc_ack_str   ->#{doc_ack_str}<="
-      puts "JJV -020- doc_ack       ->#{doc_ack}<="
-      puts "JJV -020- version_str   ->#{version_str}<="
-      puts "JJV -020- version_ack   ->#{version_ack}<="
-=end
 
       self.create(:bz_id         => bz_id,
                   :assigned_to   => assigned_to,

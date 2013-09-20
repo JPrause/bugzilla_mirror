@@ -8,10 +8,10 @@
 Issue.delete_all
 Issue.create(
   bz_id: '1653',
-  status: 'jjv_status',
+  status: 'POST',
   assigned_to: 'calvin@hobbes.com',
-  summary: 'jjv summary Dragonfly',
-  version: 'jjv_version',
+  summary: 'summary Dragonfly',
+  version: '5.1',
   version_ack: '-',
   devel_ack: '-',
   doc_ack: '-',
@@ -20,14 +20,26 @@ Issue.create(
 )
 Issue.create(
   bz_id: '1906',
-  status: 'jjv_status',
+  status: 'MODIFIED',
   assigned_to: 'calvin@hobbes.com',
-  summary: 'jjv summary Swallow',
-  version: 'jjv_version',
+  summary: 'summary Swallow',
+  version: '',
   version_ack: '-',
   devel_ack: '+',
   doc_ack: '-',
   pm_ack: '+',
   qa_ack: '-'
+)
+Issue.create(
+  bz_id: '1822',
+  status: 'POST',
+  assigned_to: 'calvin@hobbes.com',
+  summary: 'summary Swallow',
+  version: '',
+  version_ack: '+',
+  devel_ack: '+',
+  doc_ack: '+',
+  pm_ack: '+',
+  qa_ack: '+'
 )
 

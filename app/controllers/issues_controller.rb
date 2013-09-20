@@ -14,10 +14,7 @@ class IssuesController < ApplicationController
   # GET /issues/update_all
   # GET /issues/update_all.json
   def update_all
-    puts "JJV -010- Invoked issues_controller.rb update_all with params #{params}"
-
     @issue_update_all_result = Issue.update_from_bz
-
   end
 
   # POST /issues
