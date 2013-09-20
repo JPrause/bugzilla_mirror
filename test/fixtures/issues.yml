@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  bz_id: MyString
+  status: MyString
+  assigned_to: MyString
+  summary: MyString
+  version: MyString
+  version_ack: MyString
+  pm_ack: MyString
+  devel_ack: MyString
+  qa_ack: MyString
+  doc_ack: MyString
+
+two:
+  bz_id: MyString
+  status: MyString
+  assigned_to: MyString
+  summary: MyString
+  version: MyString
+  version_ack: MyString
+  pm_ack: MyString
+  devel_ack: MyString
+  qa_ack: MyString
+  doc_ack: MyString

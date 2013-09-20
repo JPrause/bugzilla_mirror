@@ -19,6 +19,7 @@
   <tr>
     <th>Bz</th>
     <th>Status</th>
+    <th>Assignee</th>
     <th>Summary</th>
   </tr>
 
@@ -28,6 +29,7 @@
       <a href="<%=get_bugzilla_uri%><%= issue.bz_id %>"><%= issue.bz_id %></a>
     </td>
     <td><%= issue.status %></td>
+    <td><%= issue.assigned_to %></td>
     <td><%= issue.summary %></td>
   </tr>
 <% end %>

@@ -5,30 +5,11 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-# encoding: utf-8
-BzQuery.delete_all
-q = BzQuery.create(
-  name: 'ReadyErrata',
-  description: 'List bugs in POST to verify triple ack.',
-  product: 'CloudForms Management Engine',
-  flag: 'cfme-5.2',
-  bug_status: 'POST',
-  output_format: 'BZ_ID: %{id} BZ_ID_END SUMMARY: %{summary} SUMMARY_END BUG_STATUS: %{bug_status} BUG_STATUS_END VERSION: %{version} VERSION_END FLAGS: %{flags} FLAGS_END KEYWORDS: %{keywords} KEYWORDS_END ')
-q.run
-# ...
-ReportTable.delete_all
-ReportTable.create(
-  name: 'Report1',
-  description: 'vertical=Version horizontal=Status',
-  query_name: 'Query7',
-  query_id: BzQuery.find_by_name('Query7'),
-  vertical: 'version',
-  horizontal: 'bug_status')
-# ...
 Issue.delete_all
 Issue.create(
   bz_id: '1653',
   status: 'jjv_status',
+  assigned_to: 'calvin@hobbes.com',
   summary: 'jjv summary Dragonfly',
   version: 'jjv_version',
   version_ack: '-',
@@ -40,6 +21,7 @@ Issue.create(
 Issue.create(
   bz_id: '1906',
   status: 'jjv_status',
+  assigned_to: 'calvin@hobbes.com',
   summary: 'jjv summary Swallow',
   version: 'jjv_version',
   version_ack: '-',

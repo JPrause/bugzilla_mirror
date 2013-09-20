@@ -2,7 +2,7 @@
 require '/home/jvlcek/.rvm/gems/ruby-1.9.3-p392@cfme_bz/gems/ruby_bugzilla-0.1.0/lib/ruby_bugzilla'
 
 class Issue < ActiveRecord::Base
-  attr_accessible :bz_id, :status, :summary,:version,
+  attr_accessible :assigned_to,  :bz_id, :status, :summary, :version,
     :version_ack, :devel_ack, :doc_ack, :pm_ack, :qa_ack
 
   VERSION_REGEX=/cfme-[0-9]\.?[0-9]?\.?z?/
@@ -45,7 +45,7 @@ class Issue < ActiveRecord::Base
     bug_status="ASSIGNED"
     bug_status="NEW, ASSIGNED, POST, MODIFIED, ON_DEV, ON_QA, VERIFIED, RELEASE_PENDING"
     flag=""
-    output_format='BZ_ID: %{id} BZ_ID_END SUMMARY: %{summary} SUMMARY_END BUG_STATUS: %{bug_status} BUG_STATUS_END VERSION: %{version} VERSION_END FLAGS: %{flags} FLAGS_END KEYWORDS: %{keywords} KEYWORDS_END'
+    output_format='BZ_ID: %{id} BZ_ID_END ASSIGNED_TO: %{assigned_to} ASSIGNED_TO_END SUMMARY: %{summary} SUMMARY_END BUG_STATUS: %{bug_status} BUG_STATUS_END VERSION: %{version} VERSION_END FLAGS: %{flags} FLAGS_END KEYWORDS: %{keywords} KEYWORDS_END'
 
     cmd, output = RubyBugzilla.query(product, flag, bug_status, output_format)
 
@@ -113,6 +113,7 @@ class Issue < ActiveRecord::Base
     output.each_line do |bz_line|
       # create a new issue object in the db for each BZ.
       bz_id = self.get_token_values(bz_line, "BZ_ID").join
+      assigned_to = self.get_token_values(bz_line, "ASSIGNED_TO").join
       summary = self.get_token_values(bz_line, "SUMMARY").join
       status = self.get_token_values(bz_line, "BUG_STATUS").join
 
@@ -124,6 +125,7 @@ class Issue < ActiveRecord::Base
 
 =begin JJV
       puts "JJV -020- bz_id         ->#{bz_id}<="
+      puts "JJV -020- assigned_to   ->#{assigned_to}<="
       puts "JJV -020- summary       ->#{summary}<="
       puts "JJV -020- status        ->#{status}<="
       puts "JJV -020- pm_ack_str    ->#{pm_ack_str}<="
@@ -139,14 +141,15 @@ class Issue < ActiveRecord::Base
 =end
 
       self.create(:bz_id         => bz_id,
-                   :status        => status,
-                   :summary       => summary,
-                   :version       => version_str,
-                   :version_ack   => version_ack,
-                   :devel_ack     => devel_ack,
-                   :doc_ack       => doc_ack,
-                   :pm_ack        => pm_ack,
-                   :qa_ack        => qa_ack)
+                  :assigned_to   => assigned_to,
+                  :status        => status,
+                  :summary       => summary,
+                  :version       => version_str,
+                  :version_ack   => version_ack,
+                  :devel_ack     => devel_ack,
+                  :doc_ack       => doc_ack,
+                  :pm_ack        => pm_ack,
+                  :qa_ack        => qa_ack)
 
     end
     
