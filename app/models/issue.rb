@@ -14,8 +14,10 @@ class Issue < ActiveRecord::Base
     bzs_have_acks = []
 
     self.order(:id).each do |bz|
-      ack_code = ""
 
+      next unless bz.status == "POST"
+
+      ack_code = ""
       ack_code << (self.ack_not_needed?(bz.pm_ack) ? "-" : "P")
       ack_code << (self.ack_not_needed?(bz.devel_ack) ? "-" : "D")
       ack_code << (self.ack_not_needed?(bz.qa_ack) ? "-" : "Q")
@@ -76,7 +78,6 @@ class Issue < ActiveRecord::Base
    
   end
 
-  # TODO Update all tokens to have token_END delimiter.
   private
   def self.get_token_values(str, token)
 
@@ -89,6 +90,7 @@ class Issue < ActiveRecord::Base
     token_values.each do |x|
       x.sub!("#{token}_END", "")
       x.sub!(/'$/, '')
+      x.strip!
     end
 
     token_values
