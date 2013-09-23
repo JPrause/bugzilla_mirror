@@ -1,0 +1,28 @@
+<h1>StatisticsReports#index</h1>
+
+<p>
+  <b>Bug Totals by Version/Status:</b>
+  <table border="1">
+    <tr>
+      <th><%= "Version"%>  &nbsp; &nbsp; &nbsp;</th>
+      <th><%= "Status"%></th> 
+      <th>Totals</th>
+    </tr>
+
+    <% @table.each do |version, statuses| %> 
+        <% version_color = cycle('list_line_odd', 'list_line_even') %>
+        <% statuses.each do |status, count| %>
+          <tr class=<%= version_color %> >
+            <td><%= version %></td>
+            <td><%= status %></td> 
+            <td><%= count %></td>
+        </tr>
+      <% end %>
+    <% end %>
+
+    </tbody>
+  </table>
+
+
+</p>
+

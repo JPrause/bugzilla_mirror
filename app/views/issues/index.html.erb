@@ -5,10 +5,13 @@
   <%= @issues_updated_at %>    
 </p>
 
+<%= link_to 'Run The Statistics Report', statistics_reports_path %>
+<br />
+<br />
 <%= link_to 'Run The Errata Report', errata_reports_path %>
 <br />
 <br />
-<%= link_to 'Refresh DB From Bugzilla', update_all_issues_path %>
+<%= link_to 'Refresh Issues Database From Bugzilla', update_all_issues_path %>
 <br />
 <%# To uncomment the below line change %# to %= %>
 <%# link_to 'Statistic Report', statstic_report_issues_path %>

@@ -12,6 +12,12 @@ CfmeBz::Application.routes.draw do
     end
   end
 
+  resources :statistics_reports do
+    collection do
+      get 'index'
+    end
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
