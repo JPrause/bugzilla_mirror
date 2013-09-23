@@ -1,24 +1,33 @@
-<h1>ErrataReports#index</h1>
-<p>Find me in app/views/errata_reports/index.html.erb</p>
 <p id="notice"><%= notice %></p>
 
+<h1>
+  BZs in <b>POST</b> state that need ACK(s)</br>
+</h1>
+
 <p>
-  <b>BZs That Need ACK(s):</b></br>
-  <u><i>Legend:</i></u></br>
-  <b>-</b> : Have ACK For This Column</br>
-  <b>P</b> : Needs ACK from <b><i>P</i></b>roduct Management</br>
-  <b>D</b> : Needs ACK from <b><i>D</i></b>evelopment</br>
-  <b>Q</b> : Needs ACK from <b><i>Q</i></b>uality Assurance</br>
-  <b>O</b> : Needs ACK from D<b><i>o</i></b>cumentation</br>
-  <b>B</b> : Needs ACK from Bugzilla <b><i>B</i></b>ot</br>
-  
-  <table>
+  <table border="1">
+    <tr>
+      <th>BZ ID</th>
+      <th>PM ACK</th> 
+      <th>Devel ACK</th> 
+      <th>QA ACK</th> 
+      <th>Doc ACK</th> 
+      <th>Version ACK</th> 
+      <th>Summary</th>
+    </tr>
+
+    </tr>
+
     <% @errata_report_need_acks.each do |bz| %>
       <tr class="<%= cycle('tag_line_odd', 'tag_line_even') %>">
         <td>
         <a href="<%=get_bugzilla_uri%><%= bz[:BZ_ID] %>"><%= bz[:BZ_ID] %></a>
         </td>
-        <td><%= bz[:ACKS] %></td>
+        <td align="center"> <%= bz[:PM_ACKS] %></td>
+        <td align="center"> <%= bz[:DEVEL_ACKS] %></td>
+        <td align="center"> <%= bz[:QA_ACKS] %></td>
+        <td align="center"> <%= bz[:DOC_ACKS] %></td>
+        <td align="center"> <%= bz[:VER_ACKS] %></td>
         <td><%= bz[:SUMMARY] %></td>
       </tr>
     <% end %>

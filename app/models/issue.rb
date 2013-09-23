@@ -17,21 +17,18 @@ class Issue < ActiveRecord::Base
 
       next unless bz.status == "POST"
 
-      ack_code = ""
-      ack_code << (self.ack_not_needed?(bz.pm_ack) ? "-" : "P")
-      ack_code << (self.ack_not_needed?(bz.devel_ack) ? "-" : "D")
-      ack_code << (self.ack_not_needed?(bz.qa_ack) ? "-" : "Q")
-      ack_code << (self.ack_not_needed?(bz.doc_ack) ? "-" : "O")
-      # The version ack is set by the Bugzilla Bot so user "B".
-      ack_code << (self.ack_not_needed?(bz.version_ack) ? "-" : "B")
-      bz_entry = {:BZ_ID   => bz.bz_id,
-                  :ACKS    => ack_code,
-                  :SUMMARY  => bz.summary}
+      entry = {:BZ_ID      => bz.bz_id,
+               :PM_ACKS    => self.ack_not_needed?(bz.pm_ack),
+               :DEVEL_ACKS => self.ack_not_needed?(bz.devel_ack),
+               :QA_ACKS    => self.ack_not_needed?(bz.qa_ack),
+               :DOC_ACKS   => self.ack_not_needed?(bz.doc_ack),
+               :VER_ACKS   => self.ack_not_needed?(bz.version_ack),
+               :SUMMARY    => bz.summary}
 
-      if ack_code == "-----"
-        bzs_have_acks << bz_entry
+      if has_all_acks?(entry)
+        bzs_have_acks << entry
       else
-        bzs_need_acks << bz_entry
+        bzs_need_acks << entry
       end
     end
 
@@ -61,7 +58,13 @@ class Issue < ActiveRecord::Base
 
   private
   def self.ack_not_needed?(ack)
-    ack == "+" || ack.upcase == "NONE"
+    (ack == "+" || ack.upcase == "NONE") ? "X" : " "
+  end
+
+  private
+  def self.has_all_acks?(entry)
+      a = [entry[:PM_ACKS], entry[:DEVEL_ACKS], entry[:QA_ACKS], entry[:DOC_ACKS], entry[:VER_ACKS]]
+      (a & a).size == 1
   end
 
   private
