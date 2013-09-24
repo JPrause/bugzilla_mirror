@@ -1,24 +1,25 @@
 <p id="notice"><%= notice %></p>
 
-<h1>
-  BZs in <b>POST</b> state that need ACK(s)</br>
-</h1>
+<h1> BZs in <b>POST</b> state that need ACK(s)</br> </h1>
 
 <p>
-  <table border="1">
+  <table width="600" border="1">
     <tr>
-      <th>BZ ID</th>
-      <th>PM ACK</th> 
-      <th>Devel ACK</th> 
-      <th>QA ACK</th> 
-      <th>Doc ACK</th> 
-      <th>Version ACK</th> 
-      <th>Summary</th>
+      <th width="10" colspan="1" rowspan="2" scope="col"> BZ ID</th>
+      <th class="list_line_even" width="100" colspan="5" scope="col">Has ACKs</th>
+      <th width="490" colspan="1" rowspan="2" scope="col"> Summary</th>
+    </tr>
+    <tr>
+      <th class="list_line_even" width="60"> PM</th> 
+      <th class="list_line_even" width="60"> Devel</th> 
+      <th class="list_line_even" width="60"> QA</th> 
+      <th class="list_line_even" width="60"> Doc</th> 
+      <th class="list_line_even" width="60"> Version</th> 
     </tr>
 
     </tr>
 
-    <% @errata_report_need_acks.each do |bz| %>
+    <% @need_acks.each do |bz| %>
       <tr class="<%= cycle('tag_line_odd', 'tag_line_even') %>">
         <td>
         <a href="<%=get_bugzilla_uri%><%= bz[:BZ_ID] %>"><%= bz[:BZ_ID] %></a>
@@ -37,9 +38,10 @@
 </p>
 
 <p>
-  <b>BZs That Have All ACKs:</b>
-  <table>
-    <% @errata_report_have_acks.each do |bz| %>
+  <h1> BZs That Have All ACKs </h1>
+
+  <table border="1">
+    <% @have_acks.each do |bz| %>
       <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
         <td>
         <a href="<%=get_bugzilla_uri%><%= bz[:BZ_ID] %>"><%= bz[:BZ_ID] %></a>

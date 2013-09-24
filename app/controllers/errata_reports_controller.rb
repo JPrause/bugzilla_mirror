@@ -3,11 +3,45 @@ class ErrataReportsController < ApplicationController
   # GET /errata_reports
   # GET /errata_reports.json
   def index
-    @errata_report_need_acks, @errata_report_have_acks = Issue.errata_report
+
+    @need_acks = []
+    @have_acks = []
+
+    # TODO: When where.not method becomes available in Rails 4 this
+    #       logic could possibly be simplified.
+    Issue.where(:status => "POST").order(:id).each do |bz|
+
+      entry = {:BZ_ID      => bz.bz_id,
+               :PM_ACKS    => ack_not_needed?(bz.pm_ack),
+               :DEVEL_ACKS => ack_not_needed?(bz.devel_ack),
+               :QA_ACKS    => ack_not_needed?(bz.qa_ack),
+               :DOC_ACKS   => ack_not_needed?(bz.doc_ack),
+               :VER_ACKS   => ack_not_needed?(bz.version_ack),
+               :SUMMARY    => bz.summary}
+
+      if has_all_acks?(entry)
+        @have_acks << entry
+      else
+        @need_acks << entry
+      end
+
+    end
+
     respond_to do |format|
       format.html
       format.json { head :no_content }
     end
+
   end
 
+  private
+  def ack_not_needed?(ack)
+    (ack == "+" || ack.upcase == "NONE") ? "X" : " "
+  end
+
+  private
+  def has_all_acks?(entry)
+      a = [entry[:PM_ACKS], entry[:DEVEL_ACKS], entry[:QA_ACKS], entry[:DOC_ACKS], entry[:VER_ACKS]]
+      (a & a).size == 1
+  end
 end
