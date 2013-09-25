@@ -12,11 +12,11 @@ class ErrataReportsController < ApplicationController
     Issue.where(:status => "POST").order(:id).each do |bz|
 
       entry = {:BZ_ID      => bz.bz_id,
-               :PM_ACKS    => ack_not_needed?(bz.pm_ack),
-               :DEVEL_ACKS => ack_not_needed?(bz.devel_ack),
-               :QA_ACKS    => ack_not_needed?(bz.qa_ack),
-               :DOC_ACKS   => ack_not_needed?(bz.doc_ack),
-               :VER_ACKS   => ack_not_needed?(bz.version_ack),
+               :PM_ACKS    => bz.pm_ack == "+" ? "X" : " ",
+               :DEVEL_ACKS => bz.devel_ack == "+" ? "X" : " ",
+               :QA_ACKS    => bz.qa_ack == "+" ? "X" : " ",
+               :DOC_ACKS   => bz.doc_ack == "+" ? "X" : " ",
+               :VER_ACKS   => bz.version_ack == "+" ? "X" : " ",
                :SUMMARY    => bz.summary}
 
       if has_all_acks?(entry)
@@ -32,11 +32,6 @@ class ErrataReportsController < ApplicationController
       format.json { head :no_content }
     end
 
-  end
-
-  private
-  def ack_not_needed?(ack)
-    (ack == "+" || ack.upcase == "NONE") ? "X" : " "
   end
 
   private

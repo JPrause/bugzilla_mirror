@@ -37,7 +37,7 @@ class Issue < ActiveRecord::Base
     if match
       return [match[0], match.post_match[0]]
     else
-      return ["NONE", "NONE"]
+      return ["NONE", "+"]
     end
    
   end

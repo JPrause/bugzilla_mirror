@@ -37,10 +37,10 @@ describe Issue do
       RubyBugzilla.stub(:query).and_return(["",output])
       Issue.update_from_bz
       Issue.order(:id).last.bz_id.should == "02032003"
-      Issue.order(:id).last.pm_ack.should == "NONE"
-      Issue.order(:id).last.devel_ack.should == "NONE"
-      Issue.order(:id).last.qa_ack.should == "NONE"
-      Issue.order(:id).last.doc_ack.should == "NONE"
+      Issue.order(:id).last.pm_ack.should == "+"
+      Issue.order(:id).last.devel_ack.should == "+"
+      Issue.order(:id).last.qa_ack.should == "+"
+      Issue.order(:id).last.doc_ack.should == "+"
     end
   end
 
@@ -63,32 +63,32 @@ describe Issue do
 
     it "with no doc flag" do
       flags = "bla bla bla FLAGS: cfme-5.2?,pm_ack+,devel_ack?,qa_ack? FLAGS_END "
-      Issue.get_from_flags(flags, /doc_ack/).should == ["NONE", "NONE"]
+      Issue.get_from_flags(flags, /doc_ack/).should == ["NONE", "+"]
     end
 
     it "with no pm flag" do
       flags = "bla bla bla FLAGS: cfme-5.2?,zz_ack+,devel_ack?,qa_ack? FLAGS_END "
-      Issue.get_from_flags(flags, /doc_ack/).should == ["NONE", "NONE"]
+      Issue.get_from_flags(flags, /doc_ack/).should == ["NONE", "+"]
     end
 
     it "with valid devel flag" do
       flags = "bla bla bla FLAGS: cfme-5.2?,pm_ack+,none_ack?,qa_ack? FLAGS_END "
-      Issue.get_from_flags(flags, /devel_ack/).should == ["NONE", "NONE"]
+      Issue.get_from_flags(flags, /devel_ack/).should == ["NONE", "+"]
     end
 
     it "when no regex match is found" do
       flags = "FLAGS: cfme-5.2?,pm_ack+,devel_ack?,qa_ack? FLAGS_END "
-      Issue.get_from_flags(flags, /none/).should == ["NONE", "NONE"]
+      Issue.get_from_flags(flags, /none/).should == ["NONE", "+"]
     end
 
     it "when FLAGS token is invalid" do
       flags = "snaAGS: cfme-5.2?,pm_ack+,none_ack?,qa_ack? snaGS_END "
-      Issue.get_from_flags(flags, /devel_ack/).should == ["NONE", "NONE"]
+      Issue.get_from_flags(flags, /devel_ack/).should == ["NONE", "+"]
     end
 
     it "with no flags" do
       flags = ""
-      Issue.get_from_flags(flags, /devel_ack/).should == ["NONE", "NONE"]
+      Issue.get_from_flags(flags, /devel_ack/).should == ["NONE", "+"]
     end
   end
 
@@ -200,10 +200,10 @@ describe Issue do
 
       Issue.recreate_all_issues(output)
       Issue.order(:id).last.bz_id.should == "10012003"
-      Issue.order(:id).last.pm_ack.should == "NONE"
-      Issue.order(:id).last.devel_ack.should == "NONE"
-      Issue.order(:id).last.qa_ack.should == "NONE"
-      Issue.order(:id).last.doc_ack.should == "NONE"
+      Issue.order(:id).last.pm_ack.should == "+"
+      Issue.order(:id).last.devel_ack.should == "+"
+      Issue.order(:id).last.qa_ack.should == "+"
+      Issue.order(:id).last.doc_ack.should == "+"
     end
   end
 
