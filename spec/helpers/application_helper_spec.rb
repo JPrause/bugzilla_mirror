@@ -12,17 +12,26 @@ require 'spec_helper'
 # end
 describe ApplicationHelper do
 
+  def ignore_warnings(&block)
+    begin
+      v, $VERBOSE = $VERBOSE, nil
+      block.call if block
+    ensure
+      $VERBOSE = v
+    end
+  end
+
   context "#get_bugzilla_uri" do
 
     it "when a valid response is returned" do
-      res = get_bugzilla_uri
-      res = get_bugzilla_uri.should include("/show_bug.cgi?id=")
+      get_bugzilla_uri.should include("/show_bug.cgi?id=")
     end
 
     it "when the default response is returned" do
-      RubyBugzilla::CREDS_FILE = "/file/not/found"
-      res = get_bugzilla_uri
-      res = get_bugzilla_uri.should == ("https://bugzilla.redhat.com/show_bug.cgi?id=")
+      ignore_warnings do
+        RubyBugzilla::CREDS_FILE = "/file/not/found"
+      end
+      get_bugzilla_uri.should == ("https://bugzilla.redhat.com/show_bug.cgi?id=")
     end
 
   end
