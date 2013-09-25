@@ -2,7 +2,12 @@ module ApplicationHelper
 
   def get_bugzilla_uri
     uri, _ = RubyBugzilla.options
-    uri + "/show_bug.cgi?id="
+
+    if uri.nil?
+      "https://bugzilla.redhat.com/show_bug.cgi?id="
+    else
+      uri + "/show_bug.cgi?id="
+    end
   end
 
 end
