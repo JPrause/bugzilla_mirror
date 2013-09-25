@@ -17,6 +17,7 @@ class ErrataReportsController < ApplicationController
                :QA_ACKS    => bz.qa_ack == "+" ? "X" : " ",
                :DOC_ACKS   => bz.doc_ack == "+" ? "X" : " ",
                :VER_ACKS   => bz.version_ack == "+" ? "X" : " ",
+               :VERSION    => bz.version,
                :SUMMARY    => bz.summary}
 
       if has_all_acks?(entry)

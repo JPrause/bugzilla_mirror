@@ -28,7 +28,7 @@
         <td align="center"> <span style="color: green"><%= bz[:DEVEL_ACKS] %></span></td>
         <td align="center"> <span style="color: green"><%= bz[:QA_ACKS] %></span></td>
         <td align="center"> <span style="color: green"><%= bz[:DOC_ACKS] %></span></td>
-        <td align="center"> <span style="color: green"><%= bz[:VER_ACKS] %></span></td>
+        <td align="center"> <span style="color: green"><%= bz[:VERSION] %></span></td>
         <td><%= bz[:SUMMARY] %></td>
       </tr>
     <% end %>
@@ -46,6 +46,7 @@
         <td>
         <a href="<%=get_bugzilla_uri%><%= bz[:BZ_ID] %>"><%= bz[:BZ_ID] %></a>
         </td>
+        <td><%= bz[:VERSION] %></td>
         <td><%= bz[:SUMMARY] %></td>
       </tr>
     <% end %>
