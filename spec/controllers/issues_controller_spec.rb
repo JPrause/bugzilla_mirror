@@ -1,0 +1,20 @@
+require 'spec_helper'
+
+describe IssuesController do
+
+  describe "GET 'index'" do
+    it "when #index returns http success" do
+      get 'index'
+      response.should be_success
+    end
+  end
+
+  describe "GET 'update_all'" do
+    it "when #updat_all returns http success" do
+      Issue.stub(:update_from_bz).and_return("stub")
+      get 'update_all'
+      response.should be_success
+    end
+  end
+
+end

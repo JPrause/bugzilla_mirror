@@ -2,6 +2,7 @@ CfmeBz::Application.routes.draw do
 
   resources :issues do
     collection do
+      get 'index'
       get 'update_all'
     end
   end

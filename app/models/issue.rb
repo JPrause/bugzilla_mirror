@@ -45,8 +45,9 @@ class Issue < ActiveRecord::Base
   private
   def self.get_token_values(str, token)
 
+    return [] if token.to_s.empty?
+
     token_values = str.scan(/(?<=#{token}:\s).*(?<=#{token}_END)/)
-    token_values = str.scan(/(?<=#{token}:\s)\S*/) unless token_values != []
 
     # Because regexp lookahead and lookbehind must be a fixed length
     # removing the occasionally occuring trailing ->'<- character must
@@ -65,7 +66,7 @@ class Issue < ActiveRecord::Base
 
     self.delete_all
 
-    # create a new bz_query_entries object in the db for each bz.
+    # create a new issue in the db for each bz.
     output.each_line do |bz_line|
       # create a new issue object in the db for each BZ.
       bz_id                    = self.get_token_values(bz_line, "BZ_ID").join
