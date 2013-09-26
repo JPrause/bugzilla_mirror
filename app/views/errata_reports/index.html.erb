@@ -3,18 +3,18 @@
 <h1> BZs in <b>POST</b> state that need ACK(s)</br> </h1>
 
 <p>
-  <table width="600" border="1">
+  <table border="1">
     <tr>
       <th width="10" colspan="1" rowspan="2" scope="col"> BZ ID</th>
-      <th class="list_line_even" width="100" colspan="5" scope="col">Has ACKs</th>
-      <th width="490" colspan="1" rowspan="2" scope="col"> Summary</th>
+      <th width="10" colspan="1" rowspan="2" scope="col"> Version</th>
+      <th class="list_line_even" width="100" colspan="4" scope="col">Has ACKs</th>
+      <th width="600" colspan="1" rowspan="2" scope="col"> Summary</th>
     </tr>
     <tr>
       <th class="list_line_even" width="60"> PM</th> 
       <th class="list_line_even" width="60"> Devel</th> 
       <th class="list_line_even" width="60"> QA</th> 
       <th class="list_line_even" width="60"> Doc</th> 
-      <th class="list_line_even" width="60"> Version</th> 
     </tr>
 
     </tr>
@@ -24,11 +24,11 @@
         <td>
         <a href="<%=get_bugzilla_uri%><%= bz[:BZ_ID] %>"><%= bz[:BZ_ID] %></a>
         </td>
+        <td align="center"> <span style="color: green"><%= bz[:VERSION] %></span></td>
         <td align="center"> <span style="color: green"><%= bz[:PM_ACKS] %></span></td>
         <td align="center"> <span style="color: green"><%= bz[:DEVEL_ACKS] %></span></td>
         <td align="center"> <span style="color: green"><%= bz[:QA_ACKS] %></span></td>
         <td align="center"> <span style="color: green"><%= bz[:DOC_ACKS] %></span></td>
-        <td align="center"> <span style="color: green"><%= bz[:VERSION] %></span></td>
         <td><%= bz[:SUMMARY] %></td>
       </tr>
     <% end %>

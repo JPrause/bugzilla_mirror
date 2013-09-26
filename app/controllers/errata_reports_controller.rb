@@ -9,7 +9,7 @@ class ErrataReportsController < ApplicationController
 
     # TODO: When where.not method becomes available in Rails 4 this
     #       logic could possibly be simplified.
-    Issue.where(:status => "POST").order(:id).each do |bz|
+    Issue.where(:status => "POST").order(:version).order(:id).each do |bz|
 
       entry = {:BZ_ID      => bz.bz_id,
                :PM_ACKS    => bz.pm_ack == "+" ? "X" : " ",
