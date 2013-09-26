@@ -5,18 +5,20 @@
 <p>
   <table border="1">
     <tr>
-      <th width="10" colspan="1" rowspan="2" scope="col"> BZ ID</th>
-      <th width="10" colspan="1" rowspan="2" scope="col"> Version</th>
+      <th width="10" colspan="1" rowspan="2" scope="col">
+        <%= sortable "bz_id", "Bz Id" %>
+      </th>
+      <th width="10" colspan="1" rowspan="2" scope="col">
+        <%= sortable "version" %>
+      </th>
       <th class="list_line_even" width="100" colspan="4" scope="col">Has ACKs</th>
       <th width="600" colspan="1" rowspan="2" scope="col"> Summary</th>
     </tr>
     <tr>
-      <th class="list_line_even" width="60"> PM</th> 
-      <th class="list_line_even" width="60"> Devel</th> 
-      <th class="list_line_even" width="60"> QA</th> 
-      <th class="list_line_even" width="60"> Doc</th> 
-    </tr>
-
+      <th class="list_line_even" width="60"><%= sortable "pm_ack", "PM" %></th> 
+      <th class="list_line_even" width="60"><%= sortable "devel_ack", "Devel" %></th> 
+      <th class="list_line_even" width="60"><%= sortable "qa_ack", "QA" %></th> 
+      <th class="list_line_even" width="60"><%= sortable "doc_ack", "Doc" %></th> 
     </tr>
 
     <% @need_acks.each do |bz| %>
@@ -41,6 +43,11 @@
   <h1> BZs in <b>POST</b> state that have all the needed ACKs</br> </h1>
 
   <table border="1">
+    <tr>
+      <th><%= sortable "bz_id", "BZ ID" %></th>
+      <th><%= sortable "version" %></th>
+      <th> Summary</th>
+    </tr>
     <% @have_acks.each do |bz| %>
       <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
         <td>

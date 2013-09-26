@@ -9,7 +9,8 @@ class ErrataReportsController < ApplicationController
 
     # TODO: When where.not method becomes available in Rails 4 this
     #       logic could possibly be simplified.
-    Issue.where(:status => "POST").order(:version).order(:id).each do |bz|
+    Issue.where(:status => "POST").order(sort_column + " " + sort_direction).
+      order(:version).each do |bz|
 
       entry = {:BZ_ID      => bz.bz_id,
                :PM_ACKS    => bz.pm_ack == "+" ? "X" : " ",
@@ -40,4 +41,5 @@ class ErrataReportsController < ApplicationController
       a = [entry[:PM_ACKS], entry[:DEVEL_ACKS], entry[:QA_ACKS], entry[:DOC_ACKS], entry[:VER_ACKS]]
       (a & a).size == 1
   end
+
 end

@@ -2,7 +2,7 @@ class IssuesController < ApplicationController
   # GET /issues
   # GET /issues.json
   def index
-    @issues = Issue.all
+    @issues = Issue.order(sort_column + " " + sort_direction)
     @issues_updated_at = Issue.order("updated_at ASC").last.nil? ?
       "None Found" : Issue.order("updated_at ASC").last.updated_at
 
