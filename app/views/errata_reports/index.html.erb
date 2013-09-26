@@ -24,11 +24,11 @@
         <td>
         <a href="<%=get_bugzilla_uri%><%= bz[:BZ_ID] %>"><%= bz[:BZ_ID] %></a>
         </td>
-        <td align="center"> <span style="color: green"><%= bz[:VERSION] %></span></td>
-        <td align="center"> <span style="color: green"><%= bz[:PM_ACKS] %></span></td>
-        <td align="center"> <span style="color: green"><%= bz[:DEVEL_ACKS] %></span></td>
-        <td align="center"> <span style="color: green"><%= bz[:QA_ACKS] %></span></td>
-        <td align="center"> <span style="color: green"><%= bz[:DOC_ACKS] %></span></td>
+        <td align="center"> <span class="green_text"><%= bz[:VERSION] %></span></td>
+        <td align="center"> <span class="green_text"><%= bz[:PM_ACKS] %></span></td>
+        <td align="center"> <span class="green_text"><%= bz[:DEVEL_ACKS] %></span></td>
+        <td align="center"> <span class="green_text"><%= bz[:QA_ACKS] %></span></td>
+        <td align="center"> <span class="green_text"><%= bz[:DOC_ACKS] %></span></td>
         <td><%= bz[:SUMMARY] %></td>
       </tr>
     <% end %>
