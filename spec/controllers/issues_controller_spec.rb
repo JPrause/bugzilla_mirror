@@ -10,7 +10,7 @@ describe IssuesController do
   end
 
   describe "GET 'update_all'" do
-    it "when #updat_all returns http success" do
+    it "when #update_all returns http success" do
       Issue.stub(:update_from_bz).and_return("stub")
       get 'update_all'
       response.should be_success

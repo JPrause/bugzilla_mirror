@@ -1,31 +1,32 @@
 require 'spec_helper'
+require 'application_controller'
 
 describe "issues/index" do
   before(:each) do
     assign(:issues, [
       stub_model(Issue,
-        :bz_id => "Bz",
-        :status => "Status",
-        :summary => "Summary",
+        :bz_id       => "Bz",
+        :status      => "Status",
+        :summary     => "Summary",
         :assigned_to => "Assignee",
-        :version => "Version",
+        :version     => "Version",
         :version_ack => "Version Ack",
-        :pm_ack => "Pm Ack",
-        :devel_ack => "Devel Ack",
-        :qa_ack => "Qa Ack",
-        :doc_ack => "Doc Ack"
+        :pm_ack      => "Pm Ack",
+        :devel_ack   => "Devel Ack",
+        :qa_ack      => "Qa Ack",
+        :doc_ack     => "Doc Ack"
       ),
       stub_model(Issue,
-        :bz_id => "Bz",
-        :status => "Status",
-        :summary => "Summary",
+        :bz_id       => "Bz",
+        :status      => "Status",
+        :summary     => "Summary",
         :assigned_to => "Assignee",
-        :version => "Version",
+        :version     => "Version",
         :version_ack => "Version Ack",
-        :pm_ack => "Pm Ack",
-        :devel_ack => "Devel Ack",
-        :qa_ack => "Qa Ack",
-        :doc_ack => "Doc Ack"
+        :pm_ack      => "Pm Ack",
+        :devel_ack   => "Devel Ack",
+        :qa_ack      => "Qa Ack",
+        :doc_ack     => "Doc Ack"
       )
     ])
   end
