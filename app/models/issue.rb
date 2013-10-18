@@ -1,6 +1,7 @@
 # TODO update require 'ruby_bugzilla' once gem is available
 # TODO require 'ruby_bugzilla'
-require '/home/jvlcek/.rvm/gems/ruby-1.9.3-p392@cfme_bz/gems/ruby_bugzilla-0.1.0/lib/ruby_bugzilla'
+# require '/home/jvlcek/.rvm/gems/ruby-1.9.3-p392@cfme_bz/gems/ruby_bugzilla-0.2.0/lib/ruby_bugzilla'
+require 'ruby_bugzilla'
 
 class Issue < ActiveRecord::Base
   attr_accessible :assigned_to,  :bz_id, :status, :summary, :version,

@@ -31,7 +31,7 @@ describe ApplicationHelper do
       ignore_warnings do
         RubyBugzilla::CREDS_FILE = "/file/not/found"
       end
-      get_bugzilla_uri.should == ("https://bugzilla.redhat.com/show_bug.cgi?id=")
+      get_bugzilla_uri.should == ("https://bugzilla.redhat.com//show_bug.cgi?id=")
     end
 
   end
