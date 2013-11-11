@@ -20,3 +20,5 @@
 # Ignore vim swap file
 *.swp
 
+# Ignore all compiled assets
+/public/assets
