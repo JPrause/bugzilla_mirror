@@ -30,7 +30,7 @@
 <% @issues.each do |issue| %>
   <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
     <td>
-      <a href="<%=get_bugzilla_uri%><%= issue.bz_id %>"><%= issue.bz_id %></a>
+      <a href="<%=AppConfig['bugzilla']['bug_display_uri']%><%= issue.bz_id %>"><%= issue.bz_id %></a>
     </td>
     <td><%= issue.version %></td>
     <td><%= issue.status %></td>
