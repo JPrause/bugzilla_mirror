@@ -27,13 +27,6 @@ describe ApplicationHelper do
       get_bugzilla_uri.should include("/show_bug.cgi?id=")
     end
 
-    it "when the default response is returned" do
-      ignore_warnings do
-        RubyBugzilla::CREDS_FILE = "/file/not/found"
-      end
-      get_bugzilla_uri.should == ("https://bugzilla.redhat.com//show_bug.cgi?id=")
-    end
-
   end
 
 end

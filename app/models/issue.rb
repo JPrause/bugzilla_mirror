@@ -8,11 +8,13 @@ class Issue < ActiveRecord::Base
 
   def self.update_from_bz
 
-    RubyBugzilla.login!
+    raise "Error no username specified in config/cfme_bz.yml" unless AppConfig['bugzilla']['username']
+    raise "Error no password specified in config/cfme_bz.yml" unless AppConfig['bugzilla']['password']
 
-    product = "CloudForms Management Engine"
-    bug_status = "NEW, ASSIGNED, POST, MODIFIED, ON_DEV, ON_QA, VERIFIED, RELEASE_PENDING"
-    flag = ""
+    bz = RubyBugzilla.new(AppConfig['bugzilla']['uri'],
+                          AppConfig['bugzilla']['username'],
+                          AppConfig['bugzilla']['password'])
+
     output_format = "BZ_ID: %{id} BZ_ID_END ASSIGNED_TO: %{assigned_to} ASSIGNED_TO_END "
     output_format << "SUMMARY: %{summary} SUMMARY_END "
     output_format << "BUG_STATUS: %{bug_status} BUG_STATUS_END "
@@ -20,7 +22,12 @@ class Issue < ActiveRecord::Base
     output_format << "FLAGS: %{flags} FLAGS_END "
     output_format << "KEYWORDS: %{keywords} KEYWORDS_END"
 
-    cmd, output = RubyBugzilla.query(product, flag, bug_status, output_format)
+    output = bz.query(
+      :product      => AppConfig['bugzilla']['product'],
+      :bug_status   => "OPEN",
+      :flag         => "",
+      :outputformat => output_format
+    )
     self.recreate_all_issues(output)
     output
 

@@ -20,5 +20,5 @@
 # Ignore vim swap file
 *.swp
 
-# Ignore all compiled assets
-/public/assets
+# Ignore live config file
+cfme_bz.yml

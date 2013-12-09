@@ -4,9 +4,21 @@ describe Issue do
 
   context "#update_from_bz" do
 
+    it "with no username specified" do
+      stub_const("AppConfig", {"bugzilla" => {"password" => "hobbes"}})
+      expect { Issue.update_from_bz }.to raise_error(RuntimeError,
+        "Error no username specified in config/cfme_bz.yml")
+    end
+
+    it "with no password specified" do
+      stub_const("AppConfig", {"bugzilla" => {"username" => "calvin"}})
+      expect { Issue.update_from_bz }.to raise_error(RuntimeError,
+        "Error no password specified in config/cfme_bz.yml")
+    end
+
     it "with no bugzilla query output" do
-      RubyBugzilla.stub(:login!).and_return(true)
-      RubyBugzilla.stub(:query).and_return(["",""])
+      stub_const("AppConfig", {"bugzilla" => {"username" => "calvin", "password" => "hobbes"}})
+      allow(RubyBugzilla).to receive(:new).and_return(double('bugzilla', :query => ""))
       Issue.update_from_bz
       Issue.order(:id).last.nil?.should == true
     end
@@ -19,8 +31,8 @@ describe Issue do
       output << "FLAGS: cfme-5.2?,pm_ack+,devel_ack?,qa_ack? FLAGS_END "
       output << "KEYWORDS: stone KEYWORDS_END"
 
-      RubyBugzilla.stub(:login!).and_return(true)
-      RubyBugzilla.stub(:query).and_return(["",output])
+      stub_const("AppConfig", {"bugzilla" => {"username" => "calvin", "password" => "hobbes"}})
+      allow(RubyBugzilla).to receive(:new).and_return(double('bugzilla', :query => output))
       Issue.update_from_bz
       Issue.order(:id).last.bz_id.should == "P30"
     end
@@ -33,8 +45,8 @@ describe Issue do
       output << "FLAGS: flake FLAGS_END "
       output << "KEYWORDS: stone KEYWORDS_END"
 
-      RubyBugzilla.stub(:login!).and_return(true)
-      RubyBugzilla.stub(:query).and_return(["",output])
+      stub_const("AppConfig", {"bugzilla" => {"username" => "calvin", "password" => "hobbes"}})
+      allow(RubyBugzilla).to receive(:new).and_return(double('bugzilla', :query => output))
       Issue.update_from_bz
       Issue.order(:id).last.bz_id.should == "02032003"
       Issue.order(:id).last.pm_ack.should == "+"
