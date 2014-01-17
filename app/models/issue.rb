@@ -1,8 +1,9 @@
 require 'ruby_bugzilla'
 
 class Issue < ActiveRecord::Base
-  attr_accessible :assigned_to,  :bz_id, :status, :summary, :version,
+  attr_accessible :assigned_to,  :bz_id, :dep_id, :status, :summary, :version,
     :version_ack, :devel_ack, :doc_ack, :pm_ack, :qa_ack
+  serialize :dep_id
 
   VERSION_REGEX=/cfme-[0-9]\.?[0-9]?\.?z?/
 
@@ -20,7 +21,8 @@ class Issue < ActiveRecord::Base
     output_format << "BUG_STATUS: %{bug_status} BUG_STATUS_END "
     output_format << "VERSION: %{version} VERSION_END "
     output_format << "FLAGS: %{flags} FLAGS_END "
-    output_format << "KEYWORDS: %{keywords} KEYWORDS_END"
+    output_format << "KEYWORDS: %{keywords} KEYWORDS_END "
+    output_format << "DEP_ID: %{dependson} DEP_ID_END"
 
     output = bz.query(
       :product      => AppConfig['bugzilla']['product'],
@@ -75,6 +77,7 @@ class Issue < ActiveRecord::Base
     output.each_line do |bz_line|
       # create a new issue object in the db for each BZ.
       bz_id                    = self.get_token_values(bz_line, "BZ_ID").join
+      dep_id                   = self.get_token_values(bz_line, "DEP_ID").join
       assigned_to              = self.get_token_values(bz_line, "ASSIGNED_TO").join
       summary                  = self.get_token_values(bz_line, "SUMMARY").join
       status                   = self.get_token_values(bz_line, "BUG_STATUS").join
@@ -86,6 +89,7 @@ class Issue < ActiveRecord::Base
       version_str, version_ack = self.get_from_flags(bz_line, VERSION_REGEX)
 
       self.create(:bz_id         => bz_id,
+                  :dep_id        => dep_id,
                   :assigned_to   => assigned_to,
                   :status        => status,
                   :summary       => summary,

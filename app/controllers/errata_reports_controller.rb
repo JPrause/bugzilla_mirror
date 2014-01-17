@@ -13,6 +13,7 @@ class ErrataReportsController < ApplicationController
       order(:version).each do |bz|
 
       entry = {:BZ_ID      => bz.bz_id,
+               :DEP_ID     => bz.dep_id,
                :PM_ACKS    => bz.pm_ack == "+" ? "X" : " ",
                :DEVEL_ACKS => bz.devel_ack == "+" ? "X" : " ",
                :QA_ACKS    => bz.qa_ack == "+" ? "X" : " ",

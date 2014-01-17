@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130920130243) do
+ActiveRecord::Schema.define(:version => 20140117173933) do
 
   create_table "issues", :force => true do |t|
     t.string   "bz_id"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20130920130243) do
     t.string   "doc_ack"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.text     "dep_id"
   end
 
 end
