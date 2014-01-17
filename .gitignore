@@ -21,4 +21,4 @@
 *.swp
 
 # Ignore live config file
-cfme_bz.yml
+cfme_bz.yml*
