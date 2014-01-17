@@ -26,12 +26,8 @@
 
     <% @need_acks.each do |bz| %>
       <tr class="<%= cycle('tag_line_odd', 'tag_line_even') %>">
-        <td>
-        <a href="<%=AppConfig['bugzilla']['bug_display_uri']%><%= bz[:BZ_ID] %>"><%= bz[:BZ_ID] %></a>
-        </td>
-        <td>
-        <a href="<%=AppConfig['bugzilla']['bug_display_uri']%><%= bz[:DEP_ID] %>"><%= bz[:DEP_ID] %></a>
-        </td>
+        <td><%= url_to_bugzilla(bz.bz_id) %></td>
+        <td><%= url_to_depends_ons(bz.dep_ids) %></td>
         <td align="center"> <span class="green_text"><%= bz[:VERSION] %></span></td>
         <td align="center"> <span class="green_text"><%= bz[:PM_ACKS] %></span></td>
         <td align="center"> <span class="green_text"><%= bz[:DEVEL_ACKS] %></span></td>
@@ -57,12 +53,8 @@
     </tr>
     <% @have_acks.each do |bz| %>
       <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
-        <td>
-        <a href="<%=AppConfig['bugzilla']['bug_display_uri']%><%= bz[:BZ_ID] %>"><%= bz[:BZ_ID] %></a>
-        </td>
-        <td>
-        <a href="<%=AppConfig['bugzilla']['bug_display_uri']%><%= bz[:DEP_ID] %>"><%= bz[:DEP_ID] %></a>
-        </td>
+        <td><%= url_to_bugzilla(bz.bz_id) %></td>
+        <td><%= url_to_bugzilla(bz[:DEP_ID]) %></td>
         <td><%= bz[:VERSION] %></td>
         <td><%= bz[:SUMMARY] %></td>
       </tr>
