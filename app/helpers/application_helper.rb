@@ -10,10 +10,11 @@ module ApplicationHelper
     link_to( bz_id, "#{AppConfig['bugzilla']['bug_display_uri']}#{bz_id}")
   end
      
-  def url_to_depends_ons(dep_ids)
-    dep_ids.collect { |dep_id|
-      link_to(dep_id, "#{AppConfig['bugzilla']['bug_display_uri']}#{dep_id}")
-    }.join(" ")
+  def url_to_bugzillas(bz_ids)
+    bz_ids = [bz_ids] unless bz_ids.is_a?(Array)
+    bz_ids.collect { |bz_id|
+      url_to_bugzilla(bz_id)
+    }.join(" ").html_safe
   end
      
 end
