@@ -14,6 +14,9 @@
       <th width="10" colspan="1" rowspan="2" scope="col">
         <%= sortable "version" %>
       </th>
+      <th width="10" colspan="1" rowspan="2" scope="col">
+        <%= "commit" %>
+      </th>
       <th class="list_line_even" width="100" colspan="4" scope="col">Has ACKs</th>
       <th width="600" colspan="1" rowspan="2" scope="col"> Summary</th>
     </tr>
@@ -29,6 +32,7 @@
         <td><%= url_to_bugzilla(bz.bz_id) %></td>
         <td><%= url_to_bugzillas(bz.dep_ids) %></td>
         <td align="center"> <span class="green_text"><%= bz[:VERSION] %></span></td>
+        <td><%= list_last_commit(bz) %></td>
         <td align="center"> <span class="green_text"><%= bz[:PM_ACKS] %></span></td>
         <td align="center"> <span class="green_text"><%= bz[:DEVEL_ACKS] %></span></td>
         <td align="center"> <span class="green_text"><%= bz[:QA_ACKS] %></span></td>
@@ -48,7 +52,8 @@
     <tr>
       <th><%= sortable "bz_id", "BZ ID" %></th>
       <th><%= sortable "dep_id", "DEP ID" %></th>
-      <th><%= sortable "version" %></th>
+      <th><%= "version" %></th>
+      <th><%= "commit" %></th>
       <th> Summary</th>
     </tr>
     <% @have_acks.each do |bz| %>
@@ -56,6 +61,7 @@
         <td><%= url_to_bugzilla(bz.bz_id) %></td>
         <td><%= url_to_bugzillas(bz.dep_ids) %></td>
         <td><%= bz[:VERSION] %></td>
+        <td><%= list_last_commit(bz) %></td>
         <td><%= bz[:SUMMARY] %></td>
       </tr>
     <% end %>
