@@ -22,11 +22,9 @@ module ApplicationHelper
     "5.2.0.37" # JJV Hard code for initial testing
   end
      
-  def available_versions()
-    result = Issue.uniq.pluck(:version) # JJV
-     # JJV ["cfme-5.2", "cfme-5.1.z", "cfme-5.3", "cfme-4.0.z", "NONE", "cfme-5.0.z", "cfme-5.2.z"] 
-    puts "JJV -070- available_versions() result ->#{result}<-"
-    Issue.uniq.pluck(:version)
+  def available_versions
+    versions = ["All"].concat(Issue.uniq.pluck(:version).sort)
+    versions.zip(versions) << "All"
   end
      
 end

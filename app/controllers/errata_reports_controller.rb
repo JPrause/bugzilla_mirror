@@ -4,15 +4,13 @@ class ErrataReportsController < ApplicationController
   # GET /errata_reports.json
   def index
 
-    puts "JJV -010- index params ->#{params}<-"
-    puts "JJV -011- index params[\"version\"] ->#{params["version"]}<-"
-
     @need_acks = []
     @have_acks = []
 
     # TODO: When where.not method becomes available in Rails 4 this
     #       logic could possibly be simplified.
     Issue.where(:status => "POST").order(sort_column + " " + sort_direction).order(:version).each do |bz|
+      if display_version?(bz, params["version"])
         entry = BugEntry.new(
           :BZ_ID      => bz.bz_id,
           :DEP_ID     => bz.dep_id,
@@ -29,6 +27,7 @@ class ErrataReportsController < ApplicationController
         else
           @need_acks << entry
         end
+      end
     end
 
     respond_to do |format|
@@ -45,8 +44,6 @@ class ErrataReportsController < ApplicationController
   end
 
   def display_version?(bz, requested_version)
-    puts "JJV -070- display_version? requested_version ->#{requested_version}<-"
-    
     if requested_version == "All" || requested_version == bz.version
       true
     else

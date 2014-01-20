@@ -15,7 +15,7 @@
         <%= sortable "version" %>
       </th>
       <th width="10" colspan="1" rowspan="2" scope="col">
-        <%= "commit" %>
+        <%= sortable "commit" %>
       </th>
       <th class="list_line_even" width="100" colspan="4" scope="col">Has ACKs</th>
       <th width="600" colspan="1" rowspan="2" scope="col"> Summary</th>
@@ -52,8 +52,8 @@
     <tr>
       <th><%= sortable "bz_id", "BZ ID" %></th>
       <th><%= sortable "dep_id", "DEP ID" %></th>
-      <th><%= "version" %></th>
-      <th><%= "commit" %></th>
+      <th><%= sortable "version" %></th>
+      <th><%= sortable "commit" %></th>
       <th> Summary</th>
     </tr>
     <% @have_acks.each do |bz| %>

@@ -1,23 +1,9 @@
 <h1>Issue Actions</h1>
 
-<p>
-  <b>Available Versions:</b>          
-  <%= available_versions %>
-</p>
-
-  
 <%= form_tag(errata_reports_path, method: "get") do %>
-  <%= label_tag(:q, "List Version:") %>
-  <select id="version_selected" multiple="multiple" name="version">
-    <option value="All">All</option>
-    <option value="cfme-4.0.z">cfme-4.0.z</option>
-    <option value="cfme-5.0.z">cfme-5.0.z</option>
-    <option value="cfme-5.1.z">cfme-5.1.z</option>
-    <option value="cfme-5.2">cfme-5.2</option>
-    <option value="cfme-5.2.z">cfme-5.2.z</option>
-    <option value="cfme-5.3">cfme-5.3</option>
-  </select>
   <%= submit_tag('Run The Errata Report') %>
+  <%= label_tag(:q, "Select Version:") %>
+  <%= select_tag(:version, options_for_select(available_versions)) %>
 <% end %>
 
 <br />
