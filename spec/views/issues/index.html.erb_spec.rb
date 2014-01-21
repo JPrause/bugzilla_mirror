@@ -6,6 +6,7 @@ describe "issues/index" do
     assign(:issues, [
       stub_model(Issue,
         :bz_id       => "Bz",
+        :dep_id      => "Dep",
         :status      => "Status",
         :summary     => "Summary",
         :assigned_to => "Assignee",
@@ -18,6 +19,7 @@ describe "issues/index" do
       ),
       stub_model(Issue,
         :bz_id       => "Bz",
+        :dep_id      => "Dep",
         :status      => "Status",
         :summary     => "Summary",
         :assigned_to => "Assignee",
