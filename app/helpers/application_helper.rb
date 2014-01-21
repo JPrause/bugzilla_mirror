@@ -18,8 +18,9 @@ module ApplicationHelper
   end
 
   def list_last_commit(bz)
+    # TODO Once available integrate with cfme_tools/commit_bug_verifier
     puts "JJV -090- list_last_commit(#{bz.bz_id}, #{bz.dep_ids})"
-    "5.2.0.37" # JJV Hard code for initial testing
+    "5.2.0.37" # JJV Hard coded for initial testing.
   end
      
   def available_versions
