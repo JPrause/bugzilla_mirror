@@ -12,9 +12,9 @@ module ApplicationHelper
      
   def url_to_bugzillas(bz_ids)
     bz_ids = [bz_ids] unless bz_ids.is_a?(Array)
-    bz_ids.collect { |bz_id|
+    bz_ids.collect do |bz_id|
       url_to_bugzilla(bz_id)
-    }.join(" ").html_safe
+    end.join(" ").html_safe
   end
 
   def list_last_commit(bz)
