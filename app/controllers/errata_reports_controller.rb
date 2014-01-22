@@ -11,16 +11,7 @@ class ErrataReportsController < ApplicationController
     #       logic could possibly be simplified.
     Issue.where(:status => "POST").order(sort_column + " " + sort_direction).order(:version).each do |bz|
       if display_version?(bz, params["version"])
-        entry = BugEntry.new(
-          :BZ_ID      => bz.bz_id,
-          :DEP_ID     => bz.dep_id,
-          :PM_ACKS    => bz.pm_ack == "+" ? "X" : " ",
-          :DEVEL_ACKS => bz.devel_ack == "+" ? "X" : " ",
-          :QA_ACKS    => bz.qa_ack == "+" ? "X" : " ",
-          :DOC_ACKS   => bz.doc_ack == "+" ? "X" : " ",
-          :VER_ACKS   => bz.version_ack == "+" ? "X" : " ",
-          :VERSION    => bz.version,
-          :SUMMARY    => bz.summary)
+        entry = BugEntry.new(bz)
 
         if has_all_acks?(entry)
           @have_acks << entry
@@ -39,7 +30,7 @@ class ErrataReportsController < ApplicationController
 
   private
   def has_all_acks?(entry)
-      a = [entry[:PM_ACKS], entry[:DEVEL_ACKS], entry[:QA_ACKS], entry[:DOC_ACKS], entry[:VER_ACKS]]
+      a = [entry.pm_acks, entry.devel_acks, entry.qa_acks, entry.doc_acks, entry.ver_acks]
       (a & a).size == 1
   end
 

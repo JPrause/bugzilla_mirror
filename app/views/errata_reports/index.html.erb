@@ -31,13 +31,13 @@
       <tr class="<%= cycle('tag_line_odd', 'tag_line_even') %>">
         <td><%= url_to_bugzilla(bz.bz_id) %></td>
         <td><%= url_to_bugzillas(bz.dep_ids) %></td>
-        <td align="center"> <span class="green_text"><%= bz[:VERSION] %></span></td>
+        <td align="center"> <span class="green_text"><%= bz.version %></span></td>
         <td><%= list_last_commit(bz) %></td>
-        <td align="center"> <span class="green_text"><%= bz[:PM_ACKS] %></span></td>
-        <td align="center"> <span class="green_text"><%= bz[:DEVEL_ACKS] %></span></td>
-        <td align="center"> <span class="green_text"><%= bz[:QA_ACKS] %></span></td>
-        <td align="center"> <span class="green_text"><%= bz[:DOC_ACKS] %></span></td>
-        <td><%= bz[:SUMMARY] %></td>
+        <td align="center"> <span class="green_text"><%= bz.pm_acks %></span></td>
+        <td align="center"> <span class="green_text"><%= bz.devel_acks %></span></td>
+        <td align="center"> <span class="green_text"><%= bz.qa_acks %></span></td>
+        <td align="center"> <span class="green_text"><%= bz.doc_acks %></span></td>
+        <td><%= bz.summary %></td>
       </tr>
     <% end %>
     </tbody>
@@ -60,9 +60,9 @@
       <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
         <td><%= url_to_bugzilla(bz.bz_id) %></td>
         <td><%= url_to_bugzillas(bz.dep_ids) %></td>
-        <td><%= bz[:VERSION] %></td>
+        <td><%= bz.version %></td>
         <td><%= list_last_commit(bz) %></td>
-        <td><%= bz[:SUMMARY] %></td>
+        <td><%= bz.summary %></td>
       </tr>
     <% end %>
     </tbody>
