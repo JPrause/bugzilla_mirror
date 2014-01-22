@@ -1,9 +1,9 @@
 require 'ruby_bugzilla'
 
 class Issue < ActiveRecord::Base
-  attr_accessible :assigned_to,  :bz_id, :dep_id, :status, :summary, :flag_version,
+  attr_accessible :assigned_to,  :bz_id, :depends_on_ids, :status, :summary, :flag_version,
     :version_ack, :devel_ack, :doc_ack, :pm_ack, :qa_ack
-  serialize :dep_id
+  serialize :depends_on_ids
 
   VERSION_REGEX=/cfme-[0-9]\.?[0-9]?\.?z?/
 
@@ -77,7 +77,7 @@ class Issue < ActiveRecord::Base
     output.each_line do |bz_line|
       # create a new issue object in the db for each BZ.
       bz_id                    = self.get_token_values(bz_line, "BZ_ID").join
-      dep_id                   = self.get_token_values(bz_line, "DEP_ID").join
+      depends_on_ids           = self.get_token_values(bz_line, "DEP_ID").join
       assigned_to              = self.get_token_values(bz_line, "ASSIGNED_TO").join
       summary                  = self.get_token_values(bz_line, "SUMMARY").join
       status                   = self.get_token_values(bz_line, "BUG_STATUS").join
@@ -88,17 +88,17 @@ class Issue < ActiveRecord::Base
       doc_ack_str, doc_ack     = self.get_from_flags(bz_line, /doc_ack/)
       version_str, version_ack = self.get_from_flags(bz_line, VERSION_REGEX)
 
-      self.create(:bz_id         => bz_id,
-                  :dep_id        => dep_id,
-                  :assigned_to   => assigned_to,
-                  :status        => status,
-                  :summary       => summary,
-                  :flag_version  => version_str,
-                  :version_ack   => version_ack,
-                  :devel_ack     => devel_ack,
-                  :doc_ack       => doc_ack,
-                  :pm_ack        => pm_ack,
-                  :qa_ack        => qa_ack)
+      self.create(:bz_id          => bz_id,
+                  :depends_on_ids => depends_on_ids,
+                  :assigned_to    => assigned_to,
+                  :status         => status,
+                  :summary        => summary,
+                  :flag_version   => version_str,
+                  :version_ack    => version_ack,
+                  :devel_ack      => devel_ack,
+                  :doc_ack        => doc_ack,
+                  :pm_ack         => pm_ack,
+                  :qa_ack         => qa_ack)
 
     end
     
