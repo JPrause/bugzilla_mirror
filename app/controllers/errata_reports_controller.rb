@@ -44,11 +44,7 @@ class ErrataReportsController < ApplicationController
   end
 
   def display_version?(bz, requested_version)
-    if requested_version == "All" || requested_version == bz.version
-      true
-    else
-      false
-    end
+    requested_version == "All" || requested_version == bz.version
   end
 
 end
