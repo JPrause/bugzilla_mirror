@@ -1,7 +1,7 @@
 require 'ruby_bugzilla'
 
 class Issue < ActiveRecord::Base
-  attr_accessible :assigned_to,  :bz_id, :dep_id, :status, :summary, :version,
+  attr_accessible :assigned_to,  :bz_id, :dep_id, :status, :summary, :flag_version,
     :version_ack, :devel_ack, :doc_ack, :pm_ack, :qa_ack
   serialize :dep_id
 
@@ -93,7 +93,7 @@ class Issue < ActiveRecord::Base
                   :assigned_to   => assigned_to,
                   :status        => status,
                   :summary       => summary,
-                  :version       => version_str,
+                  :flag_version  => version_str,
                   :version_ack   => version_ack,
                   :devel_ack     => devel_ack,
                   :doc_ack       => doc_ack,

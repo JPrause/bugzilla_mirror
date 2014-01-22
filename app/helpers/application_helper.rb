@@ -3,7 +3,7 @@ module ApplicationHelper
   def sortable(column, title = nil)
     title ||= column.titleize
     direction = column == params[:sort] && params[:direction] == "asc" ? "desc" : "asc"
-    link_to title, :sort => column, :direction => direction, :version => params[:version]
+    link_to title, :sort => column, :direction => direction, :flag_version => params[:flag_version]
   end
 
   def url_to_bugzilla(bz_id)
@@ -23,9 +23,9 @@ module ApplicationHelper
     "5.2.0.37" # JJV Hard coded for initial testing.
   end
      
-  def available_versions
-    versions = ["All"].concat(Issue.uniq.pluck(:version).sort)
-    versions.zip(versions) << "All"
+  def available_flag_versions
+    flag_versions = ["All"].concat(Issue.uniq.pluck(:flag_version).sort)
+    flag_versions.zip(flag_versions) << "All"
   end
      
 end

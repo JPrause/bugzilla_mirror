@@ -9,8 +9,8 @@ class ErrataReportsController < ApplicationController
 
     # TODO: When where.not method becomes available in Rails 4 this
     #       logic could possibly be simplified.
-    Issue.where(:status => "POST").order(sort_column + " " + sort_direction).order(:version).each do |bz|
-      if display_version?(bz, params["version"])
+    Issue.where(:status => "POST").order(sort_column + " " + sort_direction).order(:flag_version).each do |bz|
+      if display_flag_version?(bz, params["flag_version"])
         entry = BugEntry.new(bz)
 
         if entry.has_all_acks?
@@ -29,8 +29,8 @@ class ErrataReportsController < ApplicationController
   end
 
   private
-  def display_version?(bz, requested_version)
-    requested_version == "All" || requested_version == bz.version
+  def display_flag_version?(bz, requested_flag_version)
+    requested_flag_version == "All" || requested_flag_version == bz.flag_version
   end
 
 end

@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   private
   def sort_column
-    Issue.column_names.include?(params[:sort]) ? params[:sort] : "version"
+    Issue.column_names.include?(params[:sort]) ? params[:sort] : "flag_version"
   end
 
   private

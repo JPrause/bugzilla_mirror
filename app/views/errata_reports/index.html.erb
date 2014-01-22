@@ -12,7 +12,7 @@
         <%= sortable "dep_id", "Dep Id" %>
       </th>
       <th width="10" colspan="1" rowspan="2" scope="col">
-        <%= sortable "version" %>
+        <%= sortable "flag_version" %>
       </th>
       <th width="10" colspan="1" rowspan="2" scope="col">
         <%= sortable "commit" %>
@@ -31,7 +31,7 @@
       <tr class="<%= cycle('tag_line_odd', 'tag_line_even') %>">
         <td><%= url_to_bugzilla(bz.bz_id) %></td>
         <td><%= url_to_bugzillas(bz.dep_ids) %></td>
-        <td align="center"> <span class="green_text"><%= bz.version %></span></td>
+        <td align="center"> <span class="green_text"><%= bz.flag_version %></span></td>
         <td><%= list_last_commit(bz) %></td>
         <td align="center"> <span class="green_text"><%= bz.pm_acks %></span></td>
         <td align="center"> <span class="green_text"><%= bz.devel_acks %></span></td>
@@ -52,7 +52,7 @@
     <tr>
       <th><%= sortable "bz_id", "BZ ID" %></th>
       <th><%= sortable "dep_id", "DEP ID" %></th>
-      <th><%= sortable "version" %></th>
+      <th><%= sortable "flag_version" %></th>
       <th><%= sortable "commit" %></th>
       <th> Summary</th>
     </tr>
@@ -60,7 +60,7 @@
       <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
         <td><%= url_to_bugzilla(bz.bz_id) %></td>
         <td><%= url_to_bugzillas(bz.dep_ids) %></td>
-        <td><%= bz.version %></td>
+        <td><%= bz.flag_version %></td>
         <td><%= list_last_commit(bz) %></td>
         <td><%= bz.summary %></td>
       </tr>

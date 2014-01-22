@@ -2,8 +2,8 @@
 
 <%= form_tag(errata_reports_path, method: "get") do %>
   <%= submit_tag('Run The Errata Report') %>
-  <%= label_tag(:q, "Select Version:") %>
-  <%= select_tag(:version, options_for_select(available_versions)) %>
+  <%= label_tag(:q, "Select Flag Version:") %>
+  <%= select_tag(:flag_version, options_for_select(available_flag_versions)) %>
 <% end %>
 
 <br />
@@ -29,7 +29,7 @@
 <table>
   <tr>
     <th align="left"><%= sortable "bz_id", "Bz Id" %></th>
-    <th align="left"><%= sortable "version" %></th>
+    <th align="left"><%= sortable "flag_version" %></th>
     <th align="left"><%= sortable "status" %></th>
     <th align="left"><%= sortable "assigned_to", "Assignee" %></th>
     <th align="left">Summary</th>
@@ -39,7 +39,7 @@
 <% @issues.each do |issue| %>
   <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
     <td><%= url_to_bugzilla(issue.bz_id) %></td>
-    <td><%= issue.version %></td>
+    <td><%= issue.flag_version %></td>
     <td><%= issue.status %></td>
     <td><%= issue.assigned_to %></td>
     <td><%= issue.summary %></td>

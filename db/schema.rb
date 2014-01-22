@@ -11,21 +11,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140117173933) do
+ActiveRecord::Schema.define(:version => 20140122205815) do
 
   create_table "issues", :force => true do |t|
     t.string   "bz_id"
     t.string   "status"
     t.string   "assigned_to"
     t.string   "summary"
-    t.string   "version"
+    t.string   "flag_version"
     t.string   "version_ack"
     t.string   "pm_ack"
     t.string   "devel_ack"
     t.string   "qa_ack"
     t.string   "doc_ack"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
     t.text     "dep_id"
   end
 
