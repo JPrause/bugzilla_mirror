@@ -13,7 +13,7 @@ class ErrataReportsController < ApplicationController
       if display_version?(bz, params["version"])
         entry = BugEntry.new(bz)
 
-        if has_all_acks?(entry)
+        if entry.has_all_acks?
           @have_acks << entry
         else
           @need_acks << entry
@@ -29,11 +29,6 @@ class ErrataReportsController < ApplicationController
   end
 
   private
-  def has_all_acks?(entry)
-      a = [entry.pm_acks, entry.devel_acks, entry.qa_acks, entry.doc_acks, entry.ver_acks]
-      (a & a).size == 1
-  end
-
   def display_version?(bz, requested_version)
     requested_version == "All" || requested_version == bz.version
   end
