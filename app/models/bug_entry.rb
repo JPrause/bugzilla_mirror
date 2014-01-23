@@ -3,7 +3,7 @@ class BugEntry
 
   def initialize(bz) 
     @bz_id          = bz.bz_id
-    @depends_on_ids = bz.depends_on_ids == "[]" ? "" :  bz.depends_on_ids.to_s.split(",")                
+    @depends_on_ids = bz.depends_on_ids == "[]" ? "" :  bz.depends_on_ids.to_s.split(",")
     @pm_acks        = display_for_ack(bz.pm_ack)
     @devel_acks     = display_for_ack(bz.devel_ack)
     @qa_acks        = display_for_ack(bz.qa_ack)
@@ -14,8 +14,7 @@ class BugEntry
   end
 
   def has_all_acks?
-      a = [pm_acks, devel_acks, qa_acks, doc_acks, ver_acks]
-      (a & a).size == 1
+    ![pm_acks, devel_acks, qa_acks, doc_acks, ver_acks].include?(" ")
   end
 
   private
