@@ -10,6 +10,13 @@ module CFMEGit
       extract_bz_ids
     end
 
+    def attributes
+      {
+        :branch => branch,
+        :sha_id => sha_id
+      }
+    end
+
     def extract_bz_ids
       grit_commit.message.each_line do |line|
         if line =~ /show_bug.cgi\?id=([0-9]+)/

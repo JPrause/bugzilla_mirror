@@ -5,6 +5,8 @@ class Issue < ActiveRecord::Base
     :version_ack, :devel_ack, :doc_ack, :pm_ack, :qa_ack
   serialize :depends_on_ids
 
+  has_and_belongs_to_many :commits
+
   VERSION_REGEX=/cfme-[0-9]\.?[0-9]?\.?z?/
 
   def self.update_from_bz
