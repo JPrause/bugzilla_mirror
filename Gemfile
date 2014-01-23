@@ -49,3 +49,4 @@ group :test, :development do
   gem 'rspec-rails'
 end
 
+gem 'foreman'
