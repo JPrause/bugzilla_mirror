@@ -5,6 +5,16 @@ common: &common
     username: calvin
     password: hobbes
 
+  cfme_git:
+    repo_path: "/Users/Sheldon_Cooper/Code/cfme/"
+    releases:
+      cfme-5.2.z:
+        - "production/5.2.1.x"
+        - "upstream/master"
+      cfme-5.3:
+        - "production/5.3.0.x"
+        - "upstream/master"
+
 development:
   <<: *common
 
