@@ -15,7 +15,8 @@ class IssuesController < ApplicationController
   # GET /issues/update_all
   # GET /issues/update_all.json
   def update_all
-    @issue_update_all_result = Issue.update_from_bz
+    Issue.update_from_bz
+    Commit.update_from_git!
   end
 
 end

@@ -4,6 +4,7 @@ class Commit < ActiveRecord::Base
   attr_accessible :branch, :sha_id
 
   def self.update_from_git!
+    puts "Invoked: #{__method__}"
     raise ArgumentError, "cfme git checkout not defined in config/cfme_bz.yml" unless cfme_git_configuration["repo_path"]
     raise ArgumentError, "cfme git releases not defined in config/cfme_bz.yml" unless cfme_git_configuration["releases"]
     self.destroy_all
