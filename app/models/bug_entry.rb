@@ -1,9 +1,12 @@
 class BugEntry
-  attr_accessor :bz_id, :depends_on_ids, :pm_acks, :devel_acks, :qa_acks, :doc_acks, :ver_acks, :flag_version, :summary
+  attr_accessor :bz_id, :depends_on_ids, :commits
+  attr_accessor :pm_acks, :devel_acks, :qa_acks, :doc_acks, :ver_acks
+  attr_accessor :flag_version, :summary
 
-  def initialize(bz) 
+  def initialize(bz)
     @bz_id          = bz.bz_id
     @depends_on_ids = bz.depends_on_ids == "[]" ? "" :  bz.depends_on_ids.to_s.split(",")
+    @commits        = bz.commits
     @pm_acks        = display_for_ack(bz.pm_ack)
     @devel_acks     = display_for_ack(bz.devel_ack)
     @qa_acks        = display_for_ack(bz.qa_ack)
@@ -21,6 +24,4 @@ class BugEntry
   def display_for_ack(ack)
     ack == "+" ? "X" : " "
   end
-    
-
 end

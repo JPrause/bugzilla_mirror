@@ -18,9 +18,20 @@ module ApplicationHelper
   end
 
   def list_last_commit(bz)
-    # TODO Once available integrate with cfme_tools/commit_bug_verifier
-    puts "JJV -090- list_last_commit(#{bz.bz_id}, #{bz.depends_on_ids})"
-    "5.2.0.37" # JJV Hard coded for initial testing.
+    depends_on_commits = Issue.where(:bz_id => bz.depends_on_ids).collect {|i| i.commits.all}.flatten
+    commits = bz.commits.all | depends_on_commits
+    hash = commits.each_with_object({}) do |c, hash|
+      hash[c.branch] ||= 0
+      hash[c.branch] += 1
+    end
+
+    # TODO: Cleanup this formatting and double looping...
+    string = ""
+    hash.each do |k,v|
+      string << "#{k}: #{v}\n"
+    end
+
+    string
   end
      
   def available_flag_versions
