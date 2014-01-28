@@ -11,14 +11,15 @@
 /db/*.sqlite3
 
 # Ignore all logfiles and tempfiles.
-/log/*.log
+/log/**/*.log
 /tmp
 
-# Ignore nfs files
-.nfs*
-
-# Ignore vim swap file
-*.swp
+# Ignore binstubs
+/bin
 
 # Ignore live config file
 cfme_bz.yml*
+
+# Ignore production artifacts
+/public/assets
+
