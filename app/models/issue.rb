@@ -10,8 +10,6 @@ class Issue < ActiveRecord::Base
   VERSION_REGEX=/cfme-[0-9]\.?[0-9]?\.?z?/
 
   def self.update_from_bz
-    puts "Invoked: #{__method__}"
-
     raise "Error no username specified in config/cfme_bz.yml" unless AppConfig['bugzilla']['username']
     raise "Error no password specified in config/cfme_bz.yml" unless AppConfig['bugzilla']['password']
 
