@@ -18,7 +18,7 @@ class Commit < ActiveRecord::Base
     processor = CFMEGit::Processor.new(repo_path, branch)
     processor.commits.each do |commit|
       c = Commit.new(commit.attributes)
-      c.issues = Issue.where(:bz_id => commit.bz_ids).all
+      c.issues = Issue.where(:bz_id => commit.bz_ids).all unless commit.bz_ids.empty?
       c.save!
     end
   end
