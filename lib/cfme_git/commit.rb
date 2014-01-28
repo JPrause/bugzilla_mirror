@@ -2,6 +2,8 @@ module CFMEGit
   class Commit
     attr_reader :bz_ids, :grit_commit, :branch, :sha_id
 
+    BUG_URL_REGEX = %r{^\s*https://bugzilla\.redhat\.com/show_bug\.cgi\?id=(?<bug_id>\d+)$}
+
     def initialize(grit_commit, branch)
       @grit_commit = grit_commit
       @branch = branch
@@ -19,9 +21,8 @@ module CFMEGit
 
     def extract_bz_ids
       grit_commit.message.each_line do |line|
-        if line =~ /show_bug.cgi\?id=([0-9]+)/
-          @bz_ids << $1
-        end
+        match = BUG_URL_REGEX.match(line)
+        @bz_ids << match[:bug_id] if match
       end
     end
   end
