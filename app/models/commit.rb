@@ -16,7 +16,7 @@ class Commit < ActiveRecord::Base
 
   def self.update_git_branch(branch)
     processor = CFMEGit::Processor.new(repo_path, branch)
-    processor.commits_referencing_bz_urls.each do |commit|
+    processor.commits.each do |commit|
       c = Commit.new(commit.attributes)
       c.issues = Issue.where(:bz_id => commit.bz_ids).all
       c.save!

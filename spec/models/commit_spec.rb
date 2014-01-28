@@ -29,7 +29,7 @@ describe Commit do
       it "normal case" do
         double1 = double(:attributes => {}, :bz_ids => [])
 
-        CFMEGit::Processor.any_instance.stub(:commits_referencing_bz_urls => [double1])
+        CFMEGit::Processor.any_instance.stub(:commits => [double1])
 
         expect { described_class.update_from_git! }.to change{ Commit.count }.by(2)
       end
@@ -39,7 +39,7 @@ describe Commit do
         double1 = double(:attributes => {:branch => "one", :sha_id => "123"}, :bz_ids => [])
         double2 = double(:attributes => {:branch => "two", :sha_id => "123"}, :bz_ids => [])
 
-        CFMEGit::Processor.any_instance.stub(:commits_referencing_bz_urls => [double1])
+        CFMEGit::Processor.any_instance.stub(:commits => [double1])
 
         expect { described_class.update_from_git! }.to change{ Commit.count }.by(2)
       end
@@ -50,7 +50,7 @@ describe Commit do
       double1 = double(:attributes => {}, :bz_ids => [1000])
       double2 = double(:attributes => {}, :bz_ids => [1000])
 
-      CFMEGit::Processor.any_instance.stub(:commits_referencing_bz_urls => [double1, double2])
+      CFMEGit::Processor.any_instance.stub(:commits => [double1, double2])
       described_class.update_from_git!
 
       described_class.count.should == 2
@@ -65,7 +65,7 @@ describe Commit do
       issue2   = Issue.create(:bz_id => 2000)
       double1  = double(:attributes => {}, :bz_ids => [1000, 2000])
 
-      CFMEGit::Processor.any_instance.stub(:commits_referencing_bz_urls => [double1])
+      CFMEGit::Processor.any_instance.stub(:commits => [double1])
       described_class.update_from_git!
 
       described_class.count.should == 1
