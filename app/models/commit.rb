@@ -8,15 +8,19 @@ class Commit < ActiveRecord::Base
     raise ArgumentError, "cfme git releases not defined in config/cfme_bz.yml" unless cfme_git_configuration["releases"]
     self.destroy_all
 
-    branches  = cfme_git_configuration["releases"].collect {|_, branches| branches}.flatten.uniq
-    branches.each do |branch|
-      update_git_branch(branch)
+    processor = CFMEGit::Processor.new(repo_path)
+    common_branches = processor.branch_names & release_branches
+    common_branches.each do |branch|
+      update_git_branch(processor, branch)
     end
   end
 
-  def self.update_git_branch(branch)
-    processor = CFMEGit::Processor.new(repo_path, branch)
-    processor.commits.each do |commit|
+  def self.release_branches
+    cfme_git_configuration["releases"].collect {|_, branches| branches}.flatten.compact.uniq
+  end
+
+  def self.update_git_branch(processor, branch)
+    processor.commits(branch).each do |commit|
       c = Commit.new(commit.attributes)
       c.issues = Issue.where(:bz_id => commit.bz_ids).all unless commit.bz_ids.empty?
       c.save!

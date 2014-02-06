@@ -11,7 +11,8 @@ describe Commit do
       }
       described_class.stub(:cfme_git_configuration => @config)
 
-      Grit::Repo.stub(:new)
+      CFMEGit::Processor.any_instance.stub(:branch_names => ["5_2_release"])
+      Rugged::Repository.stub(:new)
     end
 
     context "two branches" do
@@ -24,6 +25,7 @@ describe Commit do
           }
         }
         described_class.stub(:cfme_git_configuration => @config)
+        CFMEGit::Processor.any_instance.stub(:branch_names => %w(5_2_release 5_3_release))
       end
 
       it "normal case" do
