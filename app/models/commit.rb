@@ -16,7 +16,7 @@ class Commit < ActiveRecord::Base
   end
 
   def self.release_branches
-    cfme_git_configuration["releases"].collect {|_, branches| branches}.flatten.compact.uniq
+    cfme_git_configuration["releases"].values.flatten.compact.uniq
   end
 
   def self.update_git_branch(processor, branch)
