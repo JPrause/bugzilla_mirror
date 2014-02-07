@@ -14,9 +14,9 @@ module CFMEGit
 
     def commits(branch)
       result = []
-      repo.walk(branch).each_with_index do |rugged_commit, index|
+      repo.walk(branch).each_with_index do |native_commit, index|
         break if index >= MAX_COMMITS
-        result << Commit.new(rugged_commit, branch)
+        result << Commit.new(native_commit, branch)
       end
       result
     end
