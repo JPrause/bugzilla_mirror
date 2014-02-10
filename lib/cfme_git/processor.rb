@@ -2,7 +2,7 @@ module CFMEGit
   class Processor
     attr_reader :repo
 
-    MAX_COMMITS = 150
+    MAX_COMMITS = 400
 
     def initialize(code_location)
       @repo = Rugged::Repository.new(code_location)
