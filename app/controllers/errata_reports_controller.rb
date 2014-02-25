@@ -11,7 +11,7 @@ class ErrataReportsController < ApplicationController
       if display_flag_version?(bz, params["flag_version"])
         entry = BugEntry.new(bz)
 
-        if entry.has_all_acks?
+        if entry.all_acks?
           @have_acks << entry
         else
           @need_acks << entry
