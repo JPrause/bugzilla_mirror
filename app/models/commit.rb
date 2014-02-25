@@ -4,9 +4,11 @@ class Commit < ActiveRecord::Base
   attr_accessible :branch, :sha_id
 
   def self.update_from_git!
-    raise ArgumentError, "cfme git checkout not defined in config/cfme_bz.yml" unless cfme_git_configuration["repo_path"]
-    raise ArgumentError, "cfme git releases not defined in config/cfme_bz.yml" unless cfme_git_configuration["releases"]
-    self.destroy_all
+    raise ArgumentError, "repo_path not defined in config/cfme_bz.yml" unless cfme_git_configuration["repo_path"]
+
+    raise ArgumentError, "releases not defined in config/cfme_bz.yml" unless cfme_git_configuration["releases"]
+
+    destroy_all
 
     processor = CFMEGit::Processor.new(repo_path)
     common_branches = processor.branch_names & release_branches

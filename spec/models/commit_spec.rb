@@ -33,17 +33,17 @@ describe Commit do
 
         CFMEGit::Processor.any_instance.stub(:commits => [double1])
 
-        expect { described_class.update_from_git! }.to change{ Commit.count }.by(2)
+        expect { described_class.update_from_git! }.to change { Commit.count }.by(2)
       end
 
-      #TODO: Should we really create two commits with the same sha1?
+      # TODO: Should we really create two commits with the same sha1?
       it "the same commit sha1 is on two branches" do
         double1 = double(:attributes => {:branch => "one", :sha_id => "123"}, :bz_ids => [])
-        double2 = double(:attributes => {:branch => "two", :sha_id => "123"}, :bz_ids => [])
+        double(:attributes => {:branch => "two", :sha_id => "123"}, :bz_ids => [])
 
         CFMEGit::Processor.any_instance.stub(:commits => [double1])
 
-        expect { described_class.update_from_git! }.to change{ Commit.count }.by(2)
+        expect { described_class.update_from_git! }.to change { Commit.count }.by(2)
       end
     end
 
@@ -55,11 +55,11 @@ describe Commit do
       CFMEGit::Processor.any_instance.stub(:commits => [double1, double2])
       described_class.update_from_git!
 
-      described_class.count.should == 2
+      expect(described_class.count).to eq 2
 
       commits = described_class.all
-      commits[0].issues.should == [issue1]
-      commits[1].issues.should == [issue1]
+      expect(commits[0].issues).to eq [issue1]
+      expect(commits[1].issues).to eq [issue1]
     end
 
     it "one commit referencing multiple issues" do
@@ -70,11 +70,11 @@ describe Commit do
       CFMEGit::Processor.any_instance.stub(:commits => [double1])
       described_class.update_from_git!
 
-      described_class.count.should == 1
+      expect(described_class.count).to eq 1
       commit = described_class.first
 
-      issue1.commits.should == [commit]
-      issue2.commits.should == [commit]
+      expect(issue1.commits).to eq [commit]
+      expect(issue2.commits).to eq [commit]
     end
   end
 end

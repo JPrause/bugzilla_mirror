@@ -1,9 +1,7 @@
 class ErrataReportsController < ApplicationController
-
   # GET /errata_reports
   # GET /errata_reports.json
   def index
-
     @need_acks = []
     @have_acks = []
 
@@ -25,12 +23,11 @@ class ErrataReportsController < ApplicationController
       format.html
       format.json { head :no_content }
     end
-
   end
 
   private
+
   def display_flag_version?(bz, requested_flag_version)
     requested_flag_version == "All" || requested_flag_version == bz.flag_version
   end
-
 end

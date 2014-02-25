@@ -5,30 +5,30 @@ describe "issues/index" do
   before(:each) do
     assign(:issues, [
       stub_model(Issue,
-        :bz_id          => "Bz",
-        :depends_on_ids => "Dep",
-        :status         => "Status",
-        :summary        => "Summary",
-        :assigned_to    => "Assignee",
-        :flag_version   => "Version",
-        :version_ack    => "Version Ack",
-        :pm_ack         => "Pm Ack",
-        :devel_ack      => "Devel Ack",
-        :qa_ack         => "Qa Ack",
-        :doc_ack        => "Doc Ack"
+                 :bz_id          => "Bz",
+                 :depends_on_ids => "Dep",
+                 :status         => "Status",
+                 :summary        => "Summary",
+                 :assigned_to    => "Assignee",
+                 :flag_version   => "Version",
+                 :version_ack    => "Version Ack",
+                 :pm_ack         => "Pm Ack",
+                 :devel_ack      => "Devel Ack",
+                 :qa_ack         => "Qa Ack",
+                 :doc_ack        => "Doc Ack"
       ),
       stub_model(Issue,
-        :bz_id          => "Bz",
-        :depends_on_ids => "Dep",
-        :status         => "Status",
-        :summary        => "Summary",
-        :assigned_to    => "Assignee",
-        :flag_version   => "Version",
-        :version_ack    => "Version Ack",
-        :pm_ack         => "Pm Ack",
-        :devel_ack      => "Devel Ack",
-        :qa_ack         => "Qa Ack",
-        :doc_ack        => "Doc Ack"
+                 :bz_id          => "Bz",
+                 :depends_on_ids => "Dep",
+                 :status         => "Status",
+                 :summary        => "Summary",
+                 :assigned_to    => "Assignee",
+                 :flag_version   => "Version",
+                 :version_ack    => "Version Ack",
+                 :pm_ack         => "Pm Ack",
+                 :devel_ack      => "Devel Ack",
+                 :qa_ack         => "Qa Ack",
+                 :doc_ack        => "Doc Ack"
       )
     ])
   end

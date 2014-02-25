@@ -16,11 +16,12 @@ class BugEntry
     @summary        = bz.summary
   end
 
-  def has_all_acks?
+  def all_acks?
     ![pm_acks, devel_acks, qa_acks, doc_acks, ver_acks].include?(" ")
   end
 
   private
+
   def display_for_ack(ack)
     ack == "+" ? "X" : " "
   end
