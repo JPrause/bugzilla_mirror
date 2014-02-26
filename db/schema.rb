@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20_140_123_205_127) do
+ActiveRecord::Schema.define(:version => 20140123205127) do
 
   create_table "commits", :force => true do |t|
     t.string   "branch"
