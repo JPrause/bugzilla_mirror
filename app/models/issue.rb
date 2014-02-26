@@ -10,12 +10,12 @@ class Issue < ActiveRecord::Base
   VERSION_REGEX = /cfme-[0-9]\.?[0-9]?\.?z?/
 
   def self.update_from_bz
-    raise "Error no username specified in config/cfme_bz.yml" unless AppConfig['bugzilla']['username']
-    raise "Error no password specified in config/cfme_bz.yml" unless AppConfig['bugzilla']['password']
+    raise "Error no username specified in config/cfme_bz.yml" unless APP_CONFIG['bugzilla']['username']
+    raise "Error no password specified in config/cfme_bz.yml" unless APP_CONFIG['bugzilla']['password']
 
-    bz = RubyBugzilla.new(AppConfig['bugzilla']['uri'],
-                          AppConfig['bugzilla']['username'],
-                          AppConfig['bugzilla']['password'])
+    bz = RubyBugzilla.new(APP_CONFIG['bugzilla']['uri'],
+                          APP_CONFIG['bugzilla']['username'],
+                          APP_CONFIG['bugzilla']['password'])
 
     output_format = "BZ_ID: %{id} BZ_ID_END ASSIGNED_TO: %{assigned_to} ASSIGNED_TO_END "
     output_format << "SUMMARY: %{summary} SUMMARY_END "
@@ -26,7 +26,7 @@ class Issue < ActiveRecord::Base
     output_format << "DEP_ID: %{dependson} DEP_ID_END"
 
     output = bz.query(
-      :product      => AppConfig['bugzilla']['product'],
+      :product      => APP_CONFIG['bugzilla']['product'],
       :bug_status   => "OPEN",
       :flag         => "",
       :outputformat => output_format

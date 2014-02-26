@@ -34,6 +34,6 @@ class Commit < ActiveRecord::Base
   end
 
   def self.cfme_git_configuration
-    AppConfig["cfme_git"]
+    APP_CONFIG["cfme_git"]
   end
 end

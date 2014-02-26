@@ -6,7 +6,7 @@ module ApplicationHelper
   end
 
   def url_to_bugzilla(bz_id)
-    link_to(bz_id, "#{AppConfig['bugzilla']['bug_display_uri']}#{bz_id}")
+    link_to(bz_id, "#{APP_CONFIG['bugzilla']['bug_display_uri']}#{bz_id}")
   end
 
   def url_to_bugzillas(bz_ids)

@@ -6,7 +6,7 @@ CfmeBz::Application.routes.draw do
       get 'update_all'
     end
   end
-  
+
   resources :errata_reports do
     collection do
       get 'index'

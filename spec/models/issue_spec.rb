@@ -5,19 +5,19 @@ describe Issue do
   context "#update_from_bz" do
 
     it "with no username specified" do
-      stub_const("AppConfig", "bugzilla" => {"password" => "hobbes"})
+      stub_const("APP_CONFIG", "bugzilla" => {"password" => "hobbes"})
       expect { Issue.update_from_bz }.to raise_error(RuntimeError,
                                                      "Error no username specified in config/cfme_bz.yml")
     end
 
     it "with no password specified" do
-      stub_const("AppConfig", "bugzilla" => {"username" => "calvin"})
+      stub_const("APP_CONFIG", "bugzilla" => {"username" => "calvin"})
       expect { Issue.update_from_bz }.to raise_error(RuntimeError,
                                                      "Error no password specified in config/cfme_bz.yml")
     end
 
     it "with no bugzilla query output" do
-      stub_const("AppConfig", "bugzilla" => {"username" => "calvin", "password" => "hobbes"})
+      stub_const("APP_CONFIG", "bugzilla" => {"username" => "calvin", "password" => "hobbes"})
       allow(RubyBugzilla).to receive(:new).and_return(double('bugzilla', :query => ""))
       Issue.update_from_bz
       expect(Issue.order(:id).last.nil?).to eq  true
@@ -31,7 +31,7 @@ describe Issue do
       output << "FLAGS: cfme-5.2?,pm_ack+,devel_ack?,qa_ack? FLAGS_END "
       output << "KEYWORDS: stone KEYWORDS_END"
 
-      stub_const("AppConfig", "bugzilla" => {"username" => "calvin", "password" => "hobbes"})
+      stub_const("APP_CONFIG", "bugzilla" => {"username" => "calvin", "password" => "hobbes"})
       allow(RubyBugzilla).to receive(:new).and_return(double('bugzilla', :query => output))
       Issue.update_from_bz
       expect(Issue.order(:id).last.bz_id).to eq  "P30"
@@ -45,7 +45,7 @@ describe Issue do
       output << "FLAGS: flake FLAGS_END "
       output << "KEYWORDS: stone KEYWORDS_END"
 
-      stub_const("AppConfig", "bugzilla" => {"username" => "calvin", "password" => "hobbes"})
+      stub_const("APP_CONFIG", "bugzilla" => {"username" => "calvin", "password" => "hobbes"})
       allow(RubyBugzilla).to receive(:new).and_return(double('bugzilla', :query => output))
       Issue.update_from_bz
       expect(Issue.order(:id).last.bz_id).to eq  "02032003"
