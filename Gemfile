@@ -51,3 +51,9 @@ group :test, :development do
 end
 
 gem 'foreman'
+
+# Sidekiq specific gems
+gem 'sidekiq'
+gem 'sinatra', require: false
+gem 'slim'
+

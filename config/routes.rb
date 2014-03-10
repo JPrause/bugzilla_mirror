@@ -1,4 +1,7 @@
+require 'sidekiq/web'
+
 CfmeBz::Application.routes.draw do
+  mount Sidekiq::Web, at: "/sidekiq"
 
   resources :issues do
     collection do
