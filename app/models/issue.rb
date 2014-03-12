@@ -1,104 +1,153 @@
-require 'ruby_bugzilla'
-
 class Issue < ActiveRecord::Base
-  attr_accessible :assigned_to,  :bz_id, :depends_on_ids, :status, :summary, :flag_version,
-                  :version_ack, :devel_ack, :doc_ack, :pm_ack, :qa_ack
-  serialize :depends_on_ids
+  ATTRIBUTES = [:bug_id,
+                :bug_type,
+                :actual_time,
+                :alias,
+                :assigned_to,
+                :bug_group,
+                :build_id,
+                :category,
+                :cc,
+                :cc_list_accessible,
+                :classification,
+                :commenter,
+                :component,
+                :created_by,
+                :cust_facing,
+                :days_elapsed,
+                :deadline,
+                :doc_type,
+                :docs_contact,
+                :documentation_action,
+                :environment,
+                :estimated_time,
+                :everconfirmed,
+                :fixed_in,
+                :flags,
+                :internal_whiteboard,
+                :keywords,
+                :layered_products,
+                :mount_type,
+                :op_sys,
+                :owner_idle_time,
+                :partner,
+                :percentage_complete,
+                :pgm_internal,
+                :platform,
+                :pm_score,
+                :priority,
+                :product,
+                :qa_contact,
+                :qa_whiteboard,
+                :qe_conditional_nak,
+                :regression_status,
+                :release_notes,
+                :remaining_time,
+                :reporter_accessible,
+                :reporter_realname,
+                :resolution,
+                :rh_sub_components,
+                :see_also,
+                :severity,
+                :status,
+                :story_points,
+                :summary,
+                :tag,
+                :target_milestone,
+                :target_release,
+                :url,
+                :vcs_commits,
+                :verified,
+                :verified_branch,
+                :version,
+                :view,
+                :votes,
+                :whiteboard,
+                :work_time]
+
+  attr_accessible(*ATTRIBUTES)
+
+  has_and_belongs_to_many :dependents,
+                          :class_name              => "Issue",
+                          :join_table              => "issue_dependencies",
+                          :foreign_key             => "issue_id",
+                          :association_foreign_key => "dependent_id"
+
+  has_and_belongs_to_many :depended_by,
+                          :class_name              => "Issue",
+                          :join_table              => "issue_dependencies",
+                          :foreign_key             => "dependent_id",
+                          :association_foreign_key => "issue_id"
+
+  has_and_belongs_to_many :blocked_issues,
+                          :class_name              => "Issue",
+                          :join_table              => "issue_blocks",
+                          :foreign_key             => "issue_id",
+                          :association_foreign_key => "blocked_issue_id"
+
+  has_and_belongs_to_many :blocked_by,
+                          :class_name              => "Issue",
+                          :join_table              => "issue_blocks",
+                          :foreign_key             => "blocked_issue_id",
+                          :association_foreign_key => "issue_id"
+
+  has_and_belongs_to_many :duplicates,
+                          :class_name              => "Issue",
+                          :join_table              => "issue_duplicates",
+                          :foreign_key             => "issue_id",
+                          :association_foreign_key => "duplicate_id"
+
+  has_and_belongs_to_many :duplicated_by,
+                          :class_name              => "Issue",
+                          :join_table              => "issue_duplicates",
+                          :foreign_key             => "duplicate_id",
+                          :association_foreign_key => "issue_id"
+
+  has_many :comments, :dependent => :destroy
 
   has_and_belongs_to_many :commits
 
-  VERSION_REGEX = /cfme-[0-9]\.?[0-9]?\.?z?/
+  before_destroy do
+    dependents.clear
+    depended_by.clear
 
-  def self.update_from_bz
-    raise "Error no username specified in config/cfme_bz.yml" unless APP_CONFIG['bugzilla']['username']
-    raise "Error no password specified in config/cfme_bz.yml" unless APP_CONFIG['bugzilla']['password']
+    blocked_issues.clear
+    blocked_by.clear
 
-    bz = RubyBugzilla.new(APP_CONFIG['bugzilla']['uri'],
-                          APP_CONFIG['bugzilla']['username'],
-                          APP_CONFIG['bugzilla']['password'])
-
-    output_format = "BZ_ID: %{id} BZ_ID_END ASSIGNED_TO: %{assigned_to} ASSIGNED_TO_END "
-    output_format << "SUMMARY: %{summary} SUMMARY_END "
-    output_format << "BUG_STATUS: %{bug_status} BUG_STATUS_END "
-    output_format << "VERSION: %{version} VERSION_END "
-    output_format << "FLAGS: %{flags} FLAGS_END "
-    output_format << "KEYWORDS: %{keywords} KEYWORDS_END "
-    output_format << "DEP_ID: %{dependson} DEP_ID_END"
-
-    output = bz.query(
-      :product      => APP_CONFIG['bugzilla']['product'],
-      :bug_status   => "OPEN",
-      :flag         => "",
-      :outputformat => output_format
-    )
-    recreate_all_issues(output)
-    output
+    duplicates.clear
+    duplicated_by.clear
   end
 
-  private
+  ASSOCIATIONS = {
+    :depends_on   => :dependents,
+    :blocks       => :blocked_issues,
+    :duplicate_id => :duplicates
+  }
 
-  def self.get_from_flags(str, regex)
-    flags = get_token_values(str, "FLAGS").join
-    match = regex.match(flags)
-
-    if match
-      return [match[0], match.post_match[0]]
-    else
-      return ["NONE", "+"]
-    end
+  #
+  # Let's get the Description of the Issue, i.e. the initial comment.
+  #
+  def description
+    initial_comment = comments.where(:count => 0).first
+    initial_comment.blank? ? "" : initial_comment.text
   end
 
-  private
-
-  def self.get_token_values(str, token)
-    return [] if token.to_s.empty?
-
-    token_values = str.scan(/(?<=#{token}:\s).*(?<=#{token}_END)/)
-
-    # Because regexp lookahead and lookbehind must be a fixed length
-    # removing the occasionally occuring trailing ->'<- character must
-    # be done in a separate step.
-    token_values.each do |x|
-      x.sub!("#{token}_END", "")
-      x.sub!(/'$/, '')
-      x.strip!
-    end
-
-    token_values
+  #
+  # Let's provide procs to return lists of bug_id's for associated Issues
+  #
+  def fetch_bug_ids(associations)
+    associations.select(:bug_id).collect { |issue| issue.bug_id }
   end
 
-  private
+  def dependents_bug_ids
+    fetch_bug_ids(dependents)
+  end
 
-  def self.recreate_all_issues(output)
-    delete_all
+  def blocked_issues_bug_ids
+    fetch_bug_ids(blocked_issues)
+  end
 
-    # create a new issue in the db for each bz.
-    output.each_line do |bz_line|
-      # create a new issue object in the db for each BZ.
-      bz_id                     = get_token_values(bz_line, "BZ_ID").join
-      depends_on_ids            = get_token_values(bz_line, "DEP_ID").join
-      assigned_to               = get_token_values(bz_line, "ASSIGNED_TO").join
-      summary                   = get_token_values(bz_line, "SUMMARY").join
-      status                    = get_token_values(bz_line, "BUG_STATUS").join
-
-      _pm_ack_str, pm_ack       = get_from_flags(bz_line, /pm_ack/)
-      _devel_ack_str, devel_ack = get_from_flags(bz_line, /devel_ack/)
-      _qa_ack_str, qa_ack       = get_from_flags(bz_line, /qa_ack/)
-      _doc_ack_str, doc_ack     = get_from_flags(bz_line, /doc_ack/)
-      version_str, version_ack  = get_from_flags(bz_line, VERSION_REGEX)
-
-      create(:bz_id          => bz_id,
-             :depends_on_ids => depends_on_ids,
-             :assigned_to    => assigned_to,
-             :status         => status,
-             :summary        => summary,
-             :flag_version   => version_str,
-             :version_ack    => version_ack,
-             :devel_ack      => devel_ack,
-             :doc_ack        => doc_ack,
-             :pm_ack         => pm_ack,
-             :qa_ack         => qa_ack)
-
-    end
+  def duplicates_bug_ids
+    fetch_bug_ids(duplicates)
   end
 end

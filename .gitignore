@@ -23,3 +23,6 @@ cfme_bz.yml*
 # Ignore production artifacts
 /public/assets
 
+# Ignore the Bugzilla Sync timestamp file
+/db/bugzilla_last_updated.timestamp
+

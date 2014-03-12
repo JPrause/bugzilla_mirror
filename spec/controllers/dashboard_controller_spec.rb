@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe IssuesController do
+describe DashboardController do
 
   describe "GET 'index'" do
     it "when #index returns http success" do

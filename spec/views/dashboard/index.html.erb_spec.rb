@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'application_controller'
 
-describe "issues/index" do
+describe "dashboard/index" do
   before(:each) do
     assign(:issues, [
       stub_model(Issue,

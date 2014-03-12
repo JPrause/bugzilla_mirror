@@ -1,0 +1,93 @@
+<p id="View Issue <%= @bug_id %>"></p>
+<p><b>Bug Id:</b> <%= @bug_id %> - <b><%= @issue.summary %></b></p>
+<table>
+  <tr>
+    <td align="right"><b>Status:</b></td>
+    <td><%= @issue.status %></td>
+  </tr>
+  <tr>
+    <td align="right"><b>Assigned To:</b></td>
+    <td><%= @issue.assigned_to %></td>
+  </tr>
+  <tr>
+    <td align="right"><b>Last updated at:</b></td>
+    <td><%= @issue.updated_at %></td>
+  </tr>
+</table>
+<br>
+<table>
+  <tr>
+    <%= form_tag("/dashboard", method: "get") do %>
+      <%= submit_tag("Dashboard") %>
+    <% end %>
+    <%= form_tag("/dashboard/view_issue/#{@bug_id}", method: "get") do %>
+      <%= submit_tag("Refresh View") %>
+    <% end %>
+    <%= form_tag("/dashboard/refresh_issue/#{@bug_id}", method: "get") do %>
+      <%= submit_tag("Reload Issue from Bugzilla") %>
+    <% end %>
+    &nbsp; &nbsp; &nbsp; &nbsp;
+    &lt;<%= link_to "View in Bugzilla", url_to_bugzilla(@bug_id) %>&gt;
+  </tr>
+</table>
+
+
+<p>
+  <table border="2">
+    <% Issue::ATTRIBUTES.sort.each do |attr|
+        unless %w(bug_id).include?(attr) %>
+          <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+            <td><i><%= attr %></i></td>
+            <td><% if attr == :flags %>
+              <table border="1">
+              <% flags = @issue.flags ? @issue.flags : ""
+                 flags.split(",").sort.each do |flag|
+                    k, v = flag.split("=") %>
+                <tr>
+                  <td><b><%= k %></b></td>
+                  <td><b><%= v %></b></td>
+                </tr>
+              <% end %>
+              </table>
+             <% else %>
+                <%= @issue.send(attr) %>
+            <% end %>
+            </td>
+          </tr>
+      <% end
+    end %>
+    <tr><td><i>Dependent Issues</i></td>
+        <td><% @issue.dependents.each do |relation| %>
+            <%= form_tag("/dashboard/view_issue/#{relation.bug_id}", method: "get") do %>
+              <%= submit_tag(relation.bug_id) %> - <%= relation.summary %>
+      <% end
+    end %></td></tr>
+    <tr><td><i>Blocked Issues</i></td><td><% @issue.blocked_issues.each do |relation| %>
+      <%= form_tag("/dashboard/view_issue/#{relation.bug_id}", method: "get") do %>
+        <%= submit_tag(relation.bug_id) %> - <%= relation.summary %>
+      <% end
+    end %></td></tr>
+    <tr><td><i>Duplicate Issues</i></td><td><% @issue.duplicates.each do |relation| %>
+      <%= form_tag("/dashboard/view_issue/#{relation.bug_id}", method: "get") do %>
+        <%= submit_tag(relation.bug_id) %> - <%= relation.summary %>
+      <% end
+    end %></td></tr>
+    <tr><td><i>Comments</i></td> </tr>
+    <% @issue.comments.order("count ASC").each do |comment| %>
+    <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+    <td align="right" style="white-space: nowrap"><% if comment.count == 0 %>
+           <i>Description</i><% else %> #<%= comment.count %>
+        <% end %>
+        <br><%= comment.created_by %>
+        <br><%= comment.created_on %>
+        <br><% if comment.private %>
+              <b><i>Private</i></b>
+        <% end %>
+        </td>
+        <td><%= comment.text %></td></tr>
+    <% end %>
+    </tr>
+  </table>
+</p>
+
+<%= link_to 'Back', dashboard_index_path %>

@@ -11,7 +11,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140123205127) do
+ActiveRecord::Schema.define(:version => 20140412150000) do
+
+  create_table "comments", :force => true do |t|
+    t.integer  "count"
+    t.text     "text"
+    t.string   "created_by"
+    t.datetime "created_on"
+    t.boolean  "private"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "issue_id"
+  end
+
+  add_index "comments", ["issue_id"], :name => "index_comments_on_issue_id"
 
   create_table "commits", :force => true do |t|
     t.string   "branch"
@@ -25,20 +38,105 @@ ActiveRecord::Schema.define(:version => 20140123205127) do
     t.integer "commit_id"
   end
 
+  create_table "issue_blocks", :id => false, :force => true do |t|
+    t.integer "issue_id"
+    t.integer "blocked_issue_id"
+  end
+
+  add_index "issue_blocks", ["blocked_issue_id"], :name => "index_issue_blocks_on_blocked_issue_id"
+  add_index "issue_blocks", ["issue_id"], :name => "index_issue_blocks_on_issue_id"
+
+  create_table "issue_dependencies", :id => false, :force => true do |t|
+    t.integer "issue_id"
+    t.integer "dependent_id"
+  end
+
+  add_index "issue_dependencies", ["dependent_id"], :name => "index_issue_dependencies_on_dependent_id"
+  add_index "issue_dependencies", ["issue_id"], :name => "index_issue_dependencies_on_issue_id"
+
+  create_table "issue_duplicates", :id => false, :force => true do |t|
+    t.integer "issue_id"
+    t.integer "duplicate_id"
+  end
+
+  add_index "issue_duplicates", ["duplicate_id"], :name => "index_issue_duplicates_on_duplicate_id"
+  add_index "issue_duplicates", ["issue_id"], :name => "index_issue_duplicates_on_issue_id"
+
   create_table "issues", :force => true do |t|
-    t.string   "bz_id"
     t.string   "status"
     t.string   "assigned_to"
     t.string   "summary"
-    t.string   "flag_version"
-    t.string   "version_ack"
-    t.string   "pm_ack"
-    t.string   "devel_ack"
-    t.string   "qa_ack"
-    t.string   "doc_ack"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
-    t.text     "depends_on_ids"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+    t.string   "bug_id"
+    t.string   "bug_type"
+    t.string   "actual_time"
+    t.string   "alias"
+    t.string   "bug_group"
+    t.string   "build_id"
+    t.string   "category"
+    t.string   "cc"
+    t.string   "cc_list_accessible"
+    t.string   "classification"
+    t.string   "commenter"
+    t.string   "component"
+    t.string   "created_by"
+    t.string   "cust_facing"
+    t.string   "days_elapsed"
+    t.string   "deadline"
+    t.string   "doc_type"
+    t.string   "docs_contact"
+    t.string   "documentation_action"
+    t.string   "environment"
+    t.string   "estimated_time"
+    t.string   "everconfirmed"
+    t.string   "fixed_in"
+    t.string   "flags"
+    t.string   "internal_whiteboard"
+    t.string   "keywords"
+    t.string   "layered_products"
+    t.string   "mount_type"
+    t.string   "op_sys"
+    t.string   "owner_idle_time"
+    t.string   "partner"
+    t.string   "percentage_complete"
+    t.string   "pgm_internal"
+    t.string   "platform"
+    t.string   "pm_score"
+    t.string   "priority"
+    t.string   "product"
+    t.string   "qa_contact"
+    t.string   "qa_whiteboard"
+    t.string   "qe_conditional_nak"
+    t.string   "regression_status"
+    t.string   "release_notes"
+    t.string   "remaining_time"
+    t.string   "reporter_accessible"
+    t.string   "reporter_realname"
+    t.string   "resolution"
+    t.string   "rh_sub_components"
+    t.string   "see_also"
+    t.string   "severity"
+    t.string   "story_points"
+    t.string   "tag"
+    t.string   "target_milestone"
+    t.string   "target_release"
+    t.string   "url"
+    t.string   "vcs_commits"
+    t.string   "verified"
+    t.string   "verified_branch"
+    t.string   "version"
+    t.string   "view"
+    t.string   "votes"
+    t.string   "whiteboard"
+    t.string   "work_time"
   end
+
+  add_index "issues", ["assigned_to"], :name => "index_issues_on_assigned_to"
+  add_index "issues", ["bug_id"], :name => "index_issues_on_bug_id", :unique => true
+  add_index "issues", ["classification"], :name => "index_issues_on_classification"
+  add_index "issues", ["priority"], :name => "index_issues_on_priority"
+  add_index "issues", ["severity"], :name => "index_issues_on_severity"
+  add_index "issues", ["status"], :name => "index_issues_on_status"
 
 end

@@ -1,0 +1,91 @@
+<h1>CFME Bugzilla Dashboard</h1>
+<br>
+<hr>
+<table>
+  <tr>
+  <%= form_tag(statistics_reports_path, method: "get") do %>
+    <%= submit_tag('Run The Statistics Report') %>
+  <% end %>
+  <%= form_tag("/dashboard/update_issues", method: "get") do %>
+    <%= submit_tag('Load Updated Issues from Bugzilla') %>
+  <% end %>
+  <%= form_tag("/sidekiq", method: "get") do %>
+    <%= submit_tag('View the SideKiq Dashboard for Queued Request') %>
+  <% end %>
+  <%= form_tag("/dashboard", method: "get") do %>
+    <%= submit_tag('Refresh Dashboard') %>
+  <% end %>
+  </tr>
+</table>
+
+<hr>
+<br />
+<%= form_tag(errata_reports_path, method: "get") do %>
+  <%= label_tag(:q, "Select Flag Version:") %>
+  <%= select_tag(:flag_version, options_for_select(available_flag_versions)) %>
+  <%= submit_tag('Run The Errata Report') %>
+<% end %>
+
+<hr>
+<h3>Select Dashboard Filters:</h3>
+<table>
+  <tr>
+    <%= form_tag("/dashboard", method: "get") do %>
+      <%= label_tag(:q, "Status:") %>
+      <%= select_tag(:selected_status, options_for_select(available_issue_states, @selected_status), :multiple => true) %>
+      &nbsp; &nbsp; &nbsp; &nbsp;
+      <%= label_tag(:q, "Owner:") %>
+      <%= select_tag(:selected_owner, options_for_select(available_issue_assigned_to, @selected_owner)) %>
+      &nbsp; &nbsp;
+      <%= submit_tag('Apply Filters') %>
+    <% end %>
+  </tr>
+</table>
+
+<hr>
+<br>
+<h2>Issue Table</h2>
+
+<p>
+  <b>Last Updated:</b>          
+  <%= @issues_updated_at %>    
+</p>
+<p>
+<table>
+  <tr>
+  <i>Number of Issues Shown: </i><b> <%= @issues.count %> </b> &nbsp; &nbsp;
+  <i>Total Number of Issues: </i><b> <%= Issue.count %> </b>
+  </tr>
+</p>
+
+<table>
+  <tr>
+    <th align="left"><%= sortable "bug_id", "Bug Id" %></th>
+    <th align="left"><%= sortable "status" %></th>
+    <th align="left"><%= sortable "assigned_to", "Assignee" %></th>
+    <th align="left">Summary</th>
+    <th align="left"><%= sortable "flags" %></th>
+  </tr>
+
+<%
+  @issues.each do |issue| %>
+  <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+    <td><%= form_tag("/dashboard/view_issue/#{issue.bug_id}", method: "get") do %>
+          <%= submit_tag(issue.bug_id) %>
+        <% end %>
+    </td>
+    <td><%= issue.status %></td>
+    <td><%= issue.assigned_to %></td>
+    <td><%= issue.summary %></td>
+    <td><%= issue.flags.split(",").join(" ") %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<br>
+  <%= form_tag("/dashboard", method: "get") do %>
+    <%= submit_tag('Refresh Dashboard') %>
+  <% end %>
+</br>

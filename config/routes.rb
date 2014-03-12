@@ -3,10 +3,11 @@ require 'sidekiq/web'
 CfmeBz::Application.routes.draw do
   mount Sidekiq::Web, at: "/sidekiq"
 
-  resources :issues do
+  resources :dashboard do
     collection do
       get 'index'
-      get 'update_all'
+      get 'reload_issues'
+      get 'update_issues'
     end
   end
 
@@ -71,7 +72,16 @@ CfmeBz::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => 'issues#index'
+
+  root :to => 'dashboard#index'
+  get '/dashboard/view_issue(/:id)'         => 'dashboard#view_issue'
+  get '/dashboard/refresh_issue(/:id)'      => 'dashboard#refresh_issue'
+
+  get '/issues(.:format)'                   => 'issues#show',   :format => 'json'
+  get '/issues(/:id)(.:format)'             => 'issues#show',   :format => 'json'
+  get '/issues(/:action(/:id))(.:format)'   => 'issues#show',   :format => 'json'
+  match '/issues(/:id)(.:format)'           => 'issues#update', :format => 'json', :via => [:post]
+  match '/issues(/:action(/:id))(.:format)' => 'issues#update', :format => 'json', :via => [:post]
 
   # See how all your routes lay out with "rake routes"
 

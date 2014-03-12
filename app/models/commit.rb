@@ -1,4 +1,6 @@
 class Commit < ActiveRecord::Base
+  include ApplicationHelper
+
   has_and_belongs_to_many :issues
 
   attr_accessible :branch, :sha_id
@@ -24,7 +26,7 @@ class Commit < ActiveRecord::Base
   def self.update_git_branch(processor, branch)
     processor.commits(branch).each do |commit|
       c = Commit.new(commit.attributes)
-      c.issues = Issue.where(:bz_id => commit.bz_ids).all unless commit.bz_ids.empty?
+      c.issues = Issue.where(:bug_id => commit.bug_ids).all unless commit.bug_ids.empty?
       c.save!
     end
   end
@@ -34,6 +36,6 @@ class Commit < ActiveRecord::Base
   end
 
   def self.cfme_git_configuration
-    APP_CONFIG["cfme_git"]
+    app_config["cfme_git"]
   end
 end

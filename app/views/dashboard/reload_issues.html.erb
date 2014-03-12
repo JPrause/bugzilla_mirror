@@ -1,0 +1,12 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+<b> Request to Reload All Issues from Bugzilla has been submitted</b>
+</p> 
+
+<br/>
+<%= form_tag("/sidekiq", method: "get") do %>
+  <%= submit_tag('View the SideKiq Dashboard for Queued Request') %>
+<% end %>
+
+<%= link_to 'Back', dashboard_index_path %>

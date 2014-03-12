@@ -1,28 +1,46 @@
-<h1>StatisticsReports#index</h1>
+<h1>Issue Statistics Reports</h1>
 
+<br>
+<h2>Issue Totals by Version and Status</h2>
+<br>
+<i>Total Number of Issues: </i><b> <%= Issue.count %> </b>
 <p>
-  <b>Bug Totals by Version/Status:</b>
-  <table border="1">
-    <tr>
-      <th>Version</th>
-      <th>Status</th> 
-      <th>Totals</th>
-    </tr>
+<table border="1">
+  <tr>
+    <th>Version</th>
+    <th>Status</th> 
+    <th>Count</th>
+    <th>Total Count</th>
+  </tr>
 
-    <% @table.each do |version, statuses| %> 
-        <% version_color = cycle('list_line_odd', 'list_line_even') %>
-        <% statuses.each do |status, count| %>
-          <tr class=<%= version_color %> >
-            <td><%= version %></td>
-            <td><%= status %></td> 
-            <td><%= count %></td>
+  <% last_version = ""
+     total_count  = 0
+     @table.each do |version, statuses|
+      version_color = cycle('list_line_odd', 'list_line_even')
+      subtotal = 0
+      statuses.each do |status, count| %>
+        <tr class=<%= version_color %> >
+          <td><% if version != last_version %>
+              <b><%= version %></b>
+              <% last_version = version %>
+          <% end %>
+          </td>
+          <td><%= status %></td> 
+          <td><%= count %></td>
+          <td></td>
         </tr>
-      <% end %>
-    <% end %>
+        <% subtotal += count %>
+   <% end
+      total_count += subtotal
+    %>
+    <tr>
+      <td><i>Sub-Total</i></td>
+      <td></td>
+      <td><b><%= subtotal %></b></td>
+      <td><%= total_count %></td>
+    </tr>
+  <% end %>
+</table>
 
-    </tbody>
-  </table>
-
-
-</p>
+<%= link_to 'Back', dashboard_index_path %>
 

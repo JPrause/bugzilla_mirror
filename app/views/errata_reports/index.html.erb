@@ -6,7 +6,7 @@
   <table border="1">
     <tr>
       <th width="10" colspan="1" rowspan="2" scope="col">
-        <%= sortable "bz_id", "Bz Id" %>
+        <%= sortable "bug_id", "Bug Id" %>
       </th>
       <th width="10" colspan="1" rowspan="2" scope="col">
         <%= sortable "depends_on_ids", "Depends On" %>
@@ -29,8 +29,16 @@
 
     <% @need_acks.each do |bz| %>
       <tr class="<%= cycle('tag_line_odd', 'tag_line_even') %>">
-        <td><%= url_to_bugzilla(bz.bz_id) %></td>
-        <td><%= url_to_bugzillas(bz.depends_on_ids) %></td>
+        <td><%= form_tag("/dashboard/view_issue/#{bz.bug_id}", method: "get") do %>
+              <%= submit_tag(bz.bug_id) %>
+            <% end %>
+        </td>
+        <td><% ids_list(bz.depends_on_ids).each do |bug_id| %>
+              <%= form_tag("/dashboard/view_issue/#{bug_id}", method: "get") do %>
+                    <%= submit_tag(bug_id) %>
+              <% end
+            end %>
+        </td>
         <td align="center"> <span class="green_text"><%= bz.flag_version %></span></td>
         <td><%= list_last_commit(bz) %></td>
         <td align="center"> <span class="green_text"><%= bz.pm_acks %></span></td>
@@ -46,11 +54,11 @@
 </p>
 
 <p>
-  <h1> BZs in <b>POST</b> state that have all the needed ACKs</br> </h1>
+  <h1> Bugs in <b>POST</b> state that have all the needed ACKs</br> </h1>
 
   <table border="1">
     <tr>
-      <th><%= sortable "bz_id", "BZ ID" %></th>
+      <th><%= sortable "bug_id", "BUG ID" %></th>
       <th><%= sortable "depends_on_ids", "Depends On" %></th>
       <th><%= sortable "flag_version" %></th>
       <th><%= sortable "commit" %></th>
@@ -58,8 +66,16 @@
     </tr>
     <% @have_acks.each do |bz| %>
       <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
-        <td><%= url_to_bugzilla(bz.bz_id) %></td>
-        <td><%= url_to_bugzillas(bz.depends_on_ids) %></td>
+        <td><%= form_tag("/dashboard/view_issue/#{bz.bug_id}", method: "get") do %>
+              <%= submit_tag(bz.bug_id) %>
+            <% end %>
+        </td>
+        <td><% ids_list(bz.depends_on_ids).each do |bug_id| %>
+              <%= form_tag("/dashboard/view_issue/#{bug_id}", method: "get") do %>
+                    <%= submit_tag(bug_id) %>
+              <% end
+            end %>
+        </td>
         <td><%= bz.flag_version %></td>
         <td><%= list_last_commit(bz) %></td>
         <td><%= bz.summary %></td>
@@ -70,4 +86,5 @@
 
 </p>
 
-<%= link_to 'Back', issues_path %>
+<%= link_to 'Back', dashboard_index_path %>
+
