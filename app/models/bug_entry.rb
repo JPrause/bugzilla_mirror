@@ -6,7 +6,7 @@ class BugEntry
   attr_accessor :flag_version, :summary
 
   def initialize(bz)
-    flags = bz.flags
+    flags = bz.flag_hash
     depends_on = bz.dependents_bug_ids
     @bug_id         = bz.bug_id
     @depends_on_ids = depends_on.blank? ? "" :  depends_on.join(" ")

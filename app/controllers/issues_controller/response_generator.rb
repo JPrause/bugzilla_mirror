@@ -2,9 +2,7 @@ class IssuesController
   module ResponseGenerator
     def issue_to_hash(issue)
       return {} unless issue
-      issue_hash  = issue.attribute_names.each_with_object({}) do |key, hash|
-        hash[key] = issue[key] if issue.respond_to?(key)
-      end
+      issue_hash = issue.attributes.slice(*issue.attribute_names)
       issue_hash.delete("id") # Let's not show the Issue id so there's no confusion.
       Issue::ASSOCIATIONS.each do |key, association|
         if expand?("associations") || !attribute_selection
@@ -15,14 +13,11 @@ class IssuesController
       end
       if expand?("comments") || show_attribute?("comments")
         issue_hash["comments"] = issue.comments.order("count ASC").collect do |comment|
-          Comment::ATTRIBUTES.each_with_object({}) do |key, hash|
-            hash[key.to_s] = comment[key]
-          end
+          comment.presentable_hash
         end
       end
 
-      flags = issue_hash["flags"]
-      issue_hash["flags"] = Bugzilla.flags_to_hash(flags) unless flags.blank?
+      issue_hash["flags"] = issue.flag_hash if issue_hash.key?("flags")
       issue_hash
     end
 
@@ -59,7 +54,7 @@ class IssuesController
         req_offset, req_limit = expand_paginate_params
         result = result.offset(req_offset).limit(req_limit)
       end
-      result.collect { |item| item }
+      result.to_a
     end
 
     def render_accepted_response(response = {"status" => "Request Accepted for Processing"})

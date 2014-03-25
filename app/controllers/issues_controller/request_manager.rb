@@ -16,7 +16,7 @@ class IssuesController
       unless bug_hash.blank?
         begin
           Bugzilla.bug_to_issue(bug_id, bug_hash, Issue::ATTRIBUTES | [:comments])
-        rescue StandardError => e
+        rescue => e
           log_error "Failed to Load Updated Issue #{bug_id} from #{bz_uri} - #{e}"
           log_error "Backtrace: #{e.backtrace.join('\n')}"
         end

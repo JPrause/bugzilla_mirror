@@ -9,10 +9,9 @@ common: &common
     max_clients:       1
     issues_per_client: 100
     update_interval:   3600
-    last_updated_file: "db/bugzilla_last_updated.timestamp"
 
   sidekiq:
-    queue:       cfme_bz
+    queue:       "cfme_bz"
 
   cfme_git:
     repo_path: "/Users/calvin/projects/cfme/"

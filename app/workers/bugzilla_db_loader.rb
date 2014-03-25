@@ -1,7 +1,7 @@
 class BugzillaDbLoader
   include Sidekiq::Worker
-  include BugzillaHelper
-  include ApplicationHelper
+  include ProcessSpawner
+  include ApplicationMixin
   sidekiq_options :queue => :cfme_bz, :retry => false
 
   def load_database
@@ -9,7 +9,7 @@ class BugzillaDbLoader
     @service = Bugzilla.new
     begin
       bug_ids = @service.fetch_bug_ids
-    rescue StandardError => e
+    rescue => e
       logger.info "Failed to fetch Issue Id's from #{bz_uri} - #{e}"
       return
     end
@@ -19,6 +19,6 @@ class BugzillaDbLoader
 
   def perform
     load_database
-    WorkerManager.update_bugzilla_timestamp
+    bz_update_config
   end
 end

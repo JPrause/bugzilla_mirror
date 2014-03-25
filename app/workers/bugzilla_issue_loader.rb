@@ -1,6 +1,6 @@
 class BugzillaIssueLoader
   include Sidekiq::Worker
-  include ApplicationHelper
+  include ApplicationMixin
   sidekiq_options :queue => :cfme_bz, :retry => false
 
   def load_issues(bug_id_list)
@@ -17,7 +17,7 @@ class BugzillaIssueLoader
       bug_id = bug[:bug_id]
       begin
         Bugzilla.bug_to_issue(bug_id, bug, issue_attrs)
-      rescue StandardError => e
+      rescue => e
         logger.error "Failed to Load Issue #{bug_id} from #{bz_uri} - #{e}"
         backtrace = e.backtrace.join("\n")
         logger.error "Stack Trace: #{backtrace}"

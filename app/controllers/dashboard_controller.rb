@@ -4,8 +4,8 @@ class DashboardController < ApplicationController
   # Cfme Bz Web Interface (Html)
   #
   def index
-    @selected_owner  = params['selected_owner']  || @selected_owner  || ["All"]
-    @selected_status = params['selected_status'] || @selected_status || "ON_DEV"
+    @selected_owner  = params['selected_owner']  || @selected_owner  || "All"
+    @selected_status = params['selected_status'] || @selected_status || ["ON_DEV"]
     @issues = Issue.order(sort_column + " " + sort_direction)
     @issues = @issues.where(:assigned_to => @selected_owner)  if @selected_owner  != "All"
     @issues = @issues.where(:status      => @selected_status) if @selected_status != ["All"]

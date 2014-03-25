@@ -16,14 +16,12 @@ class IssuesController
 
     def api_exception_type(type, e)
       log_error("api_exception_type type=#{type}")
-      type = :internal_server_error unless RETURN_CODES.key?(type)
-      api_error(type, e.message, e.class.name, e.backtrace.join("\n"), RETURN_CODES[type])
+      api_error(type, e.message, e.class.name, e.backtrace.join("\n"), Rack::Utils.status_code(type))
     end
 
     def api_error_type(type, message)
       log_error("api_error_type type=#{type}")
-      type = :internal_server_error unless RETURN_CODES.key?(type)
-      api_error(type, message, self.class.name, "", RETURN_CODES[type])
+      api_error(type, message, self.class.name, "", Rack::Utils.status_code(type))
     end
 
     private

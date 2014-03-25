@@ -1,22 +1,18 @@
+require 'benchmark'
+
 class BugzillaDbBulkLoader
   include Sidekiq::Worker
-  include BugzillaHelper
-  include ApplicationHelper
+  include ProcessSpawner
+  include ApplicationMixin
   sidekiq_options :queue => :cfme_bz, :retry => false
 
   PRIMARY_SET   = [:summary, :status]     # Required
   SECONDARY_SET = [:assigned_to, :flags]
 
+  ATTR_CHUNK_SIZE = 4
+
   def required_set?(attr_list)
     attr_list.include?(:status)
-  end
-
-  def time_stamp
-    Time.now
-  end
-
-  def time_diff_to_msec(diff)
-    (diff * 1000).to_i
   end
 
   def load_comments
@@ -30,41 +26,40 @@ class BugzillaDbBulkLoader
     chunks      = bug_ids.each_slice(chunk_size).to_a
     chunks.each do |bug_id_list|
 
-      ts1 = time_stamp
       logger.info "Fetch comments from #{bz_uri} for #{bug_id_list}"
       begin
-        all_comments = @service.bz_service.comments(:ids => bug_id_list)["bugs"]
-      rescue StandardError => e
+        all_comments = {}
+        time_taken = Benchmark.realtime do
+          all_comments = @service.service.comments(:ids => bug_id_list)["bugs"]
+        end
+        logger.info "Took #{time_taken} seconds to fetch comments for #{bug_id_list.count} issues."
+      rescue => e
         logger.error "Failed to fetch comments from #{bz_uri} - #{e}"
         next
       end
-      logger.info "Took #{time_diff_to_msec(time_stamp - ts1)} milli-seconds to fetch comments for #{bug_id_list.count} issues."
+
       logger.info "Now loading comments to the database ..."
-      ts2 = time_stamp
+      orig_logger_level = ActiveRecord::Base.logger.level
+      time_taken = Benchmark.realtime do
+        bug_id_list.each do |bug_id|
 
-      bug_id_list.each do |bug_id|
-        bug_comments = all_comments[bug_id.to_s]["comments"]
+          bz_comments = ActiveBugzilla::Comment.instantiate_from_raw_data(all_comments[bug_id.to_s]["comments"])
 
-        bug_hash = {:bug_id => bug_id}
-        bz_comments = ActiveBugzilla::Comment.instantiate_from_raw_data(bug_comments)
-        bug_hash[:comments] = bz_comments.collect do |bz_comment|
-          Comment::ATTRIBUTES.each_with_object({}) do |key, hash|
-            hash[key] = bz_comment.send(key)
+          bug_hash = {:bug_id => bug_id}
+          bug_hash[:comments] = bz_comments.collect { |c| Comment.object_to_presentable_hash(c) }
+
+          ActiveRecord::Base.logger.level = Logger::INFO
+          begin
+            Bugzilla.bug_to_issue(bug_id, bug_hash, [:bug_id, :comments])
+          rescue => e
+            logger.error "Failed to load comments from #{bz_uri} for #{bug_id} to database - #{e}"
+            next
+          ensure
+            ActiveRecord::Base.logger.level = orig_logger_level
           end
         end
-
-        old_level = ActiveRecord::Base.logger.level
-        begin
-          ActiveRecord::Base.logger.level = Logger::INFO
-          Bugzilla.bug_to_issue(bug_id, bug_hash, [:bug_id, :comments])
-          ActiveRecord::Base.logger.level = old_level
-        rescue StandardError => e
-          logger.error "Failed to load comments from #{bz_uri} for #{bug_id} to database - #{e}"
-          ActiveRecord::Base.logger.level = old_level
-          next
-        end
       end
-      logger.info "Took #{time_diff_to_msec(time_stamp - ts2)} milli-seconds to load comments."
+      logger.info "Took #{time_taken} seconds to load comments."
     end
     true
   end
@@ -78,9 +73,9 @@ class BugzillaDbBulkLoader
     logger.info "Loading the Database From #{bz_uri} ..."
     @service = Bugzilla.new
 
-    all_attrs   = (Issue::ATTRIBUTES - [:bug_id]).dup
+    all_attrs   = Issue::ATTRIBUTES - [:bug_id]
     rem_attrs   = all_attrs - PRIMARY_SET - SECONDARY_SET
-    attr_chunks = [PRIMARY_SET] + [SECONDARY_SET] + rem_attrs.each_slice(4).to_a
+    attr_chunks = [PRIMARY_SET] + [SECONDARY_SET] + rem_attrs.each_slice(ATTR_CHUNK_SIZE).to_a
 
     attr_chunks.each do |attr_list|
 
@@ -88,36 +83,41 @@ class BugzillaDbBulkLoader
       attr_list = attr_list - [:bug_type] + [:type] if attr_list.include?(:bug_type)
 
       logger.info "Fetching #{attr_list} ..."
-      ts1  = time_stamp
       begin
-        bugs = ActiveBugzilla::Bug.find(:product => bz_options["product"], :include_fields => [:id] + attr_list)
-      rescue StandardError => e
+        bugs = []
+        time_taken = Benchmark.realtime do
+          bugs = ActiveBugzilla::Bug.find(:product => bz_product, :include_fields => [:id] + attr_list)
+        end
+        logger.info "Completed Fetching #{attr_list} in #{time_taken} seconds."
+      rescue => e
         logger.error "Failed to fetch #{attr_list} from #{bz_uri} - #{e}"
         next unless required_set?(attr_list)
         logger.error "Aborting Bulk Load"
         return false
       end
-      logger.info "Completed Fetching #{attr_list} in #{time_diff_to_msec(time_stamp - ts1)} milli-seconds."
 
       logger.info "Loading #{attr_list} to the database ..."
-      ts2  = time_stamp
+      orig_logger_level = ActiveRecord::Base.logger.level
       begin
-        bugs.each do |bug|
-          bug_id    = bug.id
-          bug_hash  = @service.fetch_issue(bug, issue_attr_list)
+        time_taken = Benchmark.realtime do
+          bugs.each do |bug|
+            bug_id    = bug.id
+            bug_hash  = @service.fetch_issue(bug, issue_attr_list)
 
-          old_level = ActiveRecord::Base.logger.level
-          ActiveRecord::Base.logger.level = Logger::INFO
-          Bugzilla.bug_to_issue(bug_id, bug_hash, issue_attr_list)
-          ActiveRecord::Base.logger.level = old_level
+            ActiveRecord::Base.logger.level = Logger::INFO
+            Bugzilla.bug_to_issue(bug_id, bug_hash, issue_attr_list)
+            ActiveRecord::Base.logger.level = orig_logger_level
+          end
         end
-      rescue StandardError => e
+        logger.info "Completed Loading #{attr_list} in #{time_taken} seconds."
+      rescue => e
         logger.error "Failed to load #{attr_list} to database - #{e}"
         next unless required_set?(attr_list)
         logger.error "Aborting Bulk Load"
         return false
+      ensure
+        ActiveRecord::Base.logger.level = orig_logger_level
       end
-      logger.info "Completed Loading #{attr_list} in #{time_diff_to_msec(time_stamp - ts2)} milli-seconds."
     end
     true
   end
@@ -126,7 +126,7 @@ class BugzillaDbBulkLoader
     if bulk_load_database
       load_associations
       load_comments
-      WorkerManager.update_bugzilla_timestamp
+      bz_update_config
     end
   end
 end

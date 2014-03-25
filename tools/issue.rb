@@ -68,9 +68,9 @@ EOS
   opt :url,        "Base URL of CFME to access",
       :default => "http://localhost:5000",  :short => '-l'
   opt :user,       "User to authentication as",
-      :default => "cfme-bot@redhat.com",    :short => '-u'
+      :default => "",                       :short => '-u'
   opt :password,   "Password for user specified to authenticate as",
-      :default => "October16",              :short => '-p'
+      :default => "",                       :short => '-p'
   opt :format,     "How to format Json, pretty|none",
       :default => "pretty",                 :short => '-f'
   opt :inputfile,  "File to use as input to the POST methods",

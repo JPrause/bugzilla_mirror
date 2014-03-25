@@ -40,9 +40,7 @@
             <td><i><%= attr %></i></td>
             <td><% if attr == :flags %>
               <table border="1">
-              <% flags = @issue.flags ? @issue.flags : ""
-                 flags.split(",").sort.each do |flag|
-                    k, v = flag.split("=") %>
+              <% @issue.flag_hash.sort.each do |k, v| %>
                 <tr>
                   <td><b><%= k %></b></td>
                   <td><b><%= v %></b></td>
@@ -80,7 +78,7 @@
         <% end %>
         <br><%= comment.created_by %>
         <br><%= comment.created_on %>
-        <br><% if comment.private %>
+        <br><% if comment.private? %>
               <b><i>Private</i></b>
         <% end %>
         </td>

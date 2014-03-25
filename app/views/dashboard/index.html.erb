@@ -1,5 +1,16 @@
 <h1>CFME Bugzilla Dashboard</h1>
-<br>
+<% unless BugzillaConfig.get_config(:product).blank? %>
+  <table>
+    <tr>
+      <td><b>Product:</b></td>
+      <td> <%= BugzillaConfig.get_config(:product) %> </td>
+      <td><b>Last Updated On:</b></td>
+      <td> <%= BugzillaConfig.fetch_synctime %></td>
+      <td><b>Updated From:</b></td>
+      <td> <%= BugzillaConfig.get_config(:uri) %></td>
+    </tr>
+  </table>
+<% end %>
 <hr>
 <table>
   <tr>
@@ -74,10 +85,10 @@
           <%= submit_tag(issue.bug_id) %>
         <% end %>
     </td>
-    <td><%= issue.status %></td>
+    <td><%= issue.status      %></td>
     <td><%= issue.assigned_to %></td>
-    <td><%= issue.summary %></td>
-    <td><%= issue.flags.split(",").join(" ") %></td>
+    <td><%= issue.summary     %></td>
+    <td><%= issue.flags       %></td>
   </tr>
 <% end %>
 </table>

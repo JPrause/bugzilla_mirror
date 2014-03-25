@@ -1,19 +1,11 @@
 class BugzillaIssueAssociator
   include Sidekiq::Worker
-  include ApplicationHelper
+  include ApplicationMixin
   sidekiq_options :queue => :cfme_bz, :retry => false
 
   def define_issue_association(this_issue, what, other_issues)
-    this_issue.send(what).clear
-    unless other_issues.blank?
-      Array(other_issues).each do |other_id|
-        other_issue = Issue.where(:bug_id => other_id).first
-        logger.info "Associating #{this_issue.bug_id} <#{what}> #{other_id}"
-        next if other_issue.blank?
-        logger.info "#{this_issue.bug_id} <#{what}> #{other_id}"
-        this_issue.send(what) << other_issue
-      end
-    end
+    this_issue.send("#{what}=", Issue.where(:bug_id => Array(other_issues)))
+    logger.info "Associating #{this_issue.bug_id} <#{what}> with #{Array(other_issues)}" unless other_issues.blank?
   end
 
   def define_issue_associations(bug_id, bug_hash)
@@ -55,7 +47,7 @@ class BugzillaIssueAssociator
       bug_id = bug[:bug_id]
       begin
         define_issue_associations(bug_id, bug)
-      rescue StandardError => e
+      rescue => e
         logger.error "Failed to Define Association for Issue #{bug_id} - #{e}"
         next
       end

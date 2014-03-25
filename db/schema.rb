@@ -13,6 +13,13 @@
 
 ActiveRecord::Schema.define(:version => 20140412150000) do
 
+  create_table "bugzilla_configs", :force => true do |t|
+    t.string "name",  :null => false
+    t.string "value"
+  end
+
+  add_index "bugzilla_configs", ["name"], :name => "index_bugzilla_configs_on_name", :unique => true
+
   create_table "comments", :force => true do |t|
     t.integer  "count"
     t.text     "text"
@@ -37,30 +44,6 @@ ActiveRecord::Schema.define(:version => 20140412150000) do
     t.integer "issue_id"
     t.integer "commit_id"
   end
-
-  create_table "issue_blocks", :id => false, :force => true do |t|
-    t.integer "issue_id"
-    t.integer "blocked_issue_id"
-  end
-
-  add_index "issue_blocks", ["blocked_issue_id"], :name => "index_issue_blocks_on_blocked_issue_id"
-  add_index "issue_blocks", ["issue_id"], :name => "index_issue_blocks_on_issue_id"
-
-  create_table "issue_dependencies", :id => false, :force => true do |t|
-    t.integer "issue_id"
-    t.integer "dependent_id"
-  end
-
-  add_index "issue_dependencies", ["dependent_id"], :name => "index_issue_dependencies_on_dependent_id"
-  add_index "issue_dependencies", ["issue_id"], :name => "index_issue_dependencies_on_issue_id"
-
-  create_table "issue_duplicates", :id => false, :force => true do |t|
-    t.integer "issue_id"
-    t.integer "duplicate_id"
-  end
-
-  add_index "issue_duplicates", ["duplicate_id"], :name => "index_issue_duplicates_on_duplicate_id"
-  add_index "issue_duplicates", ["issue_id"], :name => "index_issue_duplicates_on_issue_id"
 
   create_table "issues", :force => true do |t|
     t.string   "status"
@@ -138,5 +121,29 @@ ActiveRecord::Schema.define(:version => 20140412150000) do
   add_index "issues", ["priority"], :name => "index_issues_on_priority"
   add_index "issues", ["severity"], :name => "index_issues_on_severity"
   add_index "issues", ["status"], :name => "index_issues_on_status"
+
+  create_table "issues_blocks", :id => false, :force => true do |t|
+    t.integer "issue_id"
+    t.integer "blocked_issue_id"
+  end
+
+  add_index "issues_blocks", ["blocked_issue_id"], :name => "index_issues_blocks_on_blocked_issue_id"
+  add_index "issues_blocks", ["issue_id"], :name => "index_issues_blocks_on_issue_id"
+
+  create_table "issues_dependencies", :id => false, :force => true do |t|
+    t.integer "issue_id"
+    t.integer "dependent_id"
+  end
+
+  add_index "issues_dependencies", ["dependent_id"], :name => "index_issues_dependencies_on_dependent_id"
+  add_index "issues_dependencies", ["issue_id"], :name => "index_issues_dependencies_on_issue_id"
+
+  create_table "issues_duplicates", :id => false, :force => true do |t|
+    t.integer "issue_id"
+    t.integer "duplicate_id"
+  end
+
+  add_index "issues_duplicates", ["duplicate_id"], :name => "index_issues_duplicates_on_duplicate_id"
+  add_index "issues_duplicates", ["issue_id"], :name => "index_issues_duplicates_on_issue_id"
 
 end

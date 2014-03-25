@@ -3,6 +3,7 @@ class IssuesController < ApplicationController
   class BadRequestError           < StandardError; end
   class UnsupportedMediaTypeError < StandardError; end
   class ProcessingError           < StandardError; end
+  class IssueNotFound             < StandardError; end
   class ServiceUnavailable        < StandardError; end
 
   include RequestParser
@@ -10,16 +11,6 @@ class IssuesController < ApplicationController
   include ErrorHandler
   include RequestManager
   include ResponseGenerator
-
-  RETURN_CODES = {
-    :bad_request            => 400,
-    :unauthorized           => 401,
-    :forbidden              => 403,
-    :not_found              => 404,
-    :unsupported_media_type => 415,
-    :internal_server_error  => 500,
-    :service_unavailable    => 503
-  }
 
   # Order *Must* be from most generic to most specific
   ERROR_MAPPING = {
@@ -33,6 +24,7 @@ class IssuesController < ApplicationController
     IssuesController::BadRequestError           => :bad_request,
     IssuesController::UnsupportedMediaTypeError => :unsupported_media_type,
     IssuesController::ServiceUnavailable        => :service_unavailable,
+    IssuesController::IssueNotFound             => :not_found,
     IssuesController::ProcessingError           => :internal_server_error
   }
 

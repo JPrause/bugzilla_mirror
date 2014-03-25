@@ -7,7 +7,7 @@ gem 'rails', '3.2.13'
 
 gem 'sqlite3'
 gem 'linux_admin'
-gem 'active_bugzilla', :git => "git://github.com/ManageIQ/active_bugzilla.git", :ref => 'HEAD'
+gem 'active_bugzilla'
 gem 'rugged'
 
 # Gems used only for assets and not required

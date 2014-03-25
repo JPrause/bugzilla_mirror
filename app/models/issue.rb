@@ -67,39 +67,45 @@ class Issue < ActiveRecord::Base
 
   attr_accessible(*ATTRIBUTES)
 
+  #
+  # Virtual Attributes
+  #
+  attr_accessor   :flag_hash
+  attr_accessible :flag_hash
+
   has_and_belongs_to_many :dependents,
                           :class_name              => "Issue",
-                          :join_table              => "issue_dependencies",
+                          :join_table              => "issues_dependencies",
                           :foreign_key             => "issue_id",
                           :association_foreign_key => "dependent_id"
 
   has_and_belongs_to_many :depended_by,
                           :class_name              => "Issue",
-                          :join_table              => "issue_dependencies",
+                          :join_table              => "issues_dependencies",
                           :foreign_key             => "dependent_id",
                           :association_foreign_key => "issue_id"
 
   has_and_belongs_to_many :blocked_issues,
                           :class_name              => "Issue",
-                          :join_table              => "issue_blocks",
+                          :join_table              => "issues_blocks",
                           :foreign_key             => "issue_id",
                           :association_foreign_key => "blocked_issue_id"
 
   has_and_belongs_to_many :blocked_by,
                           :class_name              => "Issue",
-                          :join_table              => "issue_blocks",
+                          :join_table              => "issues_blocks",
                           :foreign_key             => "blocked_issue_id",
                           :association_foreign_key => "issue_id"
 
   has_and_belongs_to_many :duplicates,
                           :class_name              => "Issue",
-                          :join_table              => "issue_duplicates",
+                          :join_table              => "issues_duplicates",
                           :foreign_key             => "issue_id",
                           :association_foreign_key => "duplicate_id"
 
   has_and_belongs_to_many :duplicated_by,
                           :class_name              => "Issue",
-                          :join_table              => "issue_duplicates",
+                          :join_table              => "issues_duplicates",
                           :foreign_key             => "duplicate_id",
                           :association_foreign_key => "issue_id"
 
@@ -128,17 +134,32 @@ class Issue < ActiveRecord::Base
   # Let's get the Description of the Issue, i.e. the initial comment.
   #
   def description
-    initial_comment = comments.where(:count => 0).first
-    initial_comment.blank? ? "" : initial_comment.text
+    initial_comment.try(:text) || ""
+  end
+
+  def initial_comment
+    comments.where(:count => 0).first
+  end
+
+  #
+  # Let's provide access to the flags as a hash
+  #
+  def flag_hash
+    flags.to_s.split(", ").each_with_object({}) do |flag, hash|
+      k, v = flag.split("=")
+      hash[k] = v
+    end
+  end
+
+  def flag_hash=(hash)
+    hash = {} if hash.blank?
+    self.flags = hash.collect { |k, v| "#{k}=#{v}" }.join(", ")
+    hash
   end
 
   #
   # Let's provide procs to return lists of bug_id's for associated Issues
   #
-  def fetch_bug_ids(associations)
-    associations.select(:bug_id).collect { |issue| issue.bug_id }
-  end
-
   def dependents_bug_ids
     fetch_bug_ids(dependents)
   end
@@ -149,5 +170,11 @@ class Issue < ActiveRecord::Base
 
   def duplicates_bug_ids
     fetch_bug_ids(duplicates)
+  end
+
+  private
+
+  def fetch_bug_ids(associations)
+    associations.pluck(:bug_id)
   end
 end
