@@ -25,7 +25,7 @@ class WorkerManager
 
   def self.running?(klass)
     Sidekiq::Workers.new.each do |name, work, started|
-      return true if work['payload']['class'] == klass.to_s
+      return true if started.fetch_path('payload', 'class') == klass.to_s
     end
     false
   end
