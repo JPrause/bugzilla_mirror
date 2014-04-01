@@ -6,9 +6,9 @@ class BugzillaDbBulkLoader
   include ApplicationMixin
   sidekiq_options :queue => :cfme_bz, :retry => false
 
-  PRIMARY_SET   = [:summary, :status]     # Required
-  SECONDARY_SET = [:assigned_to, :flags]
-
+  PRIMARY_SET     = [:summary, :status]     # Required
+  SECONDARY_SET   = [:assigned_to]
+  ATTRS_IN_CHUNK  = [:flags]
   ATTR_CHUNK_SIZE = 4
 
   def required_set?(attr_list)
@@ -17,13 +17,12 @@ class BugzillaDbBulkLoader
 
   def load_comments
     logger.info "Bulk loading comments in bulk ..."
-    bug_ids = Issue.select(:bug_id).collect(&:bug_id)
-    logger.info "We have #{bug_ids.count} issues"
+    logger.info "We have #{@bug_ids.count} issues"
 
     logger.info "Fetching comments from #{bz_uri} ..."
 
     chunk_size  = bz_options["issues_per_client"] || 100
-    chunks      = bug_ids.each_slice(chunk_size).to_a
+    chunks      = @bug_ids.each_slice(chunk_size).to_a
     chunks.each do |bug_id_list|
 
       logger.info "Fetch comments from #{bz_uri} for #{bug_id_list}"
@@ -69,11 +68,66 @@ class BugzillaDbBulkLoader
     spawn_issue_processes(bug_id_list, BugzillaIssueAssociator)
   end
 
+  def chunk_load_attrs(attr_list)
+    chunk_size  = bz_options["issues_per_client"] || 100
+    chunks = @bug_ids.each_slice(chunk_size).to_a
+
+    logger.info "Loading the #{attr_list} attributes From #{bz_uri} in chunks of #{chunk_size} ..."
+
+    attr_list.product(chunks) do |attr, bug_id_list|
+      begin
+        bugs = []
+        logger.info "Fetching #{attr} for #{bug_id_list} ..."
+        time_taken = Benchmark.realtime do
+          bugs = ActiveBugzilla::Bug.find(:id => bug_id_list, :include_fields => [:id, attr])
+        end
+        logger.info "Took #{time_taken} seconds to fetch #{attr} for #{bug_id_list.count} issues."
+      rescue => e
+        logger.error "Failed to fetch #{attr} from #{bz_uri} - #{e}"
+        next
+      end
+
+      logger.info "Loading #{attr} to the database ..."
+      issue_attr_list   = [:bug_id, attr]
+      orig_logger_level = ActiveRecord::Base.logger.level
+      begin
+        time_taken = Benchmark.realtime do
+          bugs.each do |bug|
+            bug_id    = bug.id
+            bug_hash  = @service.fetch_issue(bug, issue_attr_list)
+
+            ActiveRecord::Base.logger.level = Logger::INFO
+            Bugzilla.bug_to_issue(bug_id, bug_hash, issue_attr_list)
+            ActiveRecord::Base.logger.level = orig_logger_level
+          end
+        end
+        logger.info "Completed Loading #{attr} in #{time_taken} seconds."
+      rescue => e
+        logger.error "Failed to load #{attr} to database - #{e}"
+        next
+      ensure
+        ActiveRecord::Base.logger.level = orig_logger_level
+      end
+    end
+  end
+
   def bulk_load_database
     logger.info "Loading the Database From #{bz_uri} ..."
     @service = Bugzilla.new
+    begin
+      bugs = []
+      logger.info "Fetching List of Bug Id's for #{bz_product} ..."
+      time_taken = Benchmark.realtime do
+        bugs = ActiveBugzilla::Bug.find(:product => bz_product, :include_fields => [:id])
+      end
+      @bug_ids = bugs.collect(&:id)
+      logger.info "Found #{@bug_ids.count} Issues for #{bz_product} in #{time_taken} seconds ..."
+    rescue => e
+      logger.error "Failed to fetch List of Bug Id's from #{bz_uri} - #{e}"
+      return false
+    end
 
-    all_attrs   = Issue::ATTRIBUTES - [:bug_id]
+    all_attrs   = Issue::ATTRIBUTES - [:bug_id] - ATTRS_IN_CHUNK
     rem_attrs   = all_attrs - PRIMARY_SET - SECONDARY_SET
     attr_chunks = [PRIMARY_SET] + [SECONDARY_SET] + rem_attrs.each_slice(ATTR_CHUNK_SIZE).to_a
 
@@ -124,6 +178,7 @@ class BugzillaDbBulkLoader
 
   def perform
     if bulk_load_database
+      chunk_load_attrs(ATTRS_IN_CHUNK)
       load_associations
       load_comments
       bz_update_config
