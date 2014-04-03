@@ -29,6 +29,10 @@ module ApplicationMixin
     BugzillaConfig.set_config(:product, bz_product)
   end
 
+  def api_options(what)
+    app_options.fetch_path(*['rest_api', what].compact)
+  end
+
   #
   # Logging Methods
   #
