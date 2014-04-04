@@ -18,7 +18,7 @@ class IssuesController
     end
 
     def paginate_params?
-      params['offset'] || params['limit']
+      params['offset'] || params['limit'] || api_options('paging_limit')
     end
 
     def expand_param
@@ -31,7 +31,7 @@ class IssuesController
 
     def expand_paginate_params
       offset = params['offset']   # 0 based
-      limit  = params['limit']    # i.e. page size
+      limit  = params['limit'] || api_options('paging_limit')   # i.e. page size
       [offset, limit]
     end
 

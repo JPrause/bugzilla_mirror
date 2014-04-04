@@ -13,6 +13,9 @@ common: &common
   sidekiq:
     queue:       "cfme_bz"
 
+  rest_api:
+    paging_limit:      1000
+
   cfme_git:
     repo_path: "/Users/calvin/projects/cfme/"
     releases:
