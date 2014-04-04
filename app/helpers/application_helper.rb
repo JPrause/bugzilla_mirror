@@ -46,7 +46,7 @@ module ApplicationHelper
   end
 
   def available_issue_states
-    ["All"].concat(Issue.pluck(:status).compact.uniq)
+    ["All"].concat(Issue.pluck(:status).compact.uniq.sort)
   end
 
   def available_issue_assigned_to
@@ -57,7 +57,7 @@ module ApplicationHelper
   # Flag helper procs
   #
   def available_flag_versions
-    ["All"].concat(Issue.select(:flags).uniq.collect { |issue| get_flag_version(issue.flag_hash) }).uniq
+    ["All"].concat(Issue.select(:flags).uniq.collect { |issue| get_flag_version(issue.flag_hash) }).uniq.sort
   end
 
   def get_flag_version(flag_hash)

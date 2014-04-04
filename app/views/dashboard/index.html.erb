@@ -15,16 +15,16 @@
 <table>
   <tr>
   <%= form_tag(statistics_reports_path, method: "get") do %>
-    <%= submit_tag('Run The Statistics Report') %>
+    <%= submit_tag('Statistics Report', :title => 'Run the Statistics Report') %>
   <% end %>
   <%= form_tag("/dashboard/update_issues", method: "get") do %>
-    <%= submit_tag('Load Updated Issues from Bugzilla') %>
+    <%= submit_tag('Update Issues', :title => 'Load updated issues from Bugzilla') %>
   <% end %>
   <%= form_tag("/sidekiq", method: "get") do %>
-    <%= submit_tag('View the SideKiq Dashboard for Queued Request') %>
+    <%= submit_tag('SideKiq Dashboard', :title => 'View the SideKiq Dashboard for Queued Request') %>
   <% end %>
   <%= form_tag("/dashboard", method: "get") do %>
-    <%= submit_tag('Refresh Dashboard') %>
+    <%= submit_tag('Reload Dashboard', :title => 'Reload this Dashboard with default filters') %>
   <% end %>
   </tr>
 </table>
@@ -34,7 +34,7 @@
 <%= form_tag(errata_reports_path, method: "get") do %>
   <%= label_tag(:q, "Select Flag Version:") %>
   <%= select_tag(:flag_version, options_for_select(available_flag_versions)) %>
-  <%= submit_tag('Run The Errata Report') %>
+  <%= submit_tag('Errata Report', :title => 'Run the Errata Report against the selected Version') %>
 <% end %>
 
 <hr>
