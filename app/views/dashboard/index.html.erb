@@ -58,8 +58,8 @@
 <h2>Issue Table</h2>
 
 <p>
-  <b>Last Updated:</b>          
-  <%= @issues_updated_at %>    
+  <b>Last Updated:</b>
+  <%= @issues_updated_at %>
 </p>
 <p>
 <table>
@@ -94,9 +94,3 @@
 </table>
 
 <br />
-
-<br>
-  <%= form_tag("/dashboard", method: "get") do %>
-    <%= submit_tag('Refresh Dashboard') %>
-  <% end %>
-</br>
