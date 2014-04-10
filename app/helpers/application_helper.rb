@@ -53,6 +53,14 @@ module ApplicationHelper
     ["All"].concat(Issue.pluck(:assigned_to).compact.uniq.sort_by { |assignee| assignee.downcase })
   end
 
+  def available_filters
+    ["None"].concat(Settings.dashboard.filters.collect { |filter| filter.name }).uniq
+  end
+
+  def filter_name_to_sqlfilter(name)
+    Settings.dashboard.filters.find { |filter| filter.name == name }.try(:sqlfilter)
+  end
+
   #
   # Flag helper procs
   #

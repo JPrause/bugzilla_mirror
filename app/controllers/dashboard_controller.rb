@@ -4,11 +4,17 @@ class DashboardController < ApplicationController
   # Cfme Bz Web Interface (Html)
   #
   def index
+    @selected_filter = params['selected_filter'] || @selected_filter || "None"
     @selected_owner  = params['selected_owner']  || @selected_owner  || "All"
     @selected_status = params['selected_status'] || @selected_status || ["ON_DEV"]
     @issues = Issue.order(sort_column + " " + sort_direction)
+
+    selected_sqlfilter = filter_name_to_sqlfilter(@selected_filter)
+    @issues = @issues.where(selected_sqlfilter)               if selected_sqlfilter
+
     @issues = @issues.where(:assigned_to => @selected_owner)  if @selected_owner  != "All"
     @issues = @issues.where(:status      => @selected_status) if @selected_status != ["All"]
+
     @issues_updated_at = Issue.order("updated_at ASC").last.nil? ? "None Found" :
       Issue.order("updated_at ASC").last.updated_at
 
