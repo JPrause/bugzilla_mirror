@@ -48,6 +48,9 @@
       <%= label_tag(:q, "Owner:") %>
       <%= select_tag(:selected_owner, options_for_select(available_issue_assigned_to, @selected_owner)) %>
       &nbsp; &nbsp;
+      <%= label_tag(:q, "Filter:") %>
+      <%= select_tag(:selected_filter, options_for_select(available_filters, @selected_filter)) %>
+      &nbsp; &nbsp;
       <%= submit_tag('Apply Filters') %>
     <% end %>
   </tr>
