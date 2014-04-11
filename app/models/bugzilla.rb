@@ -88,7 +88,7 @@ class Bugzilla
     keys |= [:id, :flags, :summary, :status, :assigned_to]
     keys |= [:comments] if attr_hash.key?("comment")
     begin
-      bug_list = ActiveBugzilla::Bug.find(:id => bug_id, :include_attrs => keys)
+      bug_list = ActiveBugzilla::Bug.find(:id => bug_id)
     rescue StandardError => e
       emsg = e.message
       raise IssuesController::AuthenticationError, emsg if emsg.downcase.match("username")

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140412150000) do
+ActiveRecord::Schema.define(:version => 20140413152200) do
 
   create_table "bugzilla_configs", :force => true do |t|
     t.string "name",  :null => false
@@ -113,14 +113,18 @@ ActiveRecord::Schema.define(:version => 20140412150000) do
     t.string   "votes"
     t.string   "whiteboard"
     t.string   "work_time"
+    t.datetime "created_on"
+    t.datetime "updated_on"
   end
 
   add_index "issues", ["assigned_to"], :name => "index_issues_on_assigned_to"
   add_index "issues", ["bug_id"], :name => "index_issues_on_bug_id", :unique => true
   add_index "issues", ["classification"], :name => "index_issues_on_classification"
+  add_index "issues", ["created_on"], :name => "index_issues_on_created_on"
   add_index "issues", ["priority"], :name => "index_issues_on_priority"
   add_index "issues", ["severity"], :name => "index_issues_on_severity"
   add_index "issues", ["status"], :name => "index_issues_on_status"
+  add_index "issues", ["updated_on"], :name => "index_issues_on_updated_on"
 
   create_table "issues_blocks", :id => false, :force => true do |t|
     t.integer "issue_id"
