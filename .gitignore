@@ -17,8 +17,8 @@
 # Ignore binstubs
 /bin
 
-# Ignore live config file
-cfme_bz.yml*
+# Ignore yml config file
+config/*.yml
 
 # Ignore production artifacts
 /public/assets

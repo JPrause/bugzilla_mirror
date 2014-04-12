@@ -6,7 +6,7 @@ gem 'rails_config'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
+gem 'pg'
 gem 'linux_admin'
 gem 'active_bugzilla'
 gem 'rugged'

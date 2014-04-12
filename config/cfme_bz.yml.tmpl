@@ -1,0 +1,29 @@
+---
+common: &common
+  bugzilla:
+    uri: https://bugzilla.redhat.com/
+    show_bug_prefix: /show_bug.cgi?id=
+    product: CloudForms Management Engine
+    username:
+    password:
+    timeout: 180
+    max_clients: 1
+    issues_per_client: 100
+    update_interval: 3600
+
+  sidekiq:
+    queue: cfme_bz
+
+  rest_api:
+    paging_limit: 1000
+
+development:
+  <<: *common
+
+test:
+  <<: *common
+  bugzilla:
+    uri: https://partner-bugzilla.redhat.com
+
+production:
+  <<: *common
