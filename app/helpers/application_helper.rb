@@ -30,8 +30,8 @@ module ApplicationHelper
 
   def list_last_commit(bz)
     depends_on_commits =
-      Issue.where(:bug_id => bz.depends_on_ids).includes(:commits).collect { |i| i.commits.all }.flatten
-    commits = bz.commits.all | depends_on_commits
+      Issue.where(:bug_id => bz.depends_on_ids).includes(:commits).collect { |i| i.commits.to_a }.flatten
+    commits = bz.commits.to_a | depends_on_commits
     hash = commits.each_with_object(Hash.new(0)) do |c, inner_hash|
       inner_hash[c.branch] += 1
     end

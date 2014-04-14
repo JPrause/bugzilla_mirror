@@ -64,7 +64,7 @@ class BugzillaDbBulkLoader
   end
 
   def load_associations
-    bug_id_list = Issue.select(:bug_id).collect(&:bug_id)
+    bug_id_list = Issue.pluck(:bug_id).compact
     spawn_issue_processes(bug_id_list, BugzillaIssueAssociator)
   end
 

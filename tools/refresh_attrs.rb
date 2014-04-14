@@ -19,7 +19,7 @@ if attrs.blank?
 elsif uri.blank?
   puts "Database must first be bulk-loaded from a Bugzilla Server"
 else
-  issues = Issue.select(:bug_id).collect(&:bug_id)
+  issues = Issue.pluck(:bug_id).compact
   puts "Found #{issues.count} issues ..."
 
   puts "Refreshing #{attrs} from #{uri} ..."

@@ -67,13 +67,10 @@ class Issue < ActiveRecord::Base
                 :whiteboard,
                 :work_time]
 
-  attr_accessible(*ATTRIBUTES)
-
   #
   # Virtual Attributes
   #
   attr_accessor   :flag_hash
-  attr_accessible :flag_hash
 
   has_and_belongs_to_many :dependents,
                           :class_name              => "Issue",

@@ -9,8 +9,6 @@ class Comment < ActiveRecord::Base
     :private
   ]
 
-  attr_accessible(*ATTRIBUTES)
-
   def presentable_hash
     attributes.slice(*ATTRIBUTES.collect(&:to_s))
   end

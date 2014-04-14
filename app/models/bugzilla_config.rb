@@ -1,7 +1,4 @@
 class BugzillaConfig < ActiveRecord::Base
-  attr_accessible :name
-  attr_accessible :value
-
   SYNCTIME_PARAMETER = "last_updated_on"
 
   def self.get_config(name)
@@ -30,6 +27,6 @@ class BugzillaConfig < ActiveRecord::Base
   end
 
   def self.to_hash
-    find(:all).each_with_object({}) { |entry, hash|  hash[entry.name] = entry.value }
+    all.each_with_object({}) { |entry, hash|  hash[entry.name] = entry.value }
   end
 end

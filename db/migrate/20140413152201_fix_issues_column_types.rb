@@ -5,5 +5,6 @@ class FixIssuesColumnTypes < ActiveRecord::Migration
     change_column :issues, :cc,            :text
     change_column :issues, :release_notes, :text
     change_column :issues, :resolution,    :text
+    change_column :issues, :see_also,      :text
   end
 end

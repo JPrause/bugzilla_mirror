@@ -1,21 +1,21 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.13'
+gem 'rails', '~> 4.0.0'
 gem 'rails_config'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
-gem 'linux_admin'
+gem 'more_core_extensions', :require => 'more_core_extensions/all'
 gem 'active_bugzilla'
 gem 'rugged'
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
+  gem 'sass-rails'
+  gem 'coffee-rails'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'libv8'
@@ -54,7 +54,7 @@ end
 gem 'foreman'
 
 # Sidekiq specific gems
-gem 'sidekiq'
+gem 'sidekiq', '~> 2.17'
 gem 'sinatra', require: false
 gem 'slim'
 

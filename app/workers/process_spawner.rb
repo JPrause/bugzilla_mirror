@@ -20,6 +20,10 @@ module ProcessSpawner
       # within the Sidekiq worker.
       #
       Parallel.map(chunks, :in_processes => max_clients) do |bug_id_list|
+        # Reconnect to prevent errors with Postgres
+        # Not needed if we run Parallel in_threads.
+        ActiveRecord::Base.connection.reconnect!
+
         num_failed = 0  # Must be initialized outside the Benchmark block.
         chunk_time_taken = Benchmark.realtime do
           num_failed = klass.new.perform(bug_id_list)
@@ -29,5 +33,13 @@ module ProcessSpawner
       end
     end
     logger.info "#{klass}: Took #{time_taken} seconds for #{total_count} issues"
+    # Reconnect to allow main process to talk to Postgres
+    # Following is a known workaround for sockets getting copied then finally clobbered.
+    # Second attempt after the exception always seems to succeed.
+    begin
+      ActiveRecord::Base.connection.reconnect!
+    rescue
+      ActiveRecord::Base.connection.reconnect!
+    end
   end
 end

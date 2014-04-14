@@ -3,8 +3,6 @@ class Commit < ActiveRecord::Base
 
   has_and_belongs_to_many :issues
 
-  attr_accessible :branch, :sha_id
-
   def self.update_from_git!
     raise ArgumentError, "repo_path not defined in config/cfme_bz.yml" unless cfme_git_configuration["repo_path"]
 
@@ -26,7 +24,7 @@ class Commit < ActiveRecord::Base
   def self.update_git_branch(processor, branch)
     processor.commits(branch).each do |commit|
       c = Commit.new(commit.attributes)
-      c.issues = Issue.where(:bug_id => commit.bug_ids).all unless commit.bug_ids.empty?
+      c.issues = Issue.where(:bug_id => commit.bug_ids).to_a unless commit.bug_ids.empty?
       c.save!
     end
   end

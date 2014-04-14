@@ -19,13 +19,13 @@ class WorkerManager
   end
 
   def self.refresh_associations_from_bugzilla
-    bug_id_list = Issue.select(:bug_id).collect(&:bug_id)
+    bug_id_list = Issue.pluck(:bug_id).compact
     BugzillaDbAssociator.perform_async(bug_id_list)
   end
 
   def self.running?(klass)
     Sidekiq::Workers.new.each do |name, work, started|
-      return true if started.fetch_path('payload', 'class') == klass.to_s
+      return true if work.fetch_path('payload', 'class') == klass.to_s
     end
     false
   end
