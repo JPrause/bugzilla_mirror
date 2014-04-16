@@ -11,6 +11,11 @@ class IssuesController
           issue_hash[key.to_s] = issue.send(associated_bug_id_method)
         end
       end
+      if expand?("associations") || !attribute_selection
+        {"clones" => :clones}.each do |key, association|
+          issue_hash[key.to_s] = issue.send(association).pluck(:bug_id).compact if issue.respond_to?(association)
+        end
+      end
       if expand?("comments") || show_attribute?("comments")
         issue_hash["comments"] = issue.comments.order("count ASC").collect do |comment|
           comment.presentable_hash

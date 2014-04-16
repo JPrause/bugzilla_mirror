@@ -57,17 +57,27 @@
     <tr><td><i>Dependent Issues</i></td>
         <td><% @issue.dependents.each do |relation| %>
             <%= form_tag("/dashboard/view_issue/#{relation.bug_id}", method: "get") do %>
-              <%= submit_tag(relation.bug_id) %> - <%= relation.summary %>
+              <%= submit_tag(relation.bug_id) %> <%= get_flag_version(relation.flag_hash) %> - <%= relation.summary %>
       <% end
     end %></td></tr>
     <tr><td><i>Blocked Issues</i></td><td><% @issue.blocked_issues.each do |relation| %>
       <%= form_tag("/dashboard/view_issue/#{relation.bug_id}", method: "get") do %>
-        <%= submit_tag(relation.bug_id) %> - <%= relation.summary %>
+        <%= submit_tag(relation.bug_id) %> <%= get_flag_version(relation.flag_hash) %> - <%= relation.summary %>
       <% end
     end %></td></tr>
     <tr><td><i>Duplicate Issues</i></td><td><% @issue.duplicates.each do |relation| %>
       <%= form_tag("/dashboard/view_issue/#{relation.bug_id}", method: "get") do %>
-        <%= submit_tag(relation.bug_id) %> - <%= relation.summary %>
+        <%= submit_tag(relation.bug_id) %> <%= get_flag_version(relation.flag_hash) %> - <%= relation.summary %>
+      <% end
+    end %></td></tr>
+    <tr><td><i>Clone Of</i></td><td><% @issue.cloned_from.each do |relation| %>
+      <%= form_tag("/dashboard/view_issue/#{relation.bug_id}", method: "get") do %>
+        <%= submit_tag(relation.bug_id) %> <%= get_flag_version(relation.flag_hash) %> - <%= relation.summary %>
+      <% end
+    end %></td></tr>
+    <tr><td><i>Cloned Issues</i></td><td><% @issue.clones.each do |relation| %>
+      <%= form_tag("/dashboard/view_issue/#{relation.bug_id}", method: "get") do %>
+        <%= submit_tag(relation.bug_id) %> <%= get_flag_version(relation.flag_hash) %>
       <% end
     end %></td></tr>
     <tr><td><i>Comments</i></td> </tr>

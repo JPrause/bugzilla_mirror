@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140413152201) do
+ActiveRecord::Schema.define(version: 20140415123000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -135,6 +135,14 @@ ActiveRecord::Schema.define(version: 20140413152201) do
 
   add_index "issues_blocks", ["blocked_issue_id"], name: "index_issues_blocks_on_blocked_issue_id", using: :btree
   add_index "issues_blocks", ["issue_id"], name: "index_issues_blocks_on_issue_id", using: :btree
+
+  create_table "issues_clones", id: false, force: true do |t|
+    t.integer "issue_id"
+    t.integer "clone_id"
+  end
+
+  add_index "issues_clones", ["clone_id"], name: "index_issues_clones_on_clone_id", using: :btree
+  add_index "issues_clones", ["issue_id"], name: "index_issues_clones_on_issue_id", using: :btree
 
   create_table "issues_dependencies", id: false, force: true do |t|
     t.integer "issue_id"

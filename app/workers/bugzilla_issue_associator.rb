@@ -4,6 +4,7 @@ class BugzillaIssueAssociator
   sidekiq_options :queue => :cfme_bz, :retry => false
 
   def define_issue_association(this_issue, what, other_issues)
+    other_issues = [] if Array(other_issues) == [0]  # Sometime we get 0 for clone_of from Bugzilla.
     this_issue.send("#{what}=", Issue.where(:bug_id => Array(other_issues)))
     logger.info "Associating #{this_issue.bug_id} <#{what}> with #{Array(other_issues)}" unless other_issues.blank?
   end
@@ -29,6 +30,12 @@ class BugzillaIssueAssociator
       define_issue_association(this_issue,
                                Issue::ASSOCIATIONS[:duplicate_id],
                                bug_hash[:duplicate_id])
+    end
+
+    if bug_hash.key?(:clone_of)
+      define_issue_association(this_issue,
+                               Issue::ASSOCIATIONS[:clone_of],
+                               bug_hash[:clone_of])
     end
   end
 

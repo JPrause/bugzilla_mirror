@@ -108,6 +108,18 @@ class Issue < ActiveRecord::Base
                           :foreign_key             => "duplicate_id",
                           :association_foreign_key => "issue_id"
 
+  has_and_belongs_to_many :clones,
+                          :class_name              => "Issue",
+                          :join_table              => "issues_clones",
+                          :foreign_key             => "issue_id",
+                          :association_foreign_key => "clone_id"
+
+  has_and_belongs_to_many :cloned_from,
+                          :class_name              => "Issue",
+                          :join_table              => "issues_clones",
+                          :foreign_key             => "clone_id",
+                          :association_foreign_key => "issue_id"
+
   has_many :comments, :dependent => :destroy
 
   has_and_belongs_to_many :commits
@@ -121,12 +133,16 @@ class Issue < ActiveRecord::Base
 
     duplicates.clear
     duplicated_by.clear
+
+    clones.clear
+    cloned_from.clear
   end
 
   ASSOCIATIONS = {
     :depends_on   => :dependents,
     :blocks       => :blocked_issues,
-    :duplicate_id => :duplicates
+    :duplicate_id => :duplicates,
+    :clone_of     => :cloned_from
   }
 
   #
@@ -169,6 +185,10 @@ class Issue < ActiveRecord::Base
 
   def duplicates_bug_ids
     fetch_bug_ids(duplicates)
+  end
+
+  def cloned_from_bug_ids
+    fetch_bug_ids(cloned_from)
   end
 
   private
