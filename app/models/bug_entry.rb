@@ -2,8 +2,8 @@ class BugEntry
   include ApplicationHelper
 
   attr_accessor :bug_id, :depends_on_ids, :commits
-  attr_accessor :pm_acks, :devel_acks, :qa_acks, :doc_acks, :ver_acks
-  attr_accessor :flag_version, :summary
+  attr_accessor :pm_acks, :devel_acks, :qa_acks, :ver_acks
+  attr_accessor :flag_versions, :summary
 
   def initialize(bz)
     flags = bz.flag_hash
@@ -14,14 +14,13 @@ class BugEntry
     @pm_acks        = display_for_ack(get_flag_ack(flags, :pm))
     @devel_acks     = display_for_ack(get_flag_ack(flags, :devel))
     @qa_acks        = display_for_ack(get_flag_ack(flags, :qa))
-    @doc_acks       = display_for_ack(get_flag_ack(flags, :doc))
     @ver_acks       = display_for_ack(get_flag_ack(flags, :version))
-    @flag_version   = get_flag_version(flags)
+    @flag_versions  = get_flag_versions(flags)
     @summary        = bz.summary
   end
 
   def all_acks?
-    ![pm_acks, devel_acks, qa_acks, doc_acks, ver_acks].include?(" ")
+    ![pm_acks, devel_acks, qa_acks].include?(" ")
   end
 
   private

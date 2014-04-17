@@ -29,6 +29,6 @@ class ErrataReportsController < ApplicationController
   private
 
   def display_flag_version?(bz, requested_flag_version)
-    requested_flag_version == "All" || requested_flag_version == get_flag_version(bz.flag_hash)
+    requested_flag_version == "All" || get_flag_versions(bz.flag_hash).include?(requested_flag_version)
   end
 end

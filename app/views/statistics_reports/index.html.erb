@@ -18,7 +18,7 @@
      @table.each do |version, statuses|
       version_color = cycle('list_line_odd', 'list_line_even')
       subtotal = 0
-      statuses.each do |status, count| %>
+      statuses.sort.each do |status, count| %>
         <tr class=<%= version_color %> >
           <td><% if version != last_version %>
               <b><%= version %></b>
@@ -41,6 +41,12 @@
     </tr>
   <% end %>
 </table>
+<% unless @issues_with_multiple_flag_versions.zero? %>
+  <br>
+  <i>Number of Issues with multiple flag versions: </i><b> <%= @issues_with_multiple_flag_versions %> </b>
+  <br>
+  <br>
+<% end %>
 
 <%= link_to 'Back', dashboard_index_path %>
 

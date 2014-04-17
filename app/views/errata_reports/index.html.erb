@@ -3,6 +3,12 @@
 <h2> Bugzilla Issues in <b>POST</b> state that need ACK(s)</br> </h2>
 
 <p>
+<table>
+  <tr><i>Number of Issues found: </i><b> <%= @need_acks.count %> </b> &nbsp; &nbsp; </tr>
+</table>
+</p>
+
+<p>
   <table border="1">
     <tr>
       <th width="10" colspan="1" rowspan="2" scope="col">
@@ -17,14 +23,13 @@
       <th width="10" colspan="1" rowspan="2" scope="col">
         <%= sortable "commit" %>
       </th>
-      <th class="list_line_even" width="100" colspan="4" scope="col">Has ACKs</th>
+      <th class="list_line_even" width="100" colspan="3" scope="col">Has ACKs</th>
       <th width="600" colspan="1" rowspan="2" scope="col"> Summary</th>
     </tr>
     <tr>
       <th class="list_line_even" width="60"><%= sortable "pm_ack", "PM" %></th> 
       <th class="list_line_even" width="60"><%= sortable "devel_ack", "Devel" %></th> 
       <th class="list_line_even" width="60"><%= sortable "qa_ack", "QA" %></th> 
-      <th class="list_line_even" width="60"><%= sortable "doc_ack", "Doc" %></th> 
     </tr>
 
     <% @need_acks.each do |bz| %>
@@ -39,12 +44,11 @@
               <% end
             end %>
         </td>
-        <td align="center"> <span class="green_text"><%= bz.flag_version %></span></td>
+        <td align="center"> <span class="green_text"><%= flag_versions_string(bz.flag_versions) %></span></td>
         <td><%= list_last_commit(bz) %></td>
         <td align="center"> <span class="green_text"><%= bz.pm_acks %></span></td>
         <td align="center"> <span class="green_text"><%= bz.devel_acks %></span></td>
         <td align="center"> <span class="green_text"><%= bz.qa_acks %></span></td>
-        <td align="center"> <span class="green_text"><%= bz.doc_acks %></span></td>
         <td><%= bz.summary %></td>
       </tr>
     <% end %>
@@ -60,6 +64,12 @@
 
 <p>
   <h2> Bugzilla Issues in <b>POST</b> state that have all the needed ACKs</br> </h2>
+
+  <p>
+  <table>
+    <tr><i>Number of Issues found: </i><b> <%= @have_acks.count %> </b> &nbsp; &nbsp; </tr>
+  </table>
+  </p>
 
   <table border="1">
     <tr>
@@ -81,7 +91,7 @@
               <% end
             end %>
         </td>
-        <td><%= bz.flag_version %></td>
+        <td><%= flag_versions_string(bz.flag_versions) %></td>
         <td><%= list_last_commit(bz) %></td>
         <td><%= bz.summary %></td>
       </tr>

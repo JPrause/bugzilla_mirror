@@ -64,12 +64,21 @@ module ApplicationHelper
   #
   # Flag helper procs
   #
-  def available_flag_versions
-    ["All"].concat(Issue.select(:flags).uniq.collect { |issue| get_flag_version(issue.flag_hash) }).uniq.sort
+  def flag_hash_versions(flag_hash)
+    flag_versions_string(get_flag_versions(flag_hash))
   end
 
-  def get_flag_version(flag_hash)
-    get_flag_name(flag_hash, "version")
+  def flag_versions_string(flag_versions)
+    flag_versions.join(", ")
+  end
+
+  def available_flag_versions
+    ["All"].concat(Issue.select(:flags).uniq.collect { |issue| get_flag_versions(issue.flag_hash) }.flatten).uniq.sort
+  end
+
+  def get_flag_versions(flag_hash)
+    flag_versions = flag_hash.each.collect { |flag, value| flag if flag.start_with?("cfme-") }.compact
+    flag_versions.blank? ? %w(NONE) : flag_versions
   end
 
   def get_flag_ack(flag_hash, what)
