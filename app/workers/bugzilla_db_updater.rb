@@ -1,8 +1,11 @@
 class BugzillaDbUpdater
   include Sidekiq::Worker
+  include Sidetiq::Schedulable
   include ProcessSpawner
   include ApplicationMixin
   sidekiq_options :queue => :cfme_bz, :retry => false
+
+  recurrence { minutely }
 
   def update_database
     logger.info "Updating the Database From #{bz_uri} ..."
