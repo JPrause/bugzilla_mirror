@@ -177,7 +177,7 @@ class BugzillaDbBulkLoader
   end
 
   def perform
-    this_synctime = DateTime.now.to_s
+    this_synctime = bz_timestamp
     if bulk_load_database
       chunk_load_attrs(ATTRS_IN_CHUNK)
       load_associations

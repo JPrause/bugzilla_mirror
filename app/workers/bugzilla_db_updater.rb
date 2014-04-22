@@ -10,7 +10,7 @@ class BugzillaDbUpdater
   def update_database
     logger.info "Updating the Database From #{bz_uri} ..."
     @service = Bugzilla.new
-    this_synctime = DateTime.now.to_s
+    this_synctime = bz_timestamp
     search_parameters = {:updated_on => BugzillaConfig.fetch_synctime}
     begin
       bug_ids = @service.fetch_bug_ids(search_parameters)

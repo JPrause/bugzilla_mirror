@@ -11,6 +11,10 @@ module ApplicationMixin
     @options ||= YAML.load_file(Rails.root.join('config', 'cfme_bz.yml'))[Rails.env]
   end
 
+  def bz_timestamp
+    Time.now.utc.strftime("%FT%T")
+  end
+
   def bz_options
     app_options['bugzilla']
   end
@@ -23,7 +27,7 @@ module ApplicationMixin
     bz_options['product']
   end
 
-  def bz_update_config(synctime = DateTime.now.to_s)
+  def bz_update_config(synctime = bz_timestamp)
     BugzillaConfig.update_synctime(synctime)
     BugzillaConfig.set_config(:uri, bz_uri)
     BugzillaConfig.set_config(:product, bz_product)

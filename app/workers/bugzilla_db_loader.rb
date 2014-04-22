@@ -18,7 +18,7 @@ class BugzillaDbLoader
   end
 
   def perform
-    this_synctime = DateTime.now.to_s
+    this_synctime = bz_timestamp
     load_database
     bz_update_config(this_synctime)
   end
