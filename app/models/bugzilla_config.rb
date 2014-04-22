@@ -18,7 +18,7 @@ class BugzillaConfig < ActiveRecord::Base
     get_config(SYNCTIME_PARAMETER)
   end
 
-  def self.update_synctime(timestamp = DateTime.now.to_s)
+  def self.update_synctime(timestamp)
     set_config(SYNCTIME_PARAMETER, timestamp)
   end
 

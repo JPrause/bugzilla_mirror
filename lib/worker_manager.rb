@@ -24,9 +24,12 @@ class WorkerManager
   end
 
   def self.running?(klass)
-    Sidekiq::Workers.new.each do |name, work, started|
-      return true if work.fetch_path('payload', 'class') == klass.to_s
-    end
-    false
+    !running_instances(klass).blank?
+  end
+
+  def self.running_instances(klass)
+    Sidekiq::Workers.new.collect do |name, work, started|
+      work.fetch_path('payload') if work.fetch_path('payload', 'class') == klass.to_s
+    end.compact
   end
 end

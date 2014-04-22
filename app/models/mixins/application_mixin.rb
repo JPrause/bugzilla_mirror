@@ -23,8 +23,8 @@ module ApplicationMixin
     bz_options['product']
   end
 
-  def bz_update_config
-    BugzillaConfig.update_synctime
+  def bz_update_config(synctime = DateTime.now.to_s)
+    BugzillaConfig.update_synctime(synctime)
     BugzillaConfig.set_config(:uri, bz_uri)
     BugzillaConfig.set_config(:product, bz_product)
   end

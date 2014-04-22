@@ -177,11 +177,12 @@ class BugzillaDbBulkLoader
   end
 
   def perform
+    this_synctime = DateTime.now.to_s
     if bulk_load_database
       chunk_load_attrs(ATTRS_IN_CHUNK)
       load_associations
       load_comments
-      bz_update_config
+      bz_update_config(this_synctime)
     end
   end
 end
