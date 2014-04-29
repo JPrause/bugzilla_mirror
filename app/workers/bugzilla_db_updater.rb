@@ -1,6 +1,7 @@
 class BugzillaDbUpdater
   include Sidekiq::Worker
   include Sidetiq::Schedulable
+  include CFMEToolsServices::SidekiqWorkerMixin
   include ProcessSpawner
   include ApplicationMixin
   sidekiq_options :queue => :cfme_bz, :retry => false
@@ -28,11 +29,13 @@ class BugzillaDbUpdater
   end
 
   def perform
-    if WorkerManager.running_instances(self.class).count > 1
+    workers = self.workers
+
+    if !first_unique_worker?(workers)
       logger.info "#{self.class} is still running, skipping"
-    elsif WorkerManager.running?(BugzillaDbLoader)
+    elsif BugzillaDbLoader.running?(workers)
       logger.info "Cannot run the #{self.class} while the Database Loader is running"
-    elsif WorkerManager.running?(BugzillaDbBulkLoader)
+    elsif BugzillaDbBulkLoader.running?(workers)
       logger.info "Cannot run the #{self.class} while the Database Bulk Loader is running"
     elsif BugzillaConfig.fetch_synctime.blank?
       logger.info "Cannot run the #{self.class}, the Database Bulk Loader must be run first"
