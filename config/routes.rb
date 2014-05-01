@@ -4,8 +4,6 @@ require 'sidetiq/web'
 CfmeBz::Application.routes.draw do
   mount Sidekiq::Web, at: "/sidekiq"
 
-  BugzillaDbUpdater # Eager load the BugzillaDbUpdater to ensure the Sidetiq job is scheduled
-
   resources :dashboard do
     collection do
       get 'index'
