@@ -1,5 +1,7 @@
 include ApplicationMixin
 
+require 'uri'
+
 module ApplicationHelper
   def sortable(column, title = nil)
     title ||= column.titleize
@@ -9,7 +11,7 @@ module ApplicationHelper
   end
 
   def url_to_bugzilla(bug_id)
-    "#{bz_options['uri']}#{bz_options['show_bug_prefix']}#{bug_id}"
+    "#{URI.join(bz_options['uri'], bz_options['show_bug_prefix'])}#{bug_id}"
   end
 
   def link_to_bugzilla(bug_id)

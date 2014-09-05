@@ -7,7 +7,7 @@ rescue Errno::ENOENT
   {"bugzilla" => {}}
 end
 
-APP_CONFIG['bugzilla']['uri']     ||= "https://bugzilla.redhat.com/"
+APP_CONFIG['bugzilla']['uri']     ||= "https://bugzilla.redhat.com"
 APP_CONFIG['bugzilla']['product'] ||= "CloudForms Management Engine"
 
 BZ_CONFIG = APP_CONFIG['bugzilla']
