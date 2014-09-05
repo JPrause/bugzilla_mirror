@@ -33,9 +33,9 @@ class BugzillaDbUpdater
 
     if !first_unique_worker?(workers)
       logger.info "#{self.class} is still running, skipping"
-    elsif BugzillaDbLoader.running?(workers)
+    elsif BugzillaDbLoader.running?
       logger.info "Cannot run the #{self.class} while the Database Loader is running"
-    elsif BugzillaDbBulkLoader.running?(workers)
+    elsif BugzillaDbBulkLoader.running?
       logger.info "Cannot run the #{self.class} while the Database Bulk Loader is running"
     elsif BugzillaConfig.fetch_synctime.blank?
       logger.info "Cannot run the #{self.class}, the Database Bulk Loader must be run first"
