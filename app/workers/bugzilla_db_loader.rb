@@ -1,6 +1,7 @@
 class BugzillaDbLoader
   include Sidekiq::Worker
   include ProcessSpawner
+  include CFMEToolsServices::SidekiqWorkerMixin
   include ApplicationMixin
   sidekiq_options :queue => :cfme_bz, :retry => false
 
