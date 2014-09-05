@@ -6,6 +6,8 @@ dashboard:
     sqlfilter: "(status = 'NEW' OR status = 'ASSIGNED' OR status = 'ON_DEV') AND keywords = 'FutureFeature' AND flags LIKE '%cfme-future%'"
   - name: All DOCs
     sqlfilter: "(status = 'NEW' OR status = 'ASSIGNED' OR status = 'ON_DEV') AND component = 'Documentation'"
+  - name: Blocker Issues
+    sqlfilter: "(status = 'NEW' OR status = 'ASSIGNED' OR status = 'ON_DEV') AND classification = 'Red Hat' AND component != 'Documentation' AND keywords NOT LIKE '%FutureFeature%' AND flags LIKE '%blocker=%'"
   - name: Urgent Severity Issues
     sqlfilter: "(status = 'NEW' OR status = 'ASSIGNED' OR status = 'ON_DEV') AND classification = 'Red Hat' AND component != 'Documentation' AND keywords NOT LIKE '%FutureFeature%' AND flags NOT LIKE '%cfme-future%' AND severity = 'urgent'"
   - name: High Severity Issues
