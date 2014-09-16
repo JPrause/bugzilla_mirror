@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-CfmeBz::Application.load_tasks
+BugzillaMirror::Application.load_tasks

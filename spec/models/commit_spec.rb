@@ -9,9 +9,9 @@ describe Commit do
           "cfme-5.2.z" => ["5_2_release"]
         }
       }
-      described_class.stub(:cfme_git_configuration => @config)
+      described_class.stub(:git_helper_configuration => @config)
 
-      CFMEGit::Processor.any_instance.stub(:branch_names => ["5_2_release"])
+      GitHelper::Processor.any_instance.stub(:branch_names => ["5_2_release"])
       Rugged::Repository.stub(:new)
     end
 
@@ -24,14 +24,14 @@ describe Commit do
             "cfme-5.3"   => ["5_3_release"]
           }
         }
-        described_class.stub(:cfme_git_configuration => @config)
-        CFMEGit::Processor.any_instance.stub(:branch_names => %w(5_2_release 5_3_release))
+        described_class.stub(:git_helper_configuration => @config)
+        GitHelper::Processor.any_instance.stub(:branch_names => %w(5_2_release 5_3_release))
       end
 
       it "normal case" do
         double1 = double(:attributes => {}, :bz_ids => [])
 
-        CFMEGit::Processor.any_instance.stub(:commits => [double1])
+        GitHelper::Processor.any_instance.stub(:commits => [double1])
 
         expect { described_class.update_from_git! }.to change { Commit.count }.by(2)
       end
@@ -41,7 +41,7 @@ describe Commit do
         double1 = double(:attributes => {:branch => "one", :sha_id => "123"}, :bz_ids => [])
         double(:attributes => {:branch => "two", :sha_id => "123"}, :bz_ids => [])
 
-        CFMEGit::Processor.any_instance.stub(:commits => [double1])
+        GitHelper::Processor.any_instance.stub(:commits => [double1])
 
         expect { described_class.update_from_git! }.to change { Commit.count }.by(2)
       end
@@ -52,7 +52,7 @@ describe Commit do
       double1 = double(:attributes => {}, :bz_ids => [1000])
       double2 = double(:attributes => {}, :bz_ids => [1000])
 
-      CFMEGit::Processor.any_instance.stub(:commits => [double1, double2])
+      GitHelper::Processor.any_instance.stub(:commits => [double1, double2])
       described_class.update_from_git!
 
       expect(described_class.count).to eq 2
@@ -67,7 +67,7 @@ describe Commit do
       issue2   = Issue.create(:bz_id => 2000)
       double1  = double(:attributes => {}, :bz_ids => [1000, 2000])
 
-      CFMEGit::Processor.any_instance.stub(:commits => [double1])
+      GitHelper::Processor.any_instance.stub(:commits => [double1])
       described_class.update_from_git!
 
       expect(described_class.count).to eq 1

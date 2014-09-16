@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 #
-# Helper Script to access the CFME REST API
+# Helper Script to access the Bugzilla Mirror REST API
 #
 # Makes use of the Trollop and Faraday Client Gems
 #   gem install trollop
@@ -16,7 +16,7 @@ require 'faraday'
 
 api_cmd   = File.basename($PROGRAM_NAME)
 api_ver   = "1.0"
-cmd_title = "CFME BugZilla REST API Access Script"
+cmd_title = "Bugzilla Mirror REST API Access Script"
 
 sep       = "_" * 60
 prefix    = "/issues"
@@ -65,7 +65,7 @@ Usage: #{api_cmd} [options] <action> [parameters] [resource]
 EOS
   opt :verbose,    "Verbose mode, show details of the communication",
       :default => false,                    :short => '-v'
-  opt :url,        "Base URL of CFME to access",
+  opt :url,        "Base URL to access",
       :default => "http://localhost:5000",  :short => '-l'
   opt :user,       "User to authentication as",
       :default => "",                       :short => '-u'

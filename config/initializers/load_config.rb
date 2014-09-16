@@ -2,7 +2,7 @@ require 'ostruct'
 require 'yaml'
 
 APP_CONFIG = begin
-  YAML.load_file(Rails.root.join('config', 'cfme_bz.yml'))[Rails.env]
+  YAML.load_file(Rails.root.join('config', 'bugzilla_mirror.yml'))[Rails.env]
 rescue Errno::ENOENT
   {"bugzilla" => {}}
 end

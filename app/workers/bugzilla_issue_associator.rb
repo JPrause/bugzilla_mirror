@@ -1,7 +1,7 @@
 class BugzillaIssueAssociator
   include Sidekiq::Worker
   include ApplicationMixin
-  sidekiq_options :queue => :cfme_bz, :retry => false
+  sidekiq_options :queue => :bugzilla_mirror, :retry => false
 
   def define_issue_association(this_issue, what, other_issues)
     other_issues = [] if Array(other_issues) == [0]  # Sometime we get 0 for clone_of from Bugzilla.

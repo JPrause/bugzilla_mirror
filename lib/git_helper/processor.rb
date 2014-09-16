@@ -1,4 +1,4 @@
-module CFMEGit
+module GitHelper
   class Processor
     attr_reader :repo
 

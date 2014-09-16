@@ -1,4 +1,4 @@
-module CFMEGit
+module GitHelper
   class Commit
     attr_reader :bz_ids, :native_commit, :branch, :sha_id
 

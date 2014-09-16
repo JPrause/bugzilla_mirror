@@ -7,13 +7,13 @@ describe Issue do
     it "with no username specified" do
       stub_const("APP_CONFIG", "bugzilla" => {"password" => "hobbes"})
       expect { Issue.update_from_bz }.to raise_error(RuntimeError,
-                                                     "Error no username specified in config/cfme_bz.yml")
+                                                     "Error no username specified in config/bugzilla_mirror.yml")
     end
 
     it "with no password specified" do
       stub_const("APP_CONFIG", "bugzilla" => {"username" => "calvin"})
       expect { Issue.update_from_bz }.to raise_error(RuntimeError,
-                                                     "Error no password specified in config/cfme_bz.yml")
+                                                     "Error no password specified in config/bugzilla_mirror.yml")
     end
 
     it "with no bugzilla query output" do

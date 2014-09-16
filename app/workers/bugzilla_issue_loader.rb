@@ -1,7 +1,7 @@
 class BugzillaIssueLoader
   include Sidekiq::Worker
   include ApplicationMixin
-  sidekiq_options :queue => :cfme_bz, :retry => false
+  sidekiq_options :queue => :bugzilla_mirror, :retry => false
 
   def load_issues(bug_id_list)
     request_count = bug_id_list.count

@@ -32,7 +32,7 @@ class IssuesController < ApplicationController
   rescue_from_api_errors
 
   #
-  # Cfme Bz REST API (Json)
+  # Bugzilla Mirror REST API (Json)
   #
   def show
     init_request

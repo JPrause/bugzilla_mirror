@@ -9,7 +9,7 @@ gem 'rails_config'
 gem 'pg'
 gem 'more_core_extensions', :require => 'more_core_extensions/all'
 gem 'active_bugzilla'
-gem 'cfme_tools_services', :path => "../cfme_tools_services"
+gem 'miq_tools_services', :git => "git://github.com/ManageIQ/miq_tools_services.git"
 gem 'rugged'
 
 # Gems used only for assets and not required

@@ -3,9 +3,9 @@ require 'benchmark'
 class BugzillaDbBulkLoader
   include Sidekiq::Worker
   include ProcessSpawner
-  include CFMEToolsServices::SidekiqWorkerMixin
+  include MiqToolsServices::SidekiqWorkerMixin
   include ApplicationMixin
-  sidekiq_options :queue => :cfme_bz, :retry => false
+  sidekiq_options :queue => :bugzilla_mirror, :retry => false
 
   PRIMARY_SET     = [:summary, :status]     # Required
   SECONDARY_SET   = [:assigned_to]

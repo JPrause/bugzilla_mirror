@@ -10,14 +10,14 @@ base: &base
 
 development:
   <<: *base
-  database: cfme_bz_development
+  database: bugzilla_mirror_development
 
 production:
   <<: *base
-  database: cfme_bz_production
+  database: bugzilla_mirror_production
 
 test: &test
   <<: *base
-  database: cfme_bz_test
+  database: bugzilla_mirror_test
   # Silence these: 'NOTICE:  CREATE TABLE will create...'
   min_messages: warning

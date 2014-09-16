@@ -1,10 +1,10 @@
 class BugzillaDbUpdater
   include Sidekiq::Worker
   include Sidetiq::Schedulable
-  include CFMEToolsServices::SidekiqWorkerMixin
+  include MiqToolsServices::SidekiqWorkerMixin
   include ProcessSpawner
   include ApplicationMixin
-  sidekiq_options :queue => :cfme_bz, :retry => false
+  sidekiq_options :queue => :bugzilla_mirror, :retry => false
 
   recurrence { minutely }
 

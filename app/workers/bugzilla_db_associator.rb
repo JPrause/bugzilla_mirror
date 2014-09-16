@@ -2,7 +2,7 @@ class BugzillaDbAssociator
   include Sidekiq::Worker
   include ProcessSpawner
   include ApplicationMixin
-  sidekiq_options :queue => :cfme_bz, :retry => false
+  sidekiq_options :queue => :bugzilla_mirror, :retry => false
 
   def perform(bug_id_list)
     unless bug_id_list

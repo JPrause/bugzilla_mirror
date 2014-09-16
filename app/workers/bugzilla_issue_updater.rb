@@ -2,7 +2,7 @@ class BugzillaIssueUpdater
   include Sidekiq::Worker
   include ProcessSpawner
   include ApplicationMixin
-  sidekiq_options :queue => :cfme_bz, :retry => false
+  sidekiq_options :queue => :bugzilla_mirror, :retry => false
 
   def update_issues(bug_id_list)
     logger.info "Updating #{bug_id_list} Issues From #{bz_uri} ..."

@@ -8,7 +8,7 @@ module ApplicationMixin
   # Config File Methods
   #
   def app_options
-    @options ||= YAML.load_file(Rails.root.join('config', 'cfme_bz.yml'))[Rails.env]
+    @options ||= YAML.load_file(Rails.root.join('config', 'bugzilla_mirror.yml'))[Rails.env]
   end
 
   def bz_timestamp

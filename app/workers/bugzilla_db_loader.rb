@@ -1,9 +1,9 @@
 class BugzillaDbLoader
   include Sidekiq::Worker
   include ProcessSpawner
-  include CFMEToolsServices::SidekiqWorkerMixin
+  include MiqToolsServices::SidekiqWorkerMixin
   include ApplicationMixin
-  sidekiq_options :queue => :cfme_bz, :retry => false
+  sidekiq_options :queue => :bugzilla_mirror, :retry => false
 
   def load_database
     logger.info "Loading the Database From #{bz_uri} ..."

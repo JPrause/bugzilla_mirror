@@ -1,7 +1,7 @@
 require 'sidekiq/web'
 require 'sidetiq/web'
 
-CfmeBz::Application.routes.draw do
+BugzillaMirror::Application.routes.draw do
   mount Sidekiq::Web, at: "/sidekiq"
 
   resources :dashboard do

@@ -1,7 +1,7 @@
 class DashboardController < ApplicationController
   protect_from_forgery
   #
-  # Cfme Bz Web Interface (Html)
+  # Bugzilla Mirror Web Interface (Html)
   #
   def index
     @selected_filter = params['selected_filter'] || @selected_filter || "None"
